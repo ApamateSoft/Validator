@@ -5,10 +5,19 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 /**
+ * Validator
+ *
  * @author ApamateSoft
  * @version 0.0.1
  */
 public class Validator {
+
+    public static final String ALPHABET = "aAbBcCdDeEfFgGhHiIjJkKlLmMnNñÑoOpPqQrRsStTuUvVwWxXyYzZ";
+    public static final String ALPHA_LOWERCASE = "abcdefghijklmnñopqrstuvwxyz";
+    public static final String ALPHA_UPPERCASE = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ";
+    public static final String ALPHA_NUMERIC = "0123456789aAbBcCdDeEfFgGhHiIjJkKlLmMnNñÑoOpPqQrRsStTuUvVwWxXyYzZ";
+    public static final String ALPHA_NUMERIC_LOWERCASE = "0123456789abcdefghijklmnñopqrstuvwxyz";
+    public static final String ALPHA_NUMERIC_UPPERCASE = "0123456789ABCDEFGHIJKLMNÑOPQRSTUVWXYZ";
 
     private final List<Rule> rules = new ArrayList<>();
     private NotPass notPass;
@@ -50,13 +59,6 @@ public class Validator {
         return validate(evaluate);
     }
 
-    public Validator rule(Validate validate, String message) {
-        rules.add( new Rule(validate, message) );
-        return this;
-    }
-
-    //<editor-fold defaultstate="collapsed" desc="RULES">
-
     /**
      * Define el mensaje de error en caso de fallar la validación match que compara el String a evaluar con otro.
      * @param message Mensaje de error en caso de fallar la validación match.
@@ -67,8 +69,34 @@ public class Validator {
         return this;
     }
 
+    //<editor-fold desc="RULES">
     /**
-     * Regla que impide que el String a evaluar este vacío, también aplica en caso de null.
+     * Método que permite agregar reglas personalizadas.
+     * <br><br>
+     * <b>Ejemplo:</b><br>
+     * <code>
+     * <pre>
+     * new Validator()
+     *     .rule( evaluate -> {
+     *         return evaluate.equals("ejemplo");
+     *     },
+     *     "El texto es diferente de ejemplo");
+     * </pre>
+     * </code>
+     *
+     * @param validate Expresión lambda con la cóndicion a cumplir el String a evaluar para ser considerado valido.
+     * @param message Mensaje de error para esta regla.
+     * @return Validator.
+     */
+    public Validator rule(Validate validate, String message) {
+        rules.add( new Rule(validate, message) );
+        return this;
+    }
+
+    // REGLAS DE LONGITUD //////////////////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Verifica que el String a evaluar sea diferente de un String vaciío o de null.
      * @param message Mensaje de error para esta regla.
      * @return Validator.
      */
@@ -78,7 +106,7 @@ public class Validator {
     }
 
     /**
-     * Regla que impide que el String a evaluar tenga una longitud de caracteres diferente a la condición dada.
+     * Verifica que el String a evaluar tenga una longitud exacta de caracteres a la condición dada.
      * @param condition longitud de caracteres que debe tener el String a evaluar.
      * @param message Mensaje de error para esta regla.
      * @return Validator.
@@ -90,7 +118,7 @@ public class Validator {
     }
 
     /**
-     * Regla que impide que el String a evaluar tenga una longitud de caracteres menor a la condición dada.
+     * Verifica que el String a evaluar tenga una longitud de caracteres minima a la condición dada.
      * @param condition Longitud de caracteres minima a cumplir el String a evaluar.
      * @param message Mensaje de error para esta regla.
      * @return Validator.
@@ -102,7 +130,7 @@ public class Validator {
     }
 
     /**
-     * Regla que impide que el String a evaluar tenga una longitud de caracteres mayor a la condición dada.
+     * Verifica que el String a evaluar tenga una longitud maxima de caracteres a la condición dada.
      * @param condition longitud maxima de caracteres a cumplir el String a evaluar.
      * @param message Mensaje de error para esta regla.
      * @return Validator.
@@ -113,8 +141,10 @@ public class Validator {
         return rule(validate, message);
     }
 
+    // REGLAS DE FORMATO ///////////////////////////////////////////////////////////////////////////////////////////////
+
     /**
-     * Regla que impide que el String tenga un formato diferente al de un correo electrónico.
+     * Verifica que el String a evaluar tenga un formato de correo electónico (email)
      * @param message Mensaje de error para esta regla.
      * @return Validator.
      */
@@ -126,11 +156,11 @@ public class Validator {
     }
 
     /**
-     * Regla que impide que el String a evaluar tenga caracteres diferentes a caracteres numéricos.
+     * Verifica que el String a evaluar tenga un formato numérico.
      * @param message Mensaje de error para esta regla.
      * @return Validator.
      */
-    public Validator onlyNumber(String message) {
+    public Validator isNumber(String message) {
         final Validate validate = evaluate -> {
             try {
                 Double.parseDouble(evaluate);
@@ -142,15 +172,45 @@ public class Validator {
         return rule(validate, message);
     }
 
+    // REGLA DE CONTENIDO //////////////////////////////////////////////////////////////////////////////////////////////
 
-    public Validator onlyCharacters(String message) {
-        final Validate validate = evaluate -> true;
+    /**
+     * Verifica que el String a evaluar solo contenga caracteres incluidos en el String de condición.
+     * @param condition String conformado por los caracteres validos.
+     * @param message  Mensaje de error para esta regla.
+     * @return Validator.
+     */
+    public Validator shouldOnlyContain(String condition, String message) {
+        message = String.format(message, condition);
+        final char[] evaluateChars = condition.toCharArray();
+        final Validate validate = evaluate -> {
+            for (char a: evaluateChars) {
+                if ( !condition.contains( String.valueOf( a ) ) ) return false;
+            }
+            return true;
+        };
         return rule(validate, message);
     }
 
     /**
-     * Regla que impide que el String a evaluar contenga al menos uno de los caracteres incluido en el String de la
-     * condición.
+     * Verifica que solo halla caracteres numéricos en el String a evaluar.
+     * @param message Mensaje de error para esta regla.
+     * @return Validator.
+     */
+    public Validator onlyNumber(String message) {
+        final Validate validate = evaluate -> {
+            try {
+                Integer.parseInt(evaluate);
+                return true;
+            } catch (Exception e) {
+                return false;
+            }
+        };
+        return rule(validate, message);
+    }
+
+    /**
+     * Verifica que el String a evaluar no contenga algunos de los caracteres incluido en el String de la condición.
      * @param condition String que contiene los caracteres no deseados.
      * @param message Mensaje de error para esta regla.
      * @return Validator.
@@ -168,8 +228,7 @@ public class Validator {
     }
 
     /**
-     * Regla que verifica que el String a evaluar contenga al menos uno de los caracteres incluidos en el String de la
-     * condición.
+     * Verifica que el String a evaluar contenga al menos uno de los caracteres incluidos en el String de la condición.
      * @param condition String que contiene caracteres deseados.
      * @param message Mensaje de error para esta regla.
      * @return Validator.
@@ -187,6 +246,10 @@ public class Validator {
     }
     //</editor-fold>
 
+    /**
+     * Evento que se dispara en caso de no cumplirse alguna de las reglas definida en este Objeto.
+     * @param notPass Función a ejecutar con el mensaje de error de la regla no cumplida.
+     */
     public void notPass(NotPass notPass) {
         this.notPass = notPass;
     }
@@ -208,12 +271,12 @@ public class Validator {
     }
 
     @FunctionalInterface
-    interface Validate {
+    public interface Validate {
         boolean action(String evaluate);
     }
 
     @FunctionalInterface
-    interface NotPass {
+    public interface NotPass {
         void action(String message);
     }
 
