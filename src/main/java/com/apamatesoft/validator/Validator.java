@@ -8,9 +8,9 @@ import java.util.regex.Pattern;
  * Validator
  *
  * @author ApamateSoft
- * @version 0.0.1
+ * @version 0.0.4
  */
-public class Validator {
+public class Validator implements Cloneable {
 
     public static final String ALPHABET = "aAbBcCdDeEfFgGhHiIjJkKlLmMnNñÑoOpPqQrRsStTuUvVwWxXyYzZ";
     public static final String ALPHA_LOWERCASE = "abcdefghijklmnñopqrstuvwxyz";
@@ -22,6 +22,10 @@ public class Validator {
     private final List<Rule> rules = new ArrayList<>();
     private NotPass notPass;
     private String notMathMessage;
+
+    public boolean isCompare() {
+        return notMathMessage!=null;
+    }
 
     /**
      * Evalúa sobre el String dado, todas las reglas definidas previamente en este objeto.
@@ -50,7 +54,11 @@ public class Validator {
      * @return true: si pasa la validación, <br>
      *         false: si no pasa la validación.
      */
-    public boolean match(String evaluate, String compare) {
+    public boolean compare(String evaluate, String compare) {
+        if (evaluate==null || compare==null) {
+            if (notPass!=null) notPass.action( notMathMessage );
+            return false;
+        }
         final boolean math = evaluate.equals( compare );
         if (!math) {
             if (notPass!=null) notPass.action( notMathMessage );
@@ -252,6 +260,11 @@ public class Validator {
      */
     public void notPass(NotPass notPass) {
         this.notPass = notPass;
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 
     class Rule {
