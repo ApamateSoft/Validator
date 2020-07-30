@@ -9,7 +9,7 @@
 
     <groupId>com.apamatesoft</groupId>
     <artifactId>Validator</artifactId>
-    <version>0.0.4</version>
+    <version>1.0.0</version>
 
     <build>
         <plugins>
