@@ -1,7 +1,5 @@
 package com.apamatesoft.validator;
 
-import com.sun.istack.internal.NotNull;
-import com.sun.istack.internal.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -10,7 +8,7 @@ import java.util.regex.Pattern;
  * Validator
  *
  * @author ApamateSoft
- * @version 1.0.0
+ * @version 1.0.1
  */
 public class Validator implements Cloneable {
 
@@ -41,7 +39,7 @@ public class Validator implements Cloneable {
     //<editor-fold defaultstate="collapsed" desc="CONSTRUCTORS">
     public Validator() { }
 
-    private Validator(@NotNull final Builder builder) {
+    private Validator(final Builder builder) {
         rules.addAll(builder.rules);
         notPass = builder.notPass;
         notMathMessage = builder.notMathMessage;
@@ -54,7 +52,7 @@ public class Validator implements Cloneable {
      * @return true: si pasa la validación <br>
      *         false: si no pasa la validación
      */
-    public boolean validate(@Nullable final String evaluate) {
+    public boolean validate(final String evaluate) {
         for (Rule rule: rules) {
             if (!rule.validate(evaluate)) {
                 if (notPass!=null) notPass.invoke(rule.getMessage());
@@ -75,7 +73,7 @@ public class Validator implements Cloneable {
      * @return true: si pasa la validación, <br>
      *         false: si no pasa la validación.
      */
-    public boolean compare(@Nullable final String evaluate, @Nullable final String compare) {
+    public boolean compare(final String evaluate, final String compare) {
         if (evaluate==null || compare==null) {
             if (notPass!=null) notPass.invoke(notMathMessage);
             return false;
@@ -91,7 +89,7 @@ public class Validator implements Cloneable {
      * Define el mensaje de error en caso de fallar la validación match que compara el String a evaluar con otro.
      * @param message Mensaje de error en caso de fallar la validación match.
      */
-    public void setNotMathMessage(final @NotNull String message) {
+    public void setNotMathMessage(final String message) {
         this.notMathMessage = message;
     }
 
@@ -113,7 +111,7 @@ public class Validator implements Cloneable {
      * @param message Mensaje de error para esta regla.
      * @param validate Expresión lambda con la cóndicion a cumplir el String a evaluar para ser considerado valido.
      */
-    public void rule(@NotNull final String message, @NotNull final Validate validate) {
+    public void rule(final String message, final Validate validate) {
         rules.add(new Rule(message, validate));
     }
 
@@ -123,7 +121,7 @@ public class Validator implements Cloneable {
      * Verifica que el String a evaluar sea diferente de un String vacío o de null.
      * @param message Mensaje de error para esta regla.
      */
-    public void required(final @NotNull String message) {
+    public void required(final String message) {
         rule(message, it -> it!=null && !it.isEmpty());
     }
 
@@ -132,7 +130,7 @@ public class Validator implements Cloneable {
      * @param condition longitud de caracteres que debe tener el String a evaluar.
      * @param message Mensaje de error para esta regla.
      */
-    public void length(final int condition, @NotNull final String message) {
+    public void length(final int condition, final String message) {
         rule(String.format(message, condition), it -> it.length()==condition);
     }
 
@@ -141,7 +139,7 @@ public class Validator implements Cloneable {
      * @param condition Longitud de caracteres minima a cumplir el String a evaluar.
      * @param message Mensaje de error para esta regla.
      */
-    public void minLength(final int condition, @NotNull final String message) {
+    public void minLength(final int condition, final String message) {
         rule(String.format(message, condition), it -> it.length()>=condition);
     }
 
@@ -150,7 +148,7 @@ public class Validator implements Cloneable {
      * @param condition longitud maxima de caracteres a cumplir el String a evaluar.
      * @param message Mensaje de error para esta regla.
      */
-    public void maxLength(final int condition, @NotNull final String message) {
+    public void maxLength(final int condition, final String message) {
         rule(String.format(message, condition), it -> it.length()<=condition);
     }
 
@@ -160,7 +158,7 @@ public class Validator implements Cloneable {
      * Verifica que el String a evaluar tenga un formato de correo electónico (email)
      * @param message Mensaje de error para esta regla.
      */
-    public void email(@NotNull final String message) {
+    public void email(final String message) {
         final String RE = "^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$";
         rule(message, it -> Pattern.compile(RE).matcher(it).find());
     }
@@ -169,7 +167,7 @@ public class Validator implements Cloneable {
      * Verifica que el String a evaluar tenga un formato numérico.
      * @param message Mensaje de error para esta regla.
      */
-    public void number(@NotNull final String message) {
+    public void number(final String message) {
         rule(message, it -> {
             try {
                 final double number = Double.parseDouble(it);
@@ -187,7 +185,7 @@ public class Validator implements Cloneable {
      * @param condition String conformado por los caracteres validos.
      * @param message  Mensaje de error para esta regla.
      */
-    public void shouldOnlyContain(@NotNull final String condition, @NotNull final String message) {
+    public void shouldOnlyContain(final String condition, final String message) {
         rule(String.format(message, condition), it -> {
             for (char a: it.toCharArray()) {
                 if (!condition.contains(String.valueOf(a))) return false;
@@ -200,7 +198,7 @@ public class Validator implements Cloneable {
      * Verifica que solo halla caracteres numéricos en el String a evaluar.
      * @param message Mensaje de error para esta regla.
      */
-    public void onlyNumber(@NotNull final String message) {
+    public void onlyNumber(final String message) {
         shouldOnlyContain(NUMBER, message);
     }
 
@@ -209,7 +207,7 @@ public class Validator implements Cloneable {
      * @param condition String que contiene los caracteres no deseados.
      * @param message Mensaje de error para esta regla.
      */
-    public void notContain(@NotNull final String condition, @NotNull final String message) {
+    public void notContain(final String condition, final String message) {
         rule(String.format(message, condition), it -> {
             for (char a: condition.toCharArray()) {
                 if (it.contains(a+"")) return false;
@@ -223,7 +221,7 @@ public class Validator implements Cloneable {
      * @param condition String que contiene caracteres deseados.
      * @param message Mensaje de error para esta regla.
      */
-    public void mustContainOne(@NotNull final String condition, @NotNull final String message) {
+    public void mustContainOne(final String condition, final String message) {
         rule(String.format(message, condition), it -> {
             for (char a: condition.toCharArray()) {
                 if (it.contains(a+"")) return true;
@@ -237,7 +235,7 @@ public class Validator implements Cloneable {
      * Evento que se dispara en caso de no cumplirse alguna de las reglas definida en este Objeto.
      * @param notPass Función a ejecutar con el mensaje de error de la regla no cumplida.
      */
-    public void notPass(@Nullable final NotPass notPass) {
+    public void notPass(final NotPass notPass) {
         this.notPass = notPass;
     }
 
@@ -246,7 +244,6 @@ public class Validator implements Cloneable {
         return super.clone();
     }
 
-    @Nullable
     public Validator copy() {
         try {
             return (Validator) this.clone();
@@ -265,7 +262,7 @@ public class Validator implements Cloneable {
          * Define el mensaje de error en caso de fallar la validación match que compara el String a evaluar con otro.
          * @param message Mensaje de error en caso de fallar la validación match.
          */
-        public Builder setNotMathMessage(final @NotNull String message) {
+        public Builder setNotMathMessage(final String message) {
             this.notMathMessage = message;
             return this;
         }
@@ -288,7 +285,7 @@ public class Validator implements Cloneable {
          * @param message Mensaje de error para esta regla.
          * @param validate Expresión lambda con la cóndicion a cumplir el String a evaluar para ser considerado valido.
          */
-        public Builder rule(@NotNull final String message, @NotNull final Validate validate) {
+        public Builder rule(final String message, final Validate validate) {
             rules.add(new Rule(message, validate));
             return this;
         }
@@ -299,7 +296,7 @@ public class Validator implements Cloneable {
          * Verifica que el String a evaluar sea diferente de un String vacío o de null.
          * @param message Mensaje de error para esta regla.
          */
-        public Builder required(final @NotNull String message) {
+        public Builder required(final String message) {
             return rule(message, it -> it!=null && !it.isEmpty());
         }
 
@@ -308,7 +305,7 @@ public class Validator implements Cloneable {
          * @param condition longitud de caracteres que debe tener el String a evaluar.
          * @param message Mensaje de error para esta regla.
          */
-        public Builder length(final int condition, @NotNull final String message) {
+        public Builder length(final int condition, final String message) {
             return rule(String.format(message, condition), it -> it.length()==condition);
         }
 
@@ -317,7 +314,7 @@ public class Validator implements Cloneable {
          * @param condition Longitud de caracteres minima a cumplir el String a evaluar.
          * @param message Mensaje de error para esta regla.
          */
-        public Builder minLength(final int condition, @NotNull final String message) {
+        public Builder minLength(final int condition, final String message) {
             return rule(String.format(message, condition), it -> it.length()>=condition);
         }
 
@@ -326,7 +323,7 @@ public class Validator implements Cloneable {
          * @param condition longitud maxima de caracteres a cumplir el String a evaluar.
          * @param message Mensaje de error para esta regla.
          */
-        public Builder maxLength(final int condition, @NotNull final String message) {
+        public Builder maxLength(final int condition, final String message) {
             return rule(String.format(message, condition), it -> it.length()<=condition);
         }
 
@@ -336,7 +333,7 @@ public class Validator implements Cloneable {
          * Verifica que el String a evaluar tenga un formato de correo electónico (email)
          * @param message Mensaje de error para esta regla.
          */
-        public Builder email(@NotNull final String message) {
+        public Builder email(final String message) {
             final String RE = "^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$";
             return rule(message, it -> Pattern.compile(RE).matcher(it).find());
         }
@@ -345,7 +342,7 @@ public class Validator implements Cloneable {
          * Verifica que el String a evaluar tenga un formato numérico.
          * @param message Mensaje de error para esta regla.
          */
-        public Builder number(@NotNull final String message) {
+        public Builder number(final String message) {
             return rule(message, it -> {
                 try {
                     final double number = Double.parseDouble(it);
@@ -363,7 +360,7 @@ public class Validator implements Cloneable {
          * @param condition String conformado por los caracteres validos.
          * @param message  Mensaje de error para esta regla.
          */
-        public Builder shouldOnlyContain(@NotNull final String condition, @NotNull final String message) {
+        public Builder shouldOnlyContain(final String condition, final String message) {
             return rule(String.format(message, condition), it -> {
                 for (char a: it.toCharArray()) {
                     if (!condition.contains(String.valueOf(a))) return false;
@@ -376,7 +373,7 @@ public class Validator implements Cloneable {
          * Verifica que solo halla caracteres numéricos en el String a evaluar.
          * @param message Mensaje de error para esta regla.
          */
-        public Builder onlyNumber(@NotNull final String message) {
+        public Builder onlyNumber(final String message) {
             return shouldOnlyContain(NUMBER, message);
         }
 
@@ -385,7 +382,7 @@ public class Validator implements Cloneable {
          * @param condition String que contiene los caracteres no deseados.
          * @param message Mensaje de error para esta regla.
          */
-        public Builder notContain(@NotNull final String condition, @NotNull final String message) {
+        public Builder notContain(final String condition, final String message) {
             return rule(String.format(message, condition), it -> {
                 for (char a: condition.toCharArray()) {
                     if (it.contains(a+"")) return false;
@@ -399,7 +396,7 @@ public class Validator implements Cloneable {
          * @param condition String que contiene caracteres deseados.
          * @param message Mensaje de error para esta regla.
          */
-        public Builder mustContainOne(@NotNull final String condition, @NotNull final String message) {
+        public Builder mustContainOne(final String condition, final String message) {
             return rule(String.format(message, condition), it -> {
                 for (char a: condition.toCharArray()) {
                     if (it.contains(a+"")) return true;
@@ -413,7 +410,7 @@ public class Validator implements Cloneable {
          * Evento que se dispara en caso de no cumplirse alguna de las reglas definida en este Objeto.
          * @param notPass Función a ejecutar con el mensaje de error de la regla no cumplida.
          */
-        public Builder notPass(@Nullable final NotPass notPass) {
+        public Builder notPass(final NotPass notPass) {
             this.notPass = notPass;
             return this;
         }
