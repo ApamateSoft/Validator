@@ -1,4 +1,4 @@
-package com.apamatesoft.validator;
+package com.apamatesoft.validator.functions;
 
 @FunctionalInterface
 public interface Validate {

@@ -1,5 +1,7 @@
 package com.apamatesoft.validator;
 
+import com.apamatesoft.validator.functions.Validate;
+
 public class Rule {
 
     private final String message;
