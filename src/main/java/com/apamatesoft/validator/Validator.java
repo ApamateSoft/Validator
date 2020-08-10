@@ -1,5 +1,6 @@
 // TODO:
 //  - Crear reglas para numeros > < =
+//  - Regla de fecha
 //  - Crear readme
 //  - Traducir
 package com.apamatesoft.validator;
@@ -13,33 +14,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import static com.apamatesoft.validator.constants.Constants.NUMBER;
+
 /**
  * Validator
  *
  * @author ApamateSoft
- * @version 1.0.1
+ * @version 2.0.0
  */
 public class Validator implements Cloneable {
 
-    //<editor-fold defaultstate="collapsed" desc="TEMPLATES">
-    public static String NUMBER = "0123456789";
-
-    public static String ALPHABET = "aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ";
-    public static String NAME = ALPHABET+" ";
-    public static String ALPHA_LOWERCASE = "abcdefghijklmnopqrstuvwxyz";
-    public static String ALPHA_UPPERCASE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    public static String ALPHA_NUMERIC = NUMBER+ALPHABET;
-    public static String ALPHA_NUMERIC_LOWERCASE = NUMBER+ALPHA_LOWERCASE;
-    public static String ALPHA_NUMERIC_UPPERCASE = NUMBER+ALPHA_UPPERCASE;
-
-    public static String ALPHABET_ES = "aAáÁbBcCdDeEéÉfFgGhHiIíÍjJkKlLmMnNñÑoOóÓpPqQrRsStTuUúÚvVwWxXyYzZ";
-    public static String NAME_ES = ALPHABET_ES+" ";
-    public static String ALPHA_LOWERCASE_ES = "aábcdeéfghiíjklmnñoópqrstuúvwxyz";
-    public static String ALPHA_UPPERCASE_ES = "AÁBCDEÉFGHIÍJKLMNÑOÓPQRSTUÚVWXYZ";
-    public static String ALPHA_NUMERIC_ES = NUMBER+ALPHABET_ES;
-    public static String ALPHA_NUMERIC_LOWERCASE_ES = NUMBER+ALPHA_LOWERCASE_ES;
-    public static String ALPHA_NUMERIC_UPPERCASE_ES = NUMBER+ALPHA_UPPERCASE_ES;
-    //</editor-fold>
+    public static final String EMAIL_RE = "^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$";
 
     private static Messages messages = new MessagesEn();
 
@@ -208,8 +193,7 @@ public class Validator implements Cloneable {
      * @param message Mensaje de error.
      */
     public void email(String message) {
-        String RE = "^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$";
-        rule(message, it -> Pattern.compile(RE).matcher(it).find());
+        rule(message, it -> Pattern.compile(EMAIL_RE).matcher(it).find());
     }
 
     /**
@@ -473,8 +457,7 @@ public class Validator implements Cloneable {
          * @return Builder
          */
         public Builder email(String message) {
-            String RE = "^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$";
-            return rule(message, it -> Pattern.compile(RE).matcher(it).find());
+            return rule(message, it -> Pattern.compile(EMAIL_RE).matcher(it).find());
         }
 
         /**
