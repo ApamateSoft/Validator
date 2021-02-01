@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import static com.apamatesoft.validator.constants.Constants.EMAIL_RE;
 import static com.apamatesoft.validator.constants.Constants.NUMBER;
 
 /**
@@ -24,15 +25,13 @@ import static com.apamatesoft.validator.constants.Constants.NUMBER;
  */
 public class Validator implements Cloneable {
 
-    public static final String EMAIL_RE = "^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$";
-
     private static Messages messages = new MessagesEn();
 
-    private List<Rule> rules = new ArrayList<>();
+    private final List<Rule> rules = new ArrayList<>();
     private NotPass notPass;
     private String notMatchMessage = messages.getNotMatchMessage();
 
-    //<editor-fold defaultstate="collapsed" desc="CONSTRUCTORS">
+    // <editor-fold defaultstate="collapsed" desc="CONSTRUCTORS">
     public Validator() { }
 
     private Validator(Builder builder) {
@@ -84,7 +83,7 @@ public class Validator implements Cloneable {
      * error en caso de que la comparación falle.
      * @param evaluate String a evaluar.
      * @param compare String a comparar.
-     * @return true: si pasa la validación.
+     * @return true: si pasa la validación.clas
      */
     public boolean compare(String evaluate, String compare) {
         if (evaluate==null || compare==null) {
@@ -105,8 +104,8 @@ public class Validator implements Cloneable {
      * <b>Ejemplo:<b/><br>
      * <code>
      * <pre>
-     * new Validator().rule("El texto es diferente de ejemplo", evaluate -> {
-     *     return evaluate.equals("ejemplo");
+     * new Validator().rule("El texto es diferente de 'xxx'", evaluate -> {
+     *     return evaluate.equals("xxx");
      * });
      * </pre>
      * </code>
