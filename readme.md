@@ -5,7 +5,7 @@ Implementando una serie de reglas que este debe de seguir.
 ### Instalación
 Instrucciones de instalación pendiente.
 
-###Empezando
+### Empezando
 ejemplo de como crear un validator con dos reglas.
 
 ```java
@@ -77,14 +77,14 @@ validator.isValid("yyy"); // false
 Validator agrega en su biblioteca una serie de reglas predefinidas.
 
 | Regla	              | Condición     | Mensaje (`String`)  | Descripción                                                                                        |
-|---------------------|---------------|----------|----------------------------------------------------------------------------------------------------|
-| `required`	      | No            | Opcional | Valida que el String a evaluar sea diferente de un vacío y null                                    |
-| `length`	          | Si (`int`)    | Opcional | Valida que el String a evaluar tenga la longitud exacta de carácteres a la condición               |
-| `minLength`	      | Si (`int`)    | Opcional | Valida que el String a evaluar tenga una longitud de caracteres minima a la condición              |
-| `maxLength`	      | Si (`int`)    | Opcional | Valida que el String a evaluar tenga una longitud maxima de carácteres a la condición              |
-| `email`             | No            | Opcional | Valida que el String a evaluar tenga formato de email                                              |
-| `numericFormat`     | No            | Opcional | Valida que el String a evaluar tenga un formato numérico                                           |
-| `shouldOnlyContain` | Si (`String`) | Opcional | Valida que el String a evaluar solo contenga carácteres incluidos en el String de condición        |
-| `onlyNumbers`       | No            | Opcional | Valida que el Staring a evaluar solo contenga carácteres numéricos                                 |
-| `notContain`        | Si (`String`) | Opcional | Valida que el String a evaluar no contenga algún carácter incluido en el String de la condición    |
-| `mustContainOne`    | Si (`String`) | Opcional | Valida que el String a evaluar contenga al menos un carácter incluido en el String de la condición |
+|---------------------|---------------|---------------------|----------------------------------------------------------------------------------------------------|
+| `required`	      | No            | Opcional            | Valida que el String a evaluar sea diferente de un vacío y null                                    |
+| `length`	          | Si (`int`)    | Opcional            | Valida que el String a evaluar tenga la longitud exacta de carácteres a la condición               |
+| `minLength`	      | Si (`int`)    | Opcional            | Valida que el String a evaluar tenga una longitud de caracteres minima a la condición              |
+| `maxLength`	      | Si (`int`)    | Opcional            | Valida que el String a evaluar tenga una longitud maxima de carácteres a la condición              |
+| `email`             | No            | Opcional            | Valida que el String a evaluar tenga formato de email                                              |
+| `numericFormat`     | No            | Opcional            | Valida que el String a evaluar tenga un formato numérico                                           |
+| `shouldOnlyContain` | Si (`String`) | Opcional            | Valida que el String a evaluar solo contenga carácteres incluidos en el String de condición        |
+| `onlyNumbers`       | No            | Opcional            | Valida que el Staring a evaluar solo contenga carácteres numéricos                                 |
+| `notContain`        | Si (`String`) | Opcional            | Valida que el String a evaluar no contenga algún carácter incluido en el String de la condición    |
+| `mustContainOne`    | Si (`String`) | Opcional            | Valida que el String a evaluar contenga al menos un carácter incluido en el String de la condición |
