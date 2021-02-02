@@ -61,12 +61,16 @@ public class Validator implements Cloneable {
 
     /**
      * Valida que el String a evaluar cumpla todas las reglas.<br>
-     * <b>Nota:</b> Si el String no cumple alguna regla, se invocara al evento {@link #notPass(NotPass)} con el mensaje
+     * <b>Nota:</b> Si el String no cumple alguna regla, se invocara al evento {@link #onNotPass(NotPass)} con el mensaje
      * del error correspondiente.
      * @param evaluate String a evaluar.
      * @return true: si pasa la validación.
      */
-    public boolean validate(String evaluate) {
+    public boolean isValid(String evaluate) {
+        if (evaluate==null) {
+            if (notPass!=null) notPass.invoke(rules.get(0).getMessage());
+            return false;
+        }
         for (Rule rule: rules) {
             if (!rule.validate(evaluate)) {
                 if (notPass!=null) notPass.invoke(rule.getMessage());
@@ -78,7 +82,7 @@ public class Validator implements Cloneable {
 
     /**
      * Valida que ambos String coincidan y que cumplan todas las reglas.<br>
-     * <b>Nota:</b> Si los Strings no cumplen con alguna regla, se invocara al evento {@link #notPass(NotPass)}, con el
+     * <b>Nota:</b> Si los Strings no cumplen con alguna regla, se invocara al evento {@link #onNotPass(NotPass)}, con el
      * mensaje del error correspondiente. con el método {@link #setNotMatchMessage(String)} se establece un mensaje de
      * error en caso de que la comparación falle.
      * @param evaluate String a evaluar.
@@ -94,7 +98,7 @@ public class Validator implements Cloneable {
             if (notPass!=null) notPass.invoke(notMatchMessage);
             return false;
         }
-        return validate(evaluate);
+        return isValid(evaluate);
     }
 
     //<editor-fold desc="RULES">
@@ -312,7 +316,7 @@ public class Validator implements Cloneable {
      * Evento que se invoca al no cumplirse alguna regla.
      * @param notPass Función con el mensaje de error.
      */
-    public void notPass(NotPass notPass) {
+    public void onNotPass(NotPass notPass) {
         this.notPass = notPass;
     }
 
