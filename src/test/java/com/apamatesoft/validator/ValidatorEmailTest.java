@@ -3,9 +3,6 @@ package com.apamatesoft.validator;
 import com.apamatesoft.validator.functions.NotPass;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-
-import java.util.Objects;
-
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.Mockito.*;
@@ -13,6 +10,9 @@ import static org.mockito.Mockito.*;
 public class ValidatorEmailTest {
 
     private final static Validator validator = new Validator();
+    private final static Validator validatorBuild = new Validator.Builder()
+            .email()
+            .build();
 
     @BeforeAll
     static void beforeAll() {
@@ -42,30 +42,32 @@ public class ValidatorEmailTest {
         verify(notPass).invoke("Email invalid");
     }
 
-    private void a() {
+    @BeforeAll
+    static void beforeAll_build() {
+        validatorBuild.email();
+    }
 
-        Validator validator = new Validator.Builder()
-                .rule("Ingrese un texto diferente de null", Objects::nonNull)
-                .rule("El texto es diferente de 'xxx'", evaluate -> evaluate.equals("xxx"))
-                .build();
+    @Test
+    void returnFalseForNullValue_build() {
+        assertFalse(validatorBuild.isValid(null));
+    }
 
-        // Solo se ejecuta si falla la validación de alguna regla
-        validator.onNotPass( message -> System.out.println(message) );
+    @Test
+    void returnFalseForStringWithDifferentEmailFormat_build() {
+        assertFalse(validatorBuild.isValid("xxx"));
+    }
 
-        validator.isValid("yyy"); // return false
+    @Test
+    void returnTrueForAnEmailFormattedString_build() {
+        assertTrue(validatorBuild.isValid("example@mail.com"));
+    }
 
-        // 1º regla: solo se aprobara si el String a evaluar es difefente de null, en caso contrario mostrara el mensaje
-        // "Ingrese un texto diferente de null"
-        validator.rule("Ingrese un texto diferente de null", (String evaluate) -> {
-            return evaluate!=null;
-        } );
-
-        // 2º regla: solo se aprobara si el String a evaluar es igual a "xxx", en caso contrario mostrara el mensaje
-        // "El texto es diferente de 'xxx'"
-        validator.rule("El texto es diferente de 'xxx'", (String evaluate) -> {
-            return evaluate.equals("xxx");
-        } );
-
+    @Test
+    void verifyCallback_build() {
+        final NotPass notPass = mock(NotPass.class);
+        validatorBuild.onNotPass(notPass);
+        validatorBuild.isValid(null);
+        verify(notPass).invoke("Email invalid");
     }
 
 }

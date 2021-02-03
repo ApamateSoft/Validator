@@ -12,6 +12,9 @@ import static org.mockito.Mockito.verify;
 public class ValidatorMaxLength {
 
     private final static Validator validator = new Validator();
+    private final static Validator validatorBuild = new Validator.Builder()
+            .maxLength(2)
+            .build();
 
     @BeforeAll
     static void beforeAll() {
@@ -43,6 +46,34 @@ public class ValidatorMaxLength {
         final NotPass notPass = mock(NotPass.class);
         validator.onNotPass(notPass);
         validator.isValid(null);
+        verify(notPass).invoke("It requires less than 2 characters");
+    }
+
+    @Test
+    void returnFalseForNullValue_build() {
+        assertFalse(validatorBuild.isValid(null));
+    }
+
+    @Test
+    void returnTrueForStringWithLengthLessThan2_build() {
+        assertTrue(validatorBuild.isValid("x"));
+    }
+
+    @Test
+    void returnFalseForStringWithLengthGreaterThan2_build() {
+        assertFalse(validatorBuild.isValid("xxx"));
+    }
+
+    @Test
+    void returnTrueForStringWithLengthEqualThan2_build() {
+        assertTrue(validatorBuild.isValid("xx"));
+    }
+
+    @Test
+    void verifyCallback_build() {
+        final NotPass notPass = mock(NotPass.class);
+        validatorBuild.onNotPass(notPass);
+        validatorBuild.isValid(null);
         verify(notPass).invoke("It requires less than 2 characters");
     }
 

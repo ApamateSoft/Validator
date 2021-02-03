@@ -3,6 +3,7 @@
 //  - Regla de fecha
 //  - Crear readme
 //  - Traducir
+//  - RegEgx
 package com.apamatesoft.validator;
 
 import com.apamatesoft.validator.messages.Messages;
@@ -237,6 +238,7 @@ public class Validator implements Cloneable {
      */
     public void shouldOnlyContain(String condition, String message) {
         rule(String.format(message, condition), it -> {
+            if (it.isEmpty()) return false;
             for (char a: it.toCharArray()) {
                 if (!condition.contains(String.valueOf(a))) return false;
             }
@@ -274,6 +276,7 @@ public class Validator implements Cloneable {
      */
     public void notContain(String condition, String message) {
         rule(String.format(message, condition), it -> {
+            if (it.isEmpty()) return false;
             for (char a: condition.toCharArray()) {
                 if (it.contains(a+"")) return false;
             }
@@ -342,7 +345,7 @@ public class Validator implements Cloneable {
      */
     public static class Builder {
 
-        private List<Rule> rules = new ArrayList<>();
+        private final List<Rule> rules = new ArrayList<>();
         private NotPass notPass;
         private String notMatchMessage = messages.getNotMatchMessage();
 
@@ -503,6 +506,7 @@ public class Validator implements Cloneable {
          */
         public Builder shouldOnlyContain(String condition, String message) {
             return rule(String.format(message, condition), it -> {
+                if (it.isEmpty()) return false;
                 for (char a: it.toCharArray()) {
                     if (!condition.contains(String.valueOf(a))) return false;
                 }
@@ -544,6 +548,7 @@ public class Validator implements Cloneable {
          */
         public Builder notContain(String condition, String message) {
             return rule(String.format(message, condition), it -> {
+                if (it.isEmpty()) return false;
                 for (char a: condition.toCharArray()) {
                     if (it.contains(a+"")) return false;
                 }

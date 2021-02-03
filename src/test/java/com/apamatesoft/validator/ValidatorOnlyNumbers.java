@@ -4,20 +4,21 @@ import com.apamatesoft.validator.functions.NotPass;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-class ValidatorRequiredTest {
+public class ValidatorOnlyNumbers {
 
     private final static Validator validator = new Validator();
     private final static Validator validatorBuilder = new Validator.Builder()
-            .required()
+            .onlyNumbers()
             .build();
 
     @BeforeAll
     static void beforeAll() {
-        validator.required();
+        validator.onlyNumbers();
     }
 
     @Test
@@ -31,8 +32,23 @@ class ValidatorRequiredTest {
     }
 
     @Test
-    void returnTrueForAnyString() {
-        assertTrue(validator.isValid("xxx"));
+    void returnFalseForStringWithCharacters() {
+        assertFalse(validator.isValid("xxx"));
+    }
+
+    @Test
+    void returnFalseForStringWithCharactersAndNumbers() {
+        assertFalse(validator.isValid("xxx123"));
+    }
+
+    @Test
+    void returnTrueForStringWithOnlyNumbers() {
+        assertTrue(validator.isValid("123"));
+    }
+
+    @Test
+    void returnFalseForStringWithDecimalFormat() {
+        assertFalse(validator.isValid("0.5"));
     }
 
     @Test
@@ -40,7 +56,7 @@ class ValidatorRequiredTest {
         final NotPass notPass = mock(NotPass.class);
         validator.onNotPass(notPass);
         validator.isValid(null);
-        verify(notPass).invoke("Required");
+        verify(notPass).invoke("Just numbers");
     }
 
     @Test
@@ -54,8 +70,23 @@ class ValidatorRequiredTest {
     }
 
     @Test
-    void returnTrueForAnyString_build() {
-        assertTrue(validatorBuilder.isValid("xxx"));
+    void returnFalseForStringWithCharacters_build() {
+        assertFalse(validatorBuilder.isValid("xxx"));
+    }
+
+    @Test
+    void returnFalseForStringWithCharactersAndNumbers_build() {
+        assertFalse(validatorBuilder.isValid("xxx123"));
+    }
+
+    @Test
+    void returnTrueForStringWithOnlyNumbers_build() {
+        assertTrue(validatorBuilder.isValid("123"));
+    }
+
+    @Test
+    void returnFalseForStringWithDecimalFormat_build() {
+        assertFalse(validatorBuilder.isValid("0.5"));
     }
 
     @Test
@@ -63,7 +94,7 @@ class ValidatorRequiredTest {
         final NotPass notPass = mock(NotPass.class);
         validatorBuilder.onNotPass(notPass);
         validatorBuilder.isValid(null);
-        verify(notPass).invoke("Required");
+        verify(notPass).invoke("Just numbers");
     }
 
 }
