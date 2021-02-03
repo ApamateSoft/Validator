@@ -140,7 +140,7 @@ public class Validator implements Cloneable {
     }
 
     /**
-     * Valida que el String a evaluar tenga la longitud exacta de carácteres a la condición.
+     * Valida que el String a evaluar tenga la longitud exacta de caracteres a la condición.
      * @param condition longitud de caracteres.
      * @param message Mensaje de error.
      */
@@ -149,7 +149,7 @@ public class Validator implements Cloneable {
     }
 
     /**
-     * Valida que el String a evaluar tenga la longitud exacta de carácteres a la condición.
+     * Valida que el String a evaluar tenga la longitud exacta de caracteres a la condición.
      * @param condition longitud de caracteres.
      */
     public void length(int condition) {
@@ -158,7 +158,7 @@ public class Validator implements Cloneable {
 
     /**
      * Valida que el String a evaluar tenga una longitud de caracteres minima a la condición.
-     * @param condition Longitud minima de carácteres.
+     * @param condition Longitud minima de caracteres.
      * @param message Mensaje de error.
      */
     public void minLength(int condition, String message) {
@@ -167,15 +167,15 @@ public class Validator implements Cloneable {
 
     /**
      * Valida que el String a evaluar tenga una longitud de caracteres minima a la condición.
-     * @param condition Longitud minima de carácteres.
+     * @param condition Longitud minima de caracteres.
      */
     public void minLength(int condition) {
         minLength(condition, messages.getMinLengthMessage());
     }
 
     /**
-     * Valida que el String a evaluar tenga una longitud maxima de carácteres a la condición.
-     * @param condition longitud maxima de carácteres.
+     * Valida que el String a evaluar tenga una longitud maxima de caracteres a la condición.
+     * @param condition longitud maxima de caracteres.
      * @param message Mensaje de error.
      */
     public void maxLength(int condition, String message) {
@@ -183,8 +183,8 @@ public class Validator implements Cloneable {
     }
 
     /**
-     * Valida que el String a evaluar tenga una longitud maxima de carácteres a la condición.
-     * @param condition longitud maxima de carácteres.
+     * Valida que el String a evaluar tenga una longitud maxima de caracteres a la condición.
+     * @param condition longitud maxima de caracteres.
      */
     public void maxLength(int condition) {
         maxLength(condition, messages.getMaxLengthMessage());
@@ -232,8 +232,8 @@ public class Validator implements Cloneable {
     // REGLA DE CONTENIDO //////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Valida que el String a evaluar solo contenga carácteres incluidos en el String de condición.
-     * @param condition String con carácteres permitidos.
+     * Valida que el String a evaluar solo contenga caracteres incluidos en el String de condición.
+     * @param condition String con caracteres permitidos.
      * @param message  Mensaje de error.
      */
     public void shouldOnlyContain(String condition, String message) {
@@ -247,15 +247,15 @@ public class Validator implements Cloneable {
     }
 
     /**
-     * Valida que el String a evaluar solo contenga carácteres incluidos en el String de condición.
-     * @param condition String con carácteres permitidos.
+     * Valida que el String a evaluar solo contenga caracteres incluidos en el String de condición.
+     * @param condition String con caracteres permitidos.
      */
     public void shouldOnlyContain(String condition) {
         shouldOnlyContain(condition, messages.getShouldOnlyContainMessage());
     }
 
     /**
-     * Valida que el Staring a evaluar solo contenga carácteres numéricos.
+     * Valida que el Staring a evaluar solo contenga caracteres numéricos.
      * @param message Mensaje de error.
      */
     public void onlyNumbers(String message) {
@@ -263,7 +263,7 @@ public class Validator implements Cloneable {
     }
 
     /**
-     * Valida que el Staring a evaluar solo contenga carácteres numéricos.
+     * Valida que el Staring a evaluar solo contenga caracteres numéricos.
      */
     public void onlyNumbers() {
         onlyNumbers(messages.getOnlyNumbersMessage());
@@ -401,7 +401,7 @@ public class Validator implements Cloneable {
         }
 
         /**
-         * Valida que el String a evaluar tenga la longitud exacta de carácteres a la condición.
+         * Valida que el String a evaluar tenga la longitud exacta de caracteres a la condición.
          * @param condition longitud de caracteres.
          * @param message Mensaje de error.
          * @return Bulder
@@ -411,7 +411,7 @@ public class Validator implements Cloneable {
         }
 
         /**
-         * Valida que el String a evaluar tenga la longitud exacta de carácteres a la condición.
+         * Valida que el String a evaluar tenga la longitud exacta de caracteres a la condición.
          * @param condition longitud de caracteres.
          * @return Bulder
          */
@@ -421,7 +421,7 @@ public class Validator implements Cloneable {
 
         /**
          * Valida que el String a evaluar tenga una longitud de caracteres minima a la condición.
-         * @param condition Longitud minima de carácteres.
+         * @param condition Longitud minima de caracteres.
          * @param message Mensaje de error.
          * @return Builder
          */
@@ -431,7 +431,7 @@ public class Validator implements Cloneable {
 
         /**
          * Valida que el String a evaluar tenga una longitud de caracteres minima a la condición.
-         * @param condition Longitud minima de carácteres.
+         * @param condition Longitud minima de caracteres.
          * @return Builder
          */
         public Builder minLength(int condition) {
@@ -439,8 +439,8 @@ public class Validator implements Cloneable {
         }
 
         /**
-         * Valida que el String a evaluar tenga una longitud maxima de carácteres a la condición.
-         * @param condition longitud maxima de carácteres.
+         * Valida que el String a evaluar tenga una longitud maxima de caracteres a la condición.
+         * @param condition longitud maxima de caracteres.
          * @param message Mensaje de error.
          * @return Builder
          */
@@ -449,8 +449,8 @@ public class Validator implements Cloneable {
         }
 
         /**
-         * Valida que el String a evaluar tenga una longitud maxima de carácteres a la condición.
-         * @param condition longitud maxima de carácteres.
+         * Valida que el String a evaluar tenga una longitud maxima de caracteres a la condición.
+         * @param condition longitud maxima de caracteres.
          * @return Builder
          */
         public Builder maxLength(int condition) {
@@ -499,8 +499,8 @@ public class Validator implements Cloneable {
         }
 
         /**
-         * Valida que el String a evaluar solo contenga carácteres incluidos en el String de condición.
-         * @param condition String con carácteres permitidos.
+         * Valida que el String a evaluar solo contenga caracteres incluidos en el String de condición.
+         * @param condition String con caracteres permitidos.
          * @param message  Mensaje de error.
          * @return Builder
          */
@@ -515,8 +515,8 @@ public class Validator implements Cloneable {
         }
 
         /**
-         * Valida que el String a evaluar solo contenga carácteres incluidos en el String de condición.
-         * @param condition String con carácteres permitidos.
+         * Valida que el String a evaluar solo contenga caracteres incluidos en el String de condición.
+         * @param condition String con caracteres permitidos.
          * @return Builder
          */
         public Builder shouldOnlyContain(String condition) {
@@ -524,7 +524,7 @@ public class Validator implements Cloneable {
         }
 
         /**
-         * Valida que el Staring a evaluar solo contenga carácteres numéricos.
+         * Valida que el Staring a evaluar solo contenga caracteres numéricos.
          * @param message Mensaje de error.
          * @return Builder
          */
@@ -533,7 +533,7 @@ public class Validator implements Cloneable {
         }
 
         /**
-         * Valida que el Staring a evaluar solo contenga carácteres numéricos.
+         * Valida que el Staring a evaluar solo contenga caracteres numéricos.
          * @return Builder
          */
         public Builder onlyNumbers() {

@@ -54,7 +54,7 @@ public class MessagesEs implements Messages {
 
     @Override
     public String getMustContainOneMessage() {
-        return "Se requiere al menos uno de los siguientes carácteres: %s";
+        return "Se requiere al menos uno de los siguientes caracteres: %s";
     }
 
 }
