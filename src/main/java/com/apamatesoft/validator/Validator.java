@@ -1,7 +1,6 @@
 // TODO:
 //  - Crear reglas para numeros > < =
 //  - Regla de fecha
-//  - Crear readme
 //  - Traducir
 //  - RegEgx
 package com.apamatesoft.validator;
@@ -10,11 +9,9 @@ import com.apamatesoft.validator.messages.Messages;
 import com.apamatesoft.validator.messages.MessagesEn;
 import com.apamatesoft.validator.functions.NotPass;
 import com.apamatesoft.validator.functions.Validate;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
-
 import static com.apamatesoft.validator.constants.Constants.EMAIL_RE;
 import static com.apamatesoft.validator.constants.Constants.NUMBER;
 
@@ -22,7 +19,7 @@ import static com.apamatesoft.validator.constants.Constants.NUMBER;
  * Validator
  *
  * @author ApamateSoft
- * @version 2.0.0
+ * @version 1.0.0
  */
 public class Validator implements Cloneable {
 
