@@ -3,6 +3,10 @@
 Validador es una librería escrita en Java, que pretende simplificar la validación de Strings declarando una series de 
 reglas.
 
+## Instalación
+1. Descarga el Validator-1.0.0.jar.
+2. Añade el .jar como una librería a tu proyecto.
+
 ## Empezando
 
 ```java
