@@ -255,7 +255,7 @@ class Login {
 
     private String email, psw, pswConfirmation;
 
-    public Form() {
+    public Login() {
         emailValidator.onNotPass(System.out::println);
         passwordValidator.onNotPass(System.out::println);
     }
