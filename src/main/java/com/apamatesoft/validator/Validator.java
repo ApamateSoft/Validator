@@ -1,10 +1,11 @@
 // TODO:
-//  - Crear reglas para numeros > < =
+//  - Crear reglas para números > < =
 //  - Regla de fecha
 //  - Traducir
 //  - RegEgx
 package com.apamatesoft.validator;
 
+import com.apamatesoft.validator.exceptions.InvalidEvaluationException;
 import com.apamatesoft.validator.messages.Messages;
 import com.apamatesoft.validator.messages.MessagesEn;
 import com.apamatesoft.validator.functions.NotPass;
@@ -16,10 +17,13 @@ import static com.apamatesoft.validator.constants.Constants.EMAIL_RE;
 import static com.apamatesoft.validator.constants.Constants.NUMBER;
 
 /**
- * Validator
+ * <h1>Validator</h1>
+ *
+ * Validador es una librería escrita en Java, que pretende simplificar la validación de Strings declarando una series de
+ * reglas.
  *
  * @author ApamateSoft
- * @version 1.0.0
+ * @version 1.1.0
  */
 public class Validator implements Cloneable {
 
@@ -29,7 +33,7 @@ public class Validator implements Cloneable {
     private NotPass notPass;
     private String notMatchMessage = messages.getNotMatchMessage();
 
-    // <editor-fold defaultstate="collapsed" desc="CONSTRUCTORS">
+    // <editor-fold defaulted="collapsed" desc="CONSTRUCTORS">
     public Validator() { }
 
     private Validator(Builder builder) {
@@ -59,8 +63,8 @@ public class Validator implements Cloneable {
 
     /**
      * Valida que el String a evaluar cumpla todas las reglas.<br>
-     * <b>Nota:</b> Si el String no cumple alguna regla, se invocara al evento {@link #onNotPass(NotPass)} con el mensaje
-     * del error correspondiente.
+     * <b>Nota:</b> Si el String no cumple alguna regla, se invocara al evento {@link #onNotPass(NotPass)} con el
+     * mensaje del error correspondiente.
      * @param evaluate String a evaluar.
      * @return true: si pasa la validación.
      */
@@ -79,13 +83,29 @@ public class Validator implements Cloneable {
     }
 
     /**
+     * Valida que el String a evaluar cumpla todas las reglas.<br>
+     * @param evaluate String a evaluar.
+     * @throws InvalidEvaluationException Excepción arrojada si el String a evaluar no se cumple alguna regla.
+     */
+    public void isValidOrFail(String evaluate) throws InvalidEvaluationException {
+
+        if (evaluate==null)
+            throw new InvalidEvaluationException(rules.get(0).getMessage(), null);
+
+        for (Rule rule: rules)
+            if (!rule.validate(evaluate))
+                throw new InvalidEvaluationException(rule.getMessage(), evaluate);
+
+    }
+
+    /**
      * Valida que ambos String coincidan y que cumplan todas las reglas.<br>
      * <b>Nota:</b> Si los Strings no cumplen con alguna regla, se invocara al evento {@link #onNotPass(NotPass)}, con el
      * mensaje del error correspondiente. con el método {@link #setNotMatchMessage(String)} se establece un mensaje de
      * error en caso de que la comparación falle.
      * @param evaluate String a evaluar.
      * @param compare String a comparar.
-     * @return true: si pasa la validación.clas
+     * @return true: si pasa la validación.class
      */
     public boolean compare(String evaluate, String compare) {
         if (evaluate==null || compare==null) {
@@ -99,7 +119,28 @@ public class Validator implements Cloneable {
         return isValid(evaluate);
     }
 
+    /**
+     * Valida que ambos String coincidan y que cumplan todas las reglas.<br>
+     * <b>Nota:</b> Si los Strings no cumplen con alguna regla, se invocara al evento {@link #onNotPass(NotPass)}, con el
+     * mensaje del error correspondiente. con el método {@link #setNotMatchMessage(String)} se establece un mensaje de
+     * error en caso de que la comparación falle.
+     * @param evaluate String a evaluar.
+     * @param compare String a comparar.
+     * @throws InvalidEvaluationException Excepción arrojada si el String a evaluar no se cumple alguna regla.
+     */
+    public void compareOrFail(String evaluate, String compare) throws InvalidEvaluationException {
+
+        if (evaluate==null || compare==null)
+            throw new InvalidEvaluationException(notMatchMessage, evaluate);
+
+        if (!evaluate.equals(compare))
+            throw new InvalidEvaluationException(notMatchMessage, evaluate);
+
+        isValidOrFail(evaluate);
+    }
+
     //<editor-fold desc="RULES">
+
     /**
      * Crea una regla de validación.
      * <br><br>
@@ -350,7 +391,7 @@ public class Validator implements Cloneable {
          * Establece el mensaje de error a mostrar, en caso de que la comparación de los String falle en el método
          * {@link #compare(String, String)}.
          * @param message Mensaje de error.
-         * @return Bulder
+         * @return Builder
          */
         public Builder setNotMatchMessage(String message) {
             this.notMatchMessage = message;
@@ -365,15 +406,15 @@ public class Validator implements Cloneable {
          * <b>Ejemplo:<b/><br>
          * <code>
          * <pre>
-         * new Validator().rule("El texto es diferente de ejemplo", evaluate -> {
-         *     return evaluate.equals("ejemplo");
+         * new Validator().rule("El texto es diferente de 'xxx'", evaluate -> {
+         *     return evaluate.equals("xxx");
          * });
          * </pre>
          * </code>
          *
          * @param message Mensaje de error.
          * @param validate Función que retorna true cuando el String a evaluar cumpla las condiciones.
-         * @return Bulder
+         * @return Builder
          */
         public Builder rule(String message, Validate validate) {
             rules.add(new Rule(message, validate));
@@ -383,7 +424,7 @@ public class Validator implements Cloneable {
         /**
          * Valida que el String a evaluar sea diferente de un vacío y null.
          * @param message Mensaje de error.
-         * @return Bulder
+         * @return Builder
          */
         public Builder required(String message) {
             return rule(message, it -> it!=null && !it.isEmpty());
@@ -391,7 +432,7 @@ public class Validator implements Cloneable {
 
         /**
          * Valida que el String a evaluar sea diferente de un vacío y null.
-         * @return Bulder
+         * @return Builder
          */
         public Builder required() {
             return required(messages.getRequireMessage());
@@ -401,7 +442,7 @@ public class Validator implements Cloneable {
          * Valida que el String a evaluar tenga la longitud exacta de caracteres a la condición.
          * @param condition longitud de caracteres.
          * @param message Mensaje de error.
-         * @return Bulder
+         * @return Builder
          */
         public Builder length(int condition, String message) {
             return rule(String.format(message, condition), it -> it.length()==condition);
@@ -410,7 +451,7 @@ public class Validator implements Cloneable {
         /**
          * Valida que el String a evaluar tenga la longitud exacta de caracteres a la condición.
          * @param condition longitud de caracteres.
-         * @return Bulder
+         * @return Builder
          */
         public Builder length(int condition) {
             return length(condition, messages.getLengthMessage());

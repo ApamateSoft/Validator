@@ -7,12 +7,12 @@ public class Rule {
     private final String message;
     private final Validate validate;
 
-    public Rule(final String message, final Validate validate) {
+    public Rule(String message, Validate validate) {
         this.validate = validate;
         this.message = message;
     }
 
-    public boolean validate(final String evaluate) {
+    public boolean validate(String evaluate) {
         return validate.invoke(evaluate);
     }
 

@@ -3,9 +3,16 @@
 Validador es una librería escrita en Java, que pretende simplificar la validación de Strings declarando una series de 
 reglas.
 
+## RELEASE NOTES
+
+### Version 1.1.0
+
+- Se ha agregado el método `.isValidOrFail`.
+- Se ha agregado el método `.compareOrFail`.
+
 ## Instalación
-1. Descarga el Validator-1.0.0.jar.
-2. Añade el .jar como una librería a tu proyecto.
+1. Descarga el Validator-1.1.0.jar.
+2. Añade él .jar como una librería a tu proyecto.
 
 ## Empezando
 
@@ -28,9 +35,9 @@ validator.rule("El texto es diferente de 'xxx'", (String evaluate) -> {
 
 ##### Nota:
 - Se puede agregar n cantidad de reglas.
-- Validator aplicara una a una las reglas, en el orden en que fueron agregadas.
+- Validator aplicará una a una las reglas, en el orden en que fueron agregadas.
 - Al momento de fallar una regla, se ignoran las restantes. 
-- Un String se considera valido, solo si este, pasa todas las reglas.
+- Un String se considera válido, solo si este, pasa todas las reglas.
 
 ### Simplificando código
 
@@ -84,6 +91,32 @@ validator.onNotPass( message -> System.out.println(message) ); // "El texto es d
 validator.isValid("yyy"); // false
 ```
 
+Si prefiere no trabajar con el evento `.onNotPass`, puede usar los métodos `.isValidOrFail` y `.compareOrFail` en 
+sustitución de los métodos `.isValid` y `.comapre` respectivamente.
+
+La principal diferencia es que estos métodos no retorna valor alguno y en caso de fallar arrojan una excepción del tipo
+`InvalidEvaluationException` que contiene el mensaje de error de la regla junto con el valor del String a evaluar.
+
+```java
+class Example {
+
+    private Validator validator = new Validator.Builder()
+            .rule("El texto es diferente de 'xxx'", evaluate -> evaluate.equals("xxx"))
+            .build();
+
+    private void submit() {
+        try {
+            validator.isValidOrFail("yyy");
+            // validator.compareOrFail("XXX", "YYY");
+        } catch (InvalidEvaluationException e) {
+            System.out.println(e.getMessage());
+        }
+        // TODO
+    }
+
+}
+```
+
 #### Reglas predefinidas
 
 Validator ofrece una serie de reglas predefinidas.
@@ -111,7 +144,7 @@ final Validator validator = new Validator.Builder()
     .build();
 ```
 
-El mensaje en las reglas predefinidas es opcional, ya que Validator ofrece mensaje predeterminados para cada una.
+El mensaje en las reglas predefinidas es opcional, ya que Validator ofrece mensajes predeterminados para cada una.
 
 ```java
 final Validator validator = new Validator.Builder()
@@ -190,7 +223,7 @@ Validator.setMessages(new Messages() {
 ```
 
 ##### Nota:
-- Los mensajes declarados junto una regla predefinida tienen prioridad sobre los mensajes predeterminados.
+- Los mensajes declarados junto a una regla predefinida tienen prioridad sobre los mensajes predeterminados.
 - Las reglas predefinidas que requieren un parámetro `condition`, hacen uso de `String.format` para formatear el 
 mensaje con la condición.
 
