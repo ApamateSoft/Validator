@@ -19,8 +19,8 @@ import static com.apamatesoft.validator.constants.Constants.NUMBER;
 /**
  * <h1>Validator</h1>
  *
- * Validador es una librería escrita en Java, que pretende simplificar la validación de Strings declarando una series de
- * reglas.
+ * Validator is a library written in Java, which aims to simplify the validation of Strings by declaring a series of
+ * rules.
  *
  * @author ApamateSoft
  * @version 1.1.0
@@ -44,8 +44,8 @@ public class Validator implements Cloneable {
     //</editor-fold>
 
     /**
-     * Establece los mensajes de error predeterminados para cada una de las reglas pre establecidas.
-     * @param messages mensajes de error.
+     * Sets the default error messages for each of the pre-established rules.
+     * @param messages error messages.
      */
     public static void setMessages(Messages messages) {
         if (messages==null) return;
@@ -53,20 +53,11 @@ public class Validator implements Cloneable {
     }
 
     /**
-     * Establece el mensaje de error a mostrar, en caso de que la comparación de los String falle en el método
-     * {@link #compare(String, String)}.
-     * @param message Mensaje de error.
-     */
-    public void setNotMatchMessage(String message) {
-        this.notMatchMessage = message;
-    }
-
-    /**
-     * Valida que el String a evaluar cumpla todas las reglas.<br>
-     * <b>Nota:</b> Si el String no cumple alguna regla, se invocara al evento {@link #onNotPass(NotPass)} con el
-     * mensaje del error correspondiente.
-     * @param evaluate String a evaluar.
-     * @return true: si pasa la validación.
+     * Validate that the String to evaluate meets all the rules.<br>
+     * <b>Note:</b> If the String does not meet any rule, the {@link #onNotPass(NotPass)} event will be invoked with the
+     * corresponding error message.
+     * @param evaluate String to evaluate.
+     * @return true: if validation passes.
      */
     public boolean isValid(String evaluate) {
         if (evaluate==null) {
@@ -83,9 +74,9 @@ public class Validator implements Cloneable {
     }
 
     /**
-     * Valida que el String a evaluar cumpla todas las reglas.<br>
-     * @param evaluate String a evaluar.
-     * @throws InvalidEvaluationException Excepción arrojada si el String a evaluar no se cumple alguna regla.
+     * Validate that the String to evaluate meets all the rules.<br>
+     * @param evaluate String to evaluate.
+     * @throws InvalidEvaluationException Exception thrown if the String to evaluate does not meet any rule.
      */
     public void isValidOrFail(String evaluate) throws InvalidEvaluationException {
 
@@ -99,13 +90,22 @@ public class Validator implements Cloneable {
     }
 
     /**
-     * Valida que ambos String coincidan y que cumplan todas las reglas.<br>
-     * <b>Nota:</b> Si los Strings no cumplen con alguna regla, se invocara al evento {@link #onNotPass(NotPass)}, con el
-     * mensaje del error correspondiente. con el método {@link #setNotMatchMessage(String)} se establece un mensaje de
-     * error en caso de que la comparación falle.
-     * @param evaluate String a evaluar.
-     * @param compare String a comparar.
-     * @return true: si pasa la validación.class
+     * Validate that both Strings match and that they meet all the rules.
+     * <br/><br/>
+     * <b>Note:</b>
+     * <ul>
+     *     <li>
+     *         If the Strings do not comply with some of the rules, the onNotPass {@link #onNotPass(NotPass)} event will
+     *         be invoked, with the corresponding error message.
+     *     </li>
+     *     <li>
+     *        An error message can be set in case the comparison fails with the {@link #setNotMatchMessage(String)}
+     *        method.
+     *     </li>
+     * <ul/>
+     * @param evaluate String to evaluate.
+     * @param compare String to compare.
+     * @return true: if validation passes.
      */
     public boolean compare(String evaluate, String compare) {
         if (evaluate==null || compare==null) {
@@ -120,134 +120,151 @@ public class Validator implements Cloneable {
     }
 
     /**
-     * Valida que ambos String coincidan y que cumplan todas las reglas.<br>
-     * <b>Nota:</b> Si los Strings no cumplen con alguna regla, se invocara al evento {@link #onNotPass(NotPass)}, con el
-     * mensaje del error correspondiente. con el método {@link #setNotMatchMessage(String)} se establece un mensaje de
-     * error en caso de que la comparación falle.
-     * @param evaluate String a evaluar.
-     * @param compare String a comparar.
-     * @throws InvalidEvaluationException Excepción arrojada si el String a evaluar no se cumple alguna regla.
+     * Validate that both Strings match and that they meet all the rules.
+     * <br/><br/>
+     * <b>Note:</b>
+     * <ul>
+     *     <li>
+     *         If the Strings do not comply with some of the rules, the onNotPass {@link #onNotPass(NotPass)} event will
+     *         be invoked, with the corresponding error message.
+     *     </li>
+     *     <li>
+     *        An error message can be set in case the comparison fails with the {@link #setNotMatchMessage(String)}
+     *        method.
+     *     </li>
+     * <ul/>
+     * @param evaluate String to evaluate.
+     * @param compare String to compare.
+     * @throws InvalidEvaluationException Exception thrown if the String to evaluate does not meet any rule.
      */
     public void compareOrFail(String evaluate, String compare) throws InvalidEvaluationException {
-
         if (evaluate==null || compare==null)
             throw new InvalidEvaluationException(notMatchMessage, evaluate);
-
         if (!evaluate.equals(compare))
             throw new InvalidEvaluationException(notMatchMessage, evaluate);
-
         isValidOrFail(evaluate);
+    }
+
+    /**
+     * Sets the error message to display, in case the String comparison fails in the method
+     * {@link #compare(String, String)}.
+     * @param message Error message.
+     */
+    public void setNotMatchMessage(String message) {
+        this.notMatchMessage = message;
     }
 
     //<editor-fold desc="RULES">
 
     /**
-     * Crea una regla de validación.
-     * <br><br>
+     * Create a validation rule.
+     * <br/><br/>
      * <b>Ejemplo:<b/><br>
      * <code>
      * <pre>
-     * new Validator().rule("El texto es diferente de 'xxx'", evaluate -> {
+     * new Validator().rule("The text is different from 'xxx'", evaluate -> {
      *     return evaluate.equals("xxx");
      * });
      * </pre>
      * </code>
      *
-     * @param message Mensaje de error.
-     * @param validate Función que retorna true cuando el String a evaluar cumpla las condiciones.
+     * @param message Error message.
+     * @param validate Function that returns true when the String to evaluate meets the conditions.
      */
     public void rule(String message, Validate validate) {
         rules.add(new Rule(message, validate));
     }
 
-    // REGLAS DE LONGITUD //////////////////////////////////////////////////////////////////////////////////////////////
+    //<editor-fold desc=" - LENGTH RULES">
 
     /**
-     * Valida que el String a evaluar sea diferente de un vacío y null.
-     * @param message Mensaje de error.
+     * Validate that the String to evaluate is different from empty and null.
+     * @param message Error message.
      */
     public void required(String message) {
         rule(message, it -> it!=null && !it.isEmpty());
     }
 
     /**
-     * Valida que el String a evaluar sea diferente de un vacío y null.
+     * Validate that the String to evaluate is different from empty and null.
      */
     public void required() {
         required(messages.getRequireMessage());
     }
 
     /**
-     * Valida que el String a evaluar tenga la longitud exacta de caracteres a la condición.
-     * @param condition longitud de caracteres.
-     * @param message Mensaje de error.
+     * Validate that the String to evaluate has the exact length of characters to the condition.
+     * @param condition character length.
+     * @param message Error message.
      */
     public void length(int condition, String message) {
         rule(String.format(message, condition), it -> it.length()==condition);
     }
 
     /**
-     * Valida que el String a evaluar tenga la longitud exacta de caracteres a la condición.
-     * @param condition longitud de caracteres.
+     * Validate that the String to evaluate has the exact length of characters to the condition.
+     * @param condition character length.
      */
     public void length(int condition) {
         length(condition, messages.getLengthMessage());
     }
 
     /**
-     * Valida que el String a evaluar tenga una longitud de caracteres minima a la condición.
-     * @param condition Longitud minima de caracteres.
-     * @param message Mensaje de error.
+     * Validate that the String to evaluate has a minimum character length to the condition.
+     * @param condition Minimum character length.
+     * @param message Error message.
      */
     public void minLength(int condition, String message) {
         rule(String.format(message, condition), it -> it.length()>=condition);
     }
 
     /**
-     * Valida que el String a evaluar tenga una longitud de caracteres minima a la condición.
-     * @param condition Longitud minima de caracteres.
+     * Validate that the String to evaluate has a minimum character length to the condition.
+     * @param condition Minimum character length.
      */
     public void minLength(int condition) {
         minLength(condition, messages.getMinLengthMessage());
     }
 
     /**
-     * Valida que el String a evaluar tenga una longitud maxima de caracteres a la condición.
-     * @param condition longitud maxima de caracteres.
-     * @param message Mensaje de error.
+     * Validate that the String to evaluate has a maximum length of characters to the condition.
+     * @param condition maximum character length.
+     * @param message Error message.
      */
     public void maxLength(int condition, String message) {
         rule(String.format(message, condition), it -> it.length()<=condition);
     }
 
     /**
-     * Valida que el String a evaluar tenga una longitud maxima de caracteres a la condición.
-     * @param condition longitud maxima de caracteres.
+     * Validate that the String to evaluate has a maximum length of characters to the condition.
+     * @param condition maximum character length.
      */
     public void maxLength(int condition) {
         maxLength(condition, messages.getMaxLengthMessage());
     }
 
-    // REGLAS DE FORMATO ///////////////////////////////////////////////////////////////////////////////////////////////
+    //</editor-fold>
+
+    //<editor-fold desc=" - FORMAT RULES">
 
     /**
-     * Valida que el String a evaluar tenga un formato de email
-     * @param message Mensaje de error.
+     * Validate that the String has an email format
+     * @param message Error message.
      */
     public void email(String message) {
         rule(message, it -> Pattern.compile(EMAIL_RE).matcher(it).find());
     }
 
     /**
-     * Valida que el String a evaluar tenga un formato de email
+     * Validate that the String has an email format
      */
     public void email() {
         email(messages.getEmailMessage());
     }
 
     /**
-     * Valida que el String a evaluar tenga un formato numérico.
-     * @param message Mensaje de error.
+     * Validate that the String is in numeric format.
+     * @param message Error message.
      */
     public void numericFormat(String message) {
         rule(message, it -> {
@@ -261,18 +278,20 @@ public class Validator implements Cloneable {
     }
 
     /**
-     * Valida que el String a evaluar tenga un formato numérico.
+     * Validate that the String is in numeric format.
      */
     public void numericFormat() {
         numericFormat(messages.getNumericFormat());
     }
 
-    // REGLA DE CONTENIDO //////////////////////////////////////////////////////////////////////////////////////////////
+    //</editor-fold>
+
+    //<editor-fold desc=" - CONTENT RULES">
 
     /**
-     * Valida que el String a evaluar solo contenga caracteres incluidos en el String de condición.
-     * @param condition String con caracteres permitidos.
-     * @param message  Mensaje de error.
+     * Validate that the String only contains characters included in the condition String.
+     * @param condition String with allowed characters.
+     * @param message  Error message.
      */
     public void shouldOnlyContain(String condition, String message) {
         rule(String.format(message, condition), it -> {
@@ -285,32 +304,32 @@ public class Validator implements Cloneable {
     }
 
     /**
-     * Valida que el String a evaluar solo contenga caracteres incluidos en el String de condición.
-     * @param condition String con caracteres permitidos.
+     * Validate that the String only contains characters included in the condition String.
+     * @param condition String with allowed characters.
      */
     public void shouldOnlyContain(String condition) {
         shouldOnlyContain(condition, messages.getShouldOnlyContainMessage());
     }
 
     /**
-     * Valida que el Staring a evaluar solo contenga caracteres numéricos.
-     * @param message Mensaje de error.
+     * Validate that the String contains only numeric characters.
+     * @param message Error message.
      */
     public void onlyNumbers(String message) {
         shouldOnlyContain(NUMBER, message);
     }
 
     /**
-     * Valida que el Staring a evaluar solo contenga caracteres numéricos.
+     * Validate that the String contains only numeric characters.
      */
     public void onlyNumbers() {
         onlyNumbers(messages.getOnlyNumbersMessage());
     }
 
     /**
-     * Valida que el String a evaluar no contenga algún carácter incluido en el String de la condición.
-     * @param condition String con caracteres no válidos.
-     * @param message Mensaje de error.
+     * Validate that the String does not contain any character included in the String of the condition.
+     * @param condition String with invalid characters.
+     * @param message Error message.
      */
     public void notContain(String condition, String message) {
         rule(String.format(message, condition), it -> {
@@ -323,17 +342,17 @@ public class Validator implements Cloneable {
     }
 
     /**
-     * Valida que el String a evaluar no contenga algún carácter incluido en el String de la condición.
-     * @param condition String con caracteres no válidos.
+     * Validate that the String does not contain any character included in the String of the condition.
+     * @param condition String with invalid characters.
      */
     public void notContain(String condition) {
         notContain(condition, messages.getNotContainMessage());
     }
 
     /**
-     * Valida que el String a evaluar contenga al menos un carácter incluido en el String de la condición.
-     * @param condition String con caracteres deseados.
-     * @param message Mensaje de error.
+     * Validates that the String contains at least one character included in the String of the condition.
+     * @param condition String with desired characters.
+     * @param message Error message.
      */
     public void mustContainOne(String condition, String message) {
         rule(String.format(message, condition), it -> {
@@ -345,17 +364,20 @@ public class Validator implements Cloneable {
     }
 
     /**
-     * Valida que el String a evaluar contenga al menos un carácter incluido en el String de la condición.
-     * @param condition String con caracteres deseados.
+     * Validates that the String contains at least one character included in the String of the condition.
+     * @param condition String with desired characters.
      */
     public void mustContainOne(String condition) {
         mustContainOne(condition, messages.getMustContainOneMessage());
     }
+
+    //</editor-fold>
+
     //</editor-fold>
 
     /**
-     * Evento que se invoca al no cumplirse alguna regla.
-     * @param notPass Función con el mensaje de error.
+     * Event that is invoked when some rule is not fulfilled.
+     * @param notPass Function with the error message.
      */
     public void onNotPass(NotPass notPass) {
         this.notPass = notPass;
@@ -367,8 +389,8 @@ public class Validator implements Cloneable {
     }
 
     /**
-     * Crea una copia del objeto Validator.<br>
-     * @return copia de Validator.
+     * Create a copy of the Validator object.
+     * @return copy of Validator.
      */
     public Validator copy() {
         try {
@@ -379,7 +401,7 @@ public class Validator implements Cloneable {
     }
 
     /**
-     * Clase que permite construir un Validator de forma secuencial y centralizada.
+     * Class that allows to build a Validator in a sequential and centralized way.
      */
     public static class Builder {
 
@@ -388,9 +410,9 @@ public class Validator implements Cloneable {
         private String notMatchMessage = messages.getNotMatchMessage();
 
         /**
-         * Establece el mensaje de error a mostrar, en caso de que la comparación de los String falle en el método
+         * Sets the error message to display, in case the String comparison fails in the method
          * {@link #compare(String, String)}.
-         * @param message Mensaje de error.
+         * @param message Error message.
          * @return Builder
          */
         public Builder setNotMatchMessage(String message) {
@@ -401,19 +423,19 @@ public class Validator implements Cloneable {
         //<editor-fold desc="RULES">
 
         /**
-         * Crea una regla de validación.
-         * <br><br>
+         * Create a validation rule.
+         * <br/><br/>
          * <b>Ejemplo:<b/><br>
          * <code>
          * <pre>
-         * new Validator().rule("El texto es diferente de 'xxx'", evaluate -> {
+         * new Validator().rule("The text is different from 'xxx'", evaluate -> {
          *     return evaluate.equals("xxx");
          * });
          * </pre>
          * </code>
          *
-         * @param message Mensaje de error.
-         * @param validate Función que retorna true cuando el String a evaluar cumpla las condiciones.
+         * @param message Error message.
+         * @param validate Function that returns true when the String to evaluate meets the conditions.
          * @return Builder
          */
         public Builder rule(String message, Validate validate) {
@@ -421,9 +443,11 @@ public class Validator implements Cloneable {
             return this;
         }
 
+        //<editor-fold desc=" - LENGTH RULES">
+
         /**
-         * Valida que el String a evaluar sea diferente de un vacío y null.
-         * @param message Mensaje de error.
+         * Validate that the String to evaluate is different from empty and null.
+         * @param message Error message.
          * @return Builder
          */
         public Builder required(String message) {
@@ -431,7 +455,7 @@ public class Validator implements Cloneable {
         }
 
         /**
-         * Valida que el String a evaluar sea diferente de un vacío y null.
+         * Validate that the String to evaluate is different from empty and null.
          * @return Builder
          */
         public Builder required() {
@@ -439,9 +463,9 @@ public class Validator implements Cloneable {
         }
 
         /**
-         * Valida que el String a evaluar tenga la longitud exacta de caracteres a la condición.
-         * @param condition longitud de caracteres.
-         * @param message Mensaje de error.
+         * Validate that the String to evaluate has the exact length of characters to the condition.
+         * @param condition character length.
+         * @param message Error message.
          * @return Builder
          */
         public Builder length(int condition, String message) {
@@ -449,8 +473,8 @@ public class Validator implements Cloneable {
         }
 
         /**
-         * Valida que el String a evaluar tenga la longitud exacta de caracteres a la condición.
-         * @param condition longitud de caracteres.
+         * Validate that the String to evaluate has the exact length of characters to the condition.
+         * @param condition character length.
          * @return Builder
          */
         public Builder length(int condition) {
@@ -458,9 +482,9 @@ public class Validator implements Cloneable {
         }
 
         /**
-         * Valida que el String a evaluar tenga una longitud de caracteres minima a la condición.
-         * @param condition Longitud minima de caracteres.
-         * @param message Mensaje de error.
+         * Validate that the String to evaluate has a minimum character length to the condition.
+         * @param condition Minimum character length.
+         * @param message Error message.
          * @return Builder
          */
         public Builder minLength(int condition, String message) {
@@ -468,8 +492,8 @@ public class Validator implements Cloneable {
         }
 
         /**
-         * Valida que el String a evaluar tenga una longitud de caracteres minima a la condición.
-         * @param condition Longitud minima de caracteres.
+         * Validate that the String to evaluate has a minimum character length to the condition.
+         * @param condition Minimum character length.
          * @return Builder
          */
         public Builder minLength(int condition) {
@@ -477,9 +501,9 @@ public class Validator implements Cloneable {
         }
 
         /**
-         * Valida que el String a evaluar tenga una longitud maxima de caracteres a la condición.
-         * @param condition longitud maxima de caracteres.
-         * @param message Mensaje de error.
+         * Validate that the String to evaluate has a maximum length of characters to the condition.
+         * @param condition maximum character length.
+         * @param message Error message.
          * @return Builder
          */
         public Builder maxLength(int condition, String message) {
@@ -487,17 +511,21 @@ public class Validator implements Cloneable {
         }
 
         /**
-         * Valida que el String a evaluar tenga una longitud maxima de caracteres a la condición.
-         * @param condition longitud maxima de caracteres.
+         * Validate that the String to evaluate has a maximum length of characters to the condition.
+         * @param condition maximum character length.
          * @return Builder
          */
         public Builder maxLength(int condition) {
             return maxLength(condition, messages.getMaxLengthMessage());
         }
 
+        //</editor-fold>
+
+        //<editor-fold desc=" - FORMAT RULES">
+
         /**
-         * Valida que el String a evaluar tenga un formato de email
-         * @param message Mensaje de error.
+         * Validate that the String has an email format
+         * @param message Error message.
          * @return Builder
          */
         public Builder email(String message) {
@@ -505,7 +533,7 @@ public class Validator implements Cloneable {
         }
 
         /**
-         * Valida que el String a evaluar tenga un formato de email
+         * Validate that the String has an email format
          * @return Builder
          */
         public Builder email() {
@@ -513,8 +541,8 @@ public class Validator implements Cloneable {
         }
 
         /**
-         * Valida que el String a evaluar tenga un formato numérico.
-         * @param message Mensaje de error.
+         * Validate that the String is in numeric format.
+         * @param message Error message.
          * @return Builder
          */
         public Builder numericFormat(String message) {
@@ -529,17 +557,21 @@ public class Validator implements Cloneable {
         }
 
         /**
-         * Valida que el String a evaluar tenga un formato numérico.
+         * Validate that the String is in numeric format.
          * @return Builder
          */
         public Builder numericFormat() {
             return numericFormat(messages.getNumericFormat());
         }
 
+        //</editor-fold>
+
+        //<editor-fold desc=" - CONTENT RULES">
+
         /**
-         * Valida que el String a evaluar solo contenga caracteres incluidos en el String de condición.
-         * @param condition String con caracteres permitidos.
-         * @param message  Mensaje de error.
+         * Validate that the String only contains characters included in the condition String.
+         * @param condition String with allowed characters.
+         * @param message  Error message.
          * @return Builder
          */
         public Builder shouldOnlyContain(String condition, String message) {
@@ -553,8 +585,8 @@ public class Validator implements Cloneable {
         }
 
         /**
-         * Valida que el String a evaluar solo contenga caracteres incluidos en el String de condición.
-         * @param condition String con caracteres permitidos.
+         * Validate that the String only contains characters included in the condition String.
+         * @param condition String with allowed characters.
          * @return Builder
          */
         public Builder shouldOnlyContain(String condition) {
@@ -562,8 +594,8 @@ public class Validator implements Cloneable {
         }
 
         /**
-         * Valida que el Staring a evaluar solo contenga caracteres numéricos.
-         * @param message Mensaje de error.
+         * Validate that the String contains only numeric characters.
+         * @param message Error message.
          * @return Builder
          */
         public Builder onlyNumbers(String message) {
@@ -571,7 +603,7 @@ public class Validator implements Cloneable {
         }
 
         /**
-         * Valida que el Staring a evaluar solo contenga caracteres numéricos.
+         * Validate that the String contains only numeric characters.
          * @return Builder
          */
         public Builder onlyNumbers() {
@@ -579,9 +611,9 @@ public class Validator implements Cloneable {
         }
 
         /**
-         * Valida que el String a evaluar no contenga algún carácter incluido en el String de la condición.
-         * @param condition String con caracteres no válidos.
-         * @param message Mensaje de error.
+         * Validate that the String does not contain any character included in the String of the condition.
+         * @param condition String with invalid characters.
+         * @param message Error message.
          * @return Builder
          */
         public Builder notContain(String condition, String message) {
@@ -595,8 +627,8 @@ public class Validator implements Cloneable {
         }
 
         /**
-         * Valida que el String a evaluar no contenga algún carácter incluido en el String de la condición.
-         * @param condition String con caracteres no válidos.
+         * Validate that the String does not contain any character included in the String of the condition.
+         * @param condition String with invalid characters.
          * @return Builder
          */
         public Builder notContain(String condition) {
@@ -604,9 +636,9 @@ public class Validator implements Cloneable {
         }
 
         /**
-         * Valida que el String a evaluar contenga al menos un carácter incluido en el String de la condición.
-         * @param condition String con caracteres deseados.
-         * @param message Mensaje de error.
+         * Validates that the String contains at least one character included in the String of the condition.
+         * @param condition String with desired characters.
+         * @param message Error message.
          * @return Builder
          */
         public Builder mustContainOne(String condition, String message) {
@@ -619,27 +651,30 @@ public class Validator implements Cloneable {
         }
 
         /**
-         * Valida que el String a evaluar contenga al menos un carácter incluido en el String de la condición.
-         * @param condition String con caracteres deseados.
+         * Validates that the String contains at least one character included in the String of the condition.
+         * @param condition String with desired characters.
          * @return Builder
          */
         public Builder mustContainOne(String condition) {
             return mustContainOne(condition, messages.getMustContainOneMessage());
         }
+
+        //</editor-fold>
+
         //</editor-fold>
 
         /**
-         * Evento que se invoca al no cumplirse alguna regla.
-         * @param notPass Función con el mensaje de error.
+         * Event that is invoked when some rule is not fulfilled.
+         * @param notPass Function with the error message.
          * @return Builder
          */
-        public Builder notPass(NotPass notPass) {
+        public Builder onNotPass(NotPass notPass) {
             this.notPass = notPass;
             return this;
         }
 
         /**
-         * Construye el Validator
+         * Build the Validator
          * @return Validator
          */
         public Validator build() {
