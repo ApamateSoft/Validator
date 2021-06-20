@@ -1,7 +1,10 @@
+Versión original: [Inglés](../README.md)
+
 # Validator
 
-Validador es una librería escrita en Java, que pretende simplificar la validación de Strings declarando una series de 
+Validador es una librería escrita en Java, que pretende simplificar la validación de Strings declarando una series de
 reglas.
+
 
 ## Notas de lanzamiento
 
@@ -11,8 +14,23 @@ reglas.
 - Se ha agregado el método `.compareOrFail`.
 
 ## Instalación
-1. Descarga el Validator-1.1.0.jar.
-2. Añade él .jar como una librería a tu proyecto.
+
+### Descargar el JAR
+[Validator-1.1.0.jar](https://repo1.maven.org/maven2/io/github/ApamateSoft/Validator/1.1.0/Validator-1.1.0.jar)
+
+### Maven
+```xml
+<dependency>
+    <groupId>io.github.ApamateSoft</groupId>
+    <artifactId>Validator</artifactId>
+    <version>1.1.0</version>
+</dependency>
+```
+
+### Gradle
+```groovy
+implementation group: 'io.github.ApamateSoft', name: 'Validator', version: '1.1.0'
+```
 
 ## Empezando
 
@@ -36,7 +54,7 @@ validator.rule("El texto es diferente de 'xxx'", (String evaluate) -> {
 ##### Nota:
 - Se puede agregar n cantidad de reglas.
 - Validator aplicará una a una las reglas, en el orden en que fueron agregadas.
-- Al momento de fallar una regla, se ignoran las restantes. 
+- Al momento de fallar una regla, se ignoran las restantes.
 - Un String se considera válido, solo si este, pasa todas las reglas.
 
 ### Simplificando código
@@ -63,9 +81,9 @@ validator.isValid("yyy"); // false
 validator.isValid("xxx"); // true
 ```
 
-En caso de querer comparar dos String, lo cual es muy útil para validar contraseñas, se puede hacer uso del método. 
-`.compare`. Opcionalmente se puede utilizar el método `.setNotMatchMessage` para definir el mensaje de error en caso de 
-no coincidir.  
+En caso de querer comparar dos String, lo cual es muy útil para validar contraseñas, se puede hacer uso del método.
+`.compare`. Opcionalmente se puede utilizar el método `.setNotMatchMessage` para definir el mensaje de error en caso de
+no coincidir.
 
 ```java
 final Validator validator = new Validator.Builder()
@@ -91,7 +109,7 @@ validator.onNotPass( message -> System.out.println(message) ); // "El texto es d
 validator.isValid("yyy"); // false
 ```
 
-Si prefiere no trabajar con el evento `.onNotPass`, puede usar los métodos `.isValidOrFail` y `.compareOrFail` en 
+Si prefiere no trabajar con el evento `.onNotPass`, puede usar los métodos `.isValidOrFail` y `.compareOrFail` en
 sustitución de los métodos `.isValid` y `.comapre` respectivamente.
 
 La principal diferencia es que estos métodos no retorna valor alguno y en caso de fallar arrojan una excepción del tipo
@@ -130,11 +148,11 @@ Validator ofrece una serie de reglas predefinidas.
 | `email`             | No            | Opcional            | Valida que el String a evaluar tenga formato de email                                              |
 | `numericFormat`     | No            | Opcional            | Valida que el String a evaluar tenga un formato numérico                                           |
 | `shouldOnlyContain` | Si (`String`) | Opcional            | Valida que el String a evaluar solo contenga caracteres incluidos en el String de condición        |
-| `onlyNumbers`       | No            | Opcional            | Valida que el Staring a evaluar solo contenga caracteres numéricos                                 |
+| `onlyNumbers`       | No            | Opcional            | Valida que el String a evaluar solo contenga caracteres numéricos                                 |
 | `notContain`        | Si (`String`) | Opcional            | Valida que el String a evaluar no contenga algún carácter incluido en el String de la condición    |
 | `mustContainOne`    | Si (`String`) | Opcional            | Valida que el String a evaluar contenga al menos un carácter incluido en el String de la condición |
 
-Las reglas predefinidas pueden simplificar la definición de un Validator. 
+Las reglas predefinidas pueden simplificar la definición de un Validator.
 
 ```java
 final Validator validator = new Validator.Builder()
@@ -154,7 +172,7 @@ final Validator validator = new Validator.Builder()
     .build();
 ```
 
-Los mensajes predeterminados se encuentran en las clases `MessagesEn` para los mensajes en inglés, y en `MessagesEs` 
+Los mensajes predeterminados se encuentran en las clases `MessagesEn` para los mensajes en inglés, y en `MessagesEs`
 para los mensajes en español, ambas clases implementan la interfaz `Messages`.
 
 | Regla	              | Ingles                                                   | Español                                               |
@@ -224,13 +242,13 @@ Validator.setMessages(new Messages() {
 
 ##### Nota:
 - Los mensajes declarados junto a una regla predefinida tienen prioridad sobre los mensajes predeterminados.
-- Las reglas predefinidas que requieren un parámetro `condition`, hacen uso de `String.format` para formatear el 
-mensaje con la condición.
+- Las reglas predefinidas que requieren un parámetro `condition`, hacen uso de `String.format` para formatear el
+  mensaje con la condición.
 
 ### Recomendaciones
 
-Comúnmente, suele haber varias instancias de Strings a cuáles aplicar las mismas reglas de validación. Para estos casos 
-se recomienda definir los Validators por contexto, con el fin de definir nuestro Validator una vez y reutilizarlo. Esta 
+Comúnmente, suele haber varias instancias de Strings a cuáles aplicar las mismas reglas de validación. Para estos casos
+se recomienda definir los Validators por contexto, con el fin de definir nuestro Validator una vez y reutilizarlo. Esta
 lógica es posible, ya que Validator incluye el método `.copy` el cual genera copias del mismo.
 
 ```java
