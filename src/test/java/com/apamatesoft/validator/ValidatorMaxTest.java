@@ -1,6 +1,5 @@
 package com.apamatesoft.validator;
 
-import com.apamatesoft.validator.constants.Validators;
 import com.apamatesoft.validator.exceptions.InvalidEvaluationException;
 import com.apamatesoft.validator.functions.NotPass;
 import org.junit.jupiter.api.BeforeAll;
@@ -59,14 +58,14 @@ public class ValidatorMaxTest {
     void verifyCallback() {
         validator.onNotPass(notPass);
         validator.isValid(null);
-        verify(notPass).invoke("The value cannot be greater than 5");
+        verify(notPass).invoke("The value cannot be greater than 5.00");
     }
 
     @Test
     void verifyCallback_build() {
         validatorBuild.onNotPass(notPass);
         validatorBuild.isValid(null);
-        verify(notPass).invoke("The value cannot be greater than 5");
+        verify(notPass).invoke("The value cannot be greater than 5.00");
     }
 
 }

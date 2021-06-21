@@ -332,7 +332,7 @@ public class Validator implements Cloneable {
      * @param condition maximum value.
      * @param message Error message.
      */
-    public void max(int condition, String message) {
+    public void max(double condition, String message) {
         rule(String.format(message, condition), it -> Validators.max(it, condition) );
     }
 
@@ -340,7 +340,7 @@ public class Validator implements Cloneable {
      * Validate that the value of the String is not greater than the condition.
      * @param condition maximum value.
      */
-    public void max(int condition) {
+    public void max(double condition) {
         max(condition, messages.getMaxMessage());
     }
 
@@ -349,7 +349,7 @@ public class Validator implements Cloneable {
      * @param condition minimum value.
      * @param message Error message.
      */
-    public void min(int condition, String message) {
+    public void min(double condition, String message) {
         rule(String.format(message, condition), it -> Validators.min(it, condition) );
     }
 
@@ -357,7 +357,7 @@ public class Validator implements Cloneable {
      * Validate that the value of the String is not less than the condition.
      * @param condition minimum value.
      */
-    public void min(int condition) {
+    public void min(double condition) {
         min(condition, messages.getMinMessage());
     }
 
@@ -639,7 +639,7 @@ public class Validator implements Cloneable {
          * @param message Error message.
          * @return Builder
          */
-        public Builder max(int condition, String message) {
+        public Builder max(double condition, String message) {
             return rule(String.format(message, condition), it -> Validators.max(it, condition) );
         }
 
@@ -658,7 +658,7 @@ public class Validator implements Cloneable {
          * @param message Error message.
          * @return Builder
          */
-        public Builder min(int condition, String message) {
+        public Builder min(double condition, String message) {
             return rule(String.format(message, condition), it -> Validators.min(it, condition) );
         }
 
@@ -667,7 +667,7 @@ public class Validator implements Cloneable {
          * @param condition minimum value.
          * @return Builder
          */
-        public Builder min(int condition) {
+        public Builder min(double condition) {
             return min(condition, messages.getMinMessage());
         }
 

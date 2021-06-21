@@ -59,12 +59,12 @@ public class MessagesEs implements Messages {
 
     @Override
     public String getMaxMessage() {
-        return "El valor no puede ser mayor a %d";
+        return "El valor no puede ser mayor a %1$.2f";
     }
 
     @Override
     public String getMinMessage() {
-        return "El valor no puede ser menor a %d";
+        return "El valor no puede ser menor a %1$.2f";
     }
 
     @Override
