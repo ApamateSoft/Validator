@@ -57,4 +57,19 @@ public class MessagesEs implements Messages {
         return "Se requiere al menos uno de los siguientes caracteres: %s";
     }
 
+    @Override
+    public String getMaxMessage() {
+        return "El valor no puede ser mayor a %d";
+    }
+
+    @Override
+    public String getMinMessage() {
+        return "El valor no puede ser menor a %d";
+    }
+
+    @Override
+    public String getEqualMessage() {
+        return "El valor debe ser igual a %d";
+    }
+
 }

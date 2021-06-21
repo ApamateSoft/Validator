@@ -1,5 +1,4 @@
 // TODO:
-//  - Crear reglas para números > < =
 //  - Regla de fecha
 //  - RegEgx
 package com.apamatesoft.validator;
@@ -57,10 +56,6 @@ public class Validator implements Cloneable {
      * @return true: if validation passes.
      */
     public boolean isValid(String evaluate) {
-        if (evaluate==null) {
-            if (notPass!=null) notPass.invoke(rules.get(0).getMessage());
-            return false;
-        }
         for (Rule rule: rules) {
             if (!rule.validate(evaluate)) {
                 if (notPass!=null) notPass.invoke(rule.getMessage());
@@ -76,14 +71,9 @@ public class Validator implements Cloneable {
      * @throws InvalidEvaluationException Exception thrown if the String to evaluate does not meet any rule.
      */
     public void isValidOrFail(String evaluate) throws InvalidEvaluationException {
-
-        if (evaluate==null)
-            throw new InvalidEvaluationException(rules.get(0).getMessage(), null);
-
         for (Rule rule: rules)
             if (!rule.validate(evaluate))
                 throw new InvalidEvaluationException(rule.getMessage(), evaluate);
-
     }
 
     /**
@@ -105,10 +95,6 @@ public class Validator implements Cloneable {
      * @return true: if validation passes.
      */
     public boolean compare(String evaluate, String compare) {
-        if (evaluate==null || compare==null) {
-            if (notPass!=null) notPass.invoke(notMatchMessage);
-            return false;
-        }
         if (!evaluate.equals(compare)) {
             if (notPass!=null) notPass.invoke(notMatchMessage);
             return false;
@@ -135,8 +121,6 @@ public class Validator implements Cloneable {
      * @throws InvalidEvaluationException Exception thrown if the String to evaluate does not meet any rule.
      */
     public void compareOrFail(String evaluate, String compare) throws InvalidEvaluationException {
-        if (evaluate==null || compare==null)
-            throw new InvalidEvaluationException(notMatchMessage, evaluate);
         if (!evaluate.equals(compare))
             throw new InvalidEvaluationException(notMatchMessage, evaluate);
         isValidOrFail(evaluate);
@@ -341,6 +325,48 @@ public class Validator implements Cloneable {
      */
     public void mustContainOne(String condition) {
         mustContainOne(condition, messages.getMustContainOneMessage());
+    }
+
+    /**
+     * Validate that the value of the String is not greater than the condition.
+     * @param condition maximum value.
+     * @param message Error message.
+     */
+    public void max(int condition, String message) {
+        rule(String.format(message, condition), it -> Validators.max(it, condition) );
+    }
+
+    /**
+     * Validate that the value of the String is not greater than the condition.
+     * @param condition maximum value.
+     */
+    public void max(int condition) {
+        max(condition, messages.getMaxMessage());
+    }
+
+    /**
+     * Validate that the value of the String is not less than the condition.
+     * @param condition minimum value.
+     * @param message Error message.
+     */
+    public void min(int condition, String message) {
+        rule(String.format(message, condition), it -> Validators.min(it, condition) );
+    }
+
+    /**
+     * Validate that the value of the String is not less than the condition.
+     * @param condition minimum value.
+     */
+    public void min(int condition) {
+        min(condition, messages.getMinMessage());
+    }
+
+    public void equal(int condition, String message) {
+        rule(String.format(message, condition), it -> Validators.equal(it, condition) );
+    }
+
+    public void equal(int condition) {
+        equal(condition, messages.getEqualMessage());
     }
 
     //</editor-fold>
@@ -605,6 +631,52 @@ public class Validator implements Cloneable {
          */
         public Builder mustContainOne(String condition) {
             return mustContainOne(condition, messages.getMustContainOneMessage());
+        }
+
+        /**
+         * Validate that the value of the String is not greater than the condition.
+         * @param condition maximum value.
+         * @param message Error message.
+         * @return Builder
+         */
+        public Builder max(int condition, String message) {
+            return rule(String.format(message, condition), it -> Validators.max(it, condition) );
+        }
+
+        /**
+         * Validate that the value of the String is not greater than the condition.
+         * @param condition maximum value.
+         * @return Builder
+         */
+        public Builder max(int condition) {
+            return max(condition, messages.getMaxMessage());
+        }
+
+        /**
+         * Validate that the value of the String is not less than the condition.
+         * @param condition minimum value.
+         * @param message Error message.
+         * @return Builder
+         */
+        public Builder min(int condition, String message) {
+            return rule(String.format(message, condition), it -> Validators.min(it, condition) );
+        }
+
+        /**
+         * Validate that the value of the String is not less than the condition.
+         * @param condition minimum value.
+         * @return Builder
+         */
+        public Builder min(int condition) {
+            return min(condition, messages.getMinMessage());
+        }
+
+        public Builder equal(int condition, String message) {
+            return rule(String.format(message, condition), it -> Validators.equal(it, condition) );
+        }
+
+        public Builder equal(int condition) {
+            return equal(condition, messages.getEqualMessage());
         }
 
         //</editor-fold>

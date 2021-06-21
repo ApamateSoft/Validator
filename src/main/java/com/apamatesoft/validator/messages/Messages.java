@@ -12,4 +12,7 @@ public interface Messages {
     String getOnlyNumbersMessage();
     String getNotContainMessage();
     String getMustContainOneMessage();
+    String getMaxMessage();
+    String getMinMessage();
+    String getEqualMessage();
 }
