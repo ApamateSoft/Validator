@@ -1,6 +1,6 @@
 // TODO:
 //  - Regla de fecha
-//  - RegEgx
+//  - RegEgx: [link, ipv4, ipv6, filepath, phone, date, onlyNumbers, onlyAlphabet]
 package com.apamatesoft.validator;
 
 import com.apamatesoft.validator.constants.Validators;
@@ -228,6 +228,23 @@ public class Validator implements Cloneable {
     //<editor-fold desc=" - FORMAT RULES">
 
     /**
+     * Validate that the value matches the regular expression.
+     * @param condition Regular expression
+     * @param message Error message.
+     */
+    public void regExp(String condition, String message) {
+        rule(String.format(message, condition), it -> Validators.regExp(it, condition) );
+    }
+
+    /**
+     * Validate that the value matches the regular expression.
+     * @param condition Regular expression
+     */
+    public void regExp(String condition) {
+        regExp(condition, messages.getRegExpMessage());
+    }
+
+    /**
      * Validate that the String has an email format
      * @param message Error message.
      */
@@ -363,10 +380,6 @@ public class Validator implements Cloneable {
 
     public void equal(int condition, String message) {
         rule(String.format(message, condition), it -> Validators.equal(it, condition) );
-    }
-
-    public void equal(int condition) {
-        equal(condition, messages.getEqualMessage());
     }
 
     //</editor-fold>
@@ -522,6 +535,25 @@ public class Validator implements Cloneable {
         //<editor-fold desc=" - FORMAT RULES">
 
         /**
+         * Validate that the value matches the regular expression.
+         * @param condition Regular expression
+         * @param message Error message.
+         * @return Builder
+         */
+        public Builder regExp(String condition, String message) {
+            return rule(String.format(message, condition), it -> Validators.regExp(it, condition) );
+        }
+
+        /**
+         * Validate that the value matches the regular expression.
+         * @param condition Regular expression
+         * @return Builder
+         */
+        public Builder regExp(String condition) {
+            return regExp(condition, messages.getRegExpMessage());
+        }
+
+        /**
          * Validate that the String has an email format
          * @param message Error message.
          * @return Builder
@@ -673,10 +705,6 @@ public class Validator implements Cloneable {
 
         public Builder equal(int condition, String message) {
             return rule(String.format(message, condition), it -> Validators.equal(it, condition) );
-        }
-
-        public Builder equal(int condition) {
-            return equal(condition, messages.getEqualMessage());
         }
 
         //</editor-fold>

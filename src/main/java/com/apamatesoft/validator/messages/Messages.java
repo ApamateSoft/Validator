@@ -14,5 +14,5 @@ public interface Messages {
     String getMustContainOneMessage();
     String getMaxMessage();
     String getMinMessage();
-    String getEqualMessage();
+    String getRegExpMessage();
 }

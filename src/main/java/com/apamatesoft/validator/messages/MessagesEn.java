@@ -68,8 +68,8 @@ public class MessagesEn implements Messages {
     }
 
     @Override
-    public String getEqualMessage() {
-        return "The value must be equal to %d";
+    public String getRegExpMessage() {
+        return "Value does not match pattern %s";
     }
 
 }

@@ -5,7 +5,7 @@ Validator is a library written in Java, which aims to simplify the validation of
 ## Translations
 - [Español](translations/README-es.md)
 
-## Notas de lanzamiento
+## Release notes
 
 ### Version 1.1.0
 
