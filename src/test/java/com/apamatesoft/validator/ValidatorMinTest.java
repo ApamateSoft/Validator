@@ -5,7 +5,7 @@ import com.apamatesoft.validator.functions.NotPass;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import static com.apamatesoft.validator.constants.Validators.min;
+import static com.apamatesoft.validator.constants.Validators.ls;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.Mockito.mock;
@@ -26,22 +26,22 @@ public class ValidatorMinTest {
 
     @Test
     void returnFalseForNullValue() {
-        assertFalse(min(null, 5));
+        assertFalse(ls(null, 5));
     }
 
     @Test
     void returnsFalseForStringDifferentFromNumber() {
-        assertFalse(min("abc", 5));
+        assertFalse(ls("abc", 5));
     }
 
     @Test
     void returnsTrueForValuesGreaterThanCondition() {
-        assertTrue(min("6", 5));
+        assertTrue(ls("6", 5));
     }
 
     @Test
     void returnsFalseForValuesLessThanTheCondition() {
-        assertFalse(min("2", 5));
+        assertFalse(ls("2", 5));
     }
 
     @Test

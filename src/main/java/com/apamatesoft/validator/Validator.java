@@ -1,6 +1,20 @@
 // TODO:
 //  - Regla de fecha
-//  - RegEgx: [link, ipv4, ipv6, filepath, phone, date, onlyNumbers, onlyAlphabet]
+//  - RegEgx: [
+//  * link,
+//  * httpsLink,
+//  * httpLink,
+//  * wwwLink,
+//  * ip,
+//  * ipv4,
+//  * ipv6,
+//  name (nombre propio dependiendo del idioma debe tener una codificación distinta)
+//  filepath,
+//  phone?,
+//  date?,
+//  password(low, medium, hard)?,
+//  onlyNumbers,
+//  onlyAlphabet]
 package com.apamatesoft.validator;
 
 import com.apamatesoft.validator.constants.Validators;
@@ -11,6 +25,8 @@ import com.apamatesoft.validator.functions.NotPass;
 import com.apamatesoft.validator.functions.Validate;
 import java.util.ArrayList;
 import java.util.List;
+
+import static java.lang.String.format;
 
 /**
  * <h1>Validator</h1>
@@ -178,7 +194,7 @@ public class Validator implements Cloneable {
      * @param message Error message.
      */
     public void length(int condition, String message) {
-        rule(String.format(message, condition), it -> Validators.length(it, condition) );
+        rule(format(message, condition), it -> Validators.length(it, condition) );
     }
 
     /**
@@ -195,7 +211,7 @@ public class Validator implements Cloneable {
      * @param message Error message.
      */
     public void minLength(int condition, String message) {
-        rule(String.format(message, condition), it -> Validators.minLength(it, condition) );
+        rule(format(message, condition), it -> Validators.minLength(it, condition) );
     }
 
     /**
@@ -212,7 +228,7 @@ public class Validator implements Cloneable {
      * @param message Error message.
      */
     public void maxLength(int condition, String message) {
-        rule(String.format(message, condition), it -> Validators.maxLength(it, condition) );
+        rule(format(message, condition), it -> Validators.maxLength(it, condition) );
     }
 
     /**
@@ -233,7 +249,7 @@ public class Validator implements Cloneable {
      * @param message Error message.
      */
     public void regExp(String condition, String message) {
-        rule(String.format(message, condition), it -> Validators.regExp(it, condition) );
+        rule(format(message, condition), it -> Validators.regExp(it, condition) );
     }
 
     /**
@@ -245,7 +261,7 @@ public class Validator implements Cloneable {
     }
 
     /**
-     * Validate that the String has an email format
+     * Validate that the String has an email format.
      * @param message Error message.
      */
     public void email(String message) {
@@ -264,7 +280,7 @@ public class Validator implements Cloneable {
      * @param message Error message.
      */
     public void numericFormat(String message) {
-        rule(message, Validators::numericFormat);
+        rule(message, Validators::number);
     }
 
     /**
@@ -284,7 +300,7 @@ public class Validator implements Cloneable {
      * @param message  Error message.
      */
     public void shouldOnlyContain(String condition, String message) {
-        rule(String.format(message, condition), it -> Validators.shouldOnlyContain(it, condition) );
+        rule(format(message, condition), it -> Validators.shouldOnlyContain(it, condition) );
     }
 
     /**
@@ -316,7 +332,7 @@ public class Validator implements Cloneable {
      * @param message Error message.
      */
     public void notContain(String condition, String message) {
-        rule(String.format(message, condition), it -> Validators.notContain(it, condition) );
+        rule(format(message, condition), it -> Validators.notContain(it, condition) );
     }
 
     /**
@@ -333,7 +349,7 @@ public class Validator implements Cloneable {
      * @param message Error message.
      */
     public void mustContainOne(String condition, String message) {
-        rule(String.format(message, condition), it -> Validators.mustContainOne(it, condition) );
+        rule(format(message, condition), it -> Validators.mustContainOne(it, condition) );
     }
 
     /**
@@ -350,7 +366,7 @@ public class Validator implements Cloneable {
      * @param message Error message.
      */
     public void max(double condition, String message) {
-        rule(String.format(message, condition), it -> Validators.max(it, condition) );
+        rule(format(message, condition), it -> Validators.gt(it, condition) );
     }
 
     /**
@@ -367,7 +383,7 @@ public class Validator implements Cloneable {
      * @param message Error message.
      */
     public void min(double condition, String message) {
-        rule(String.format(message, condition), it -> Validators.min(it, condition) );
+        rule(format(message, condition), it -> Validators.ls(it, condition) );
     }
 
     /**
@@ -378,8 +394,8 @@ public class Validator implements Cloneable {
         min(condition, messages.getMinMessage());
     }
 
-    public void equal(int condition, String message) {
-        rule(String.format(message, condition), it -> Validators.equal(it, condition) );
+    public void equal(String condition, String message) {
+        rule(format(message, condition), it -> Validators.equal(it, condition) );
     }
 
     //</editor-fold>
@@ -480,7 +496,7 @@ public class Validator implements Cloneable {
          * @return Builder
          */
         public Builder length(int condition, String message) {
-            return rule(String.format(message, condition), it -> Validators.length(it, condition) );
+            return rule(format(message, condition), it -> Validators.length(it, condition) );
         }
 
         /**
@@ -499,7 +515,7 @@ public class Validator implements Cloneable {
          * @return Builder
          */
         public Builder minLength(int condition, String message) {
-            return rule(String.format(message, condition), it -> Validators.minLength(it, condition) );
+            return rule(format(message, condition), it -> Validators.minLength(it, condition) );
         }
 
         /**
@@ -518,7 +534,7 @@ public class Validator implements Cloneable {
          * @return Builder
          */
         public Builder maxLength(int condition, String message) {
-            return rule(String.format(message, condition), it -> Validators.maxLength(it, condition) );
+            return rule(format(message, condition), it -> Validators.maxLength(it, condition) );
         }
 
         /**
@@ -541,7 +557,7 @@ public class Validator implements Cloneable {
          * @return Builder
          */
         public Builder regExp(String condition, String message) {
-            return rule(String.format(message, condition), it -> Validators.regExp(it, condition) );
+            return rule(format(message, condition), it -> Validators.regExp(it, condition) );
         }
 
         /**
@@ -576,7 +592,7 @@ public class Validator implements Cloneable {
          * @return Builder
          */
         public Builder numericFormat(String message) {
-            return rule(message, Validators::numericFormat);
+            return rule(message, Validators::number);
         }
 
         /**
@@ -598,7 +614,7 @@ public class Validator implements Cloneable {
          * @return Builder
          */
         public Builder shouldOnlyContain(String condition, String message) {
-            return rule(String.format(message, condition), it -> Validators.shouldOnlyContain(it, condition));
+            return rule(format(message, condition), it -> Validators.shouldOnlyContain(it, condition));
         }
 
         /**
@@ -634,7 +650,7 @@ public class Validator implements Cloneable {
          * @return Builder
          */
         public Builder notContain(String condition, String message) {
-            return rule(String.format(message, condition), it -> Validators.notContain(it, condition));
+            return rule(format(message, condition), it -> Validators.notContain(it, condition));
         }
 
         /**
@@ -653,7 +669,7 @@ public class Validator implements Cloneable {
          * @return Builder
          */
         public Builder mustContainOne(String condition, String message) {
-            return rule(String.format(message, condition), it -> Validators.mustContainOne(it, condition));
+            return rule(format(message, condition), it -> Validators.mustContainOne(it, condition));
         }
 
         /**
@@ -672,7 +688,7 @@ public class Validator implements Cloneable {
          * @return Builder
          */
         public Builder max(double condition, String message) {
-            return rule(String.format(message, condition), it -> Validators.max(it, condition) );
+            return rule(format(message, condition), it -> Validators.gt(it, condition) );
         }
 
         /**
@@ -691,7 +707,7 @@ public class Validator implements Cloneable {
          * @return Builder
          */
         public Builder min(double condition, String message) {
-            return rule(String.format(message, condition), it -> Validators.min(it, condition) );
+            return rule(format(message, condition), it -> Validators.ls(it, condition) );
         }
 
         /**
@@ -703,8 +719,8 @@ public class Validator implements Cloneable {
             return min(condition, messages.getMinMessage());
         }
 
-        public Builder equal(int condition, String message) {
-            return rule(String.format(message, condition), it -> Validators.equal(it, condition) );
+        public Builder equal(String condition, String message) {
+            return rule(format(message, condition), it -> Validators.equal(it, condition) );
         }
 
         //</editor-fold>
