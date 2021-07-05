@@ -107,6 +107,11 @@ public class Validators {
         return regExp(evaluate, IPV6);
     }
 
+    // TODO: Aclarar que es genérico
+    public static boolean phone(String evaluate) {
+        return regExp(evaluate, PHONE);
+    }
+
     /**
      * Validate that the String only contains characters included in the condition.
      * @param evaluate String to evaluate.
