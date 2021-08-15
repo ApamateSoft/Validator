@@ -4,6 +4,10 @@ public class Constants {
 
     public static final String NUMBER = "0123456789";
 
+    public static final String BIN = "01";
+    public static final String OCT = "01234567";
+    public static final String HEX = "0123456789aAbBcCdDeEfF";
+
     public static final String ALPHABET = "aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ";
     public static final String NAME = ALPHABET+" ";
     public static final String ALPHA_LOWERCASE = "abcdefghijklmnopqrstuvwxyz";

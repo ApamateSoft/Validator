@@ -394,10 +394,6 @@ public class Validator implements Cloneable {
         min(condition, messages.getMinMessage());
     }
 
-    public void equal(String condition, String message) {
-        rule(format(message, condition), it -> Validators.equal(it, condition) );
-    }
-
     //</editor-fold>
 
     //</editor-fold>
@@ -717,10 +713,6 @@ public class Validator implements Cloneable {
          */
         public Builder min(double condition) {
             return min(condition, messages.getMinMessage());
-        }
-
-        public Builder equal(String condition, String message) {
-            return rule(format(message, condition), it -> Validators.equal(it, condition) );
         }
 
         //</editor-fold>

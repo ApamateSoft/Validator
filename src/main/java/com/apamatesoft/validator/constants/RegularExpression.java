@@ -2,7 +2,7 @@ package com.apamatesoft.validator.constants;
 
 public class RegularExpression {
 
-    public static final String ONLY_NUMBERS = "^\\d+$";
+    public static final String NUMBERS = "^\\d+$";
     public static final String ALPHABET = "^[a-zA-Z]+$";
     public static final String ALPHABET_ES = "^[a-zA-ZáéíóúñÁÉÍÓÚÑ]+$";
     public static final String ALPHA_NUMERIC = "^[a-zA-Z0-9]+$";
@@ -10,7 +10,7 @@ public class RegularExpression {
     public static final String NAME = "^[a-zA-Z]+\\s?[a-zA-Z]*$";
     public static final String NAME_ES = "^[a-zA-ZáéíóúñÁÉÍÓÚÑ]+\\s?[a-zA-ZáéíóúñÁÉÍÓÚÑ]*$";
     public static final String INTEGER = "^-?\\d+$";
-    public static final String DECIMAL = "^-?\\d*.?\\d+$";
+    public static final String DECIMAL = "^\\-?\\d*\\.?\\d+?$";
     public static final String EMAIL = "^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$";
     public static final String LINK = "^((https://)|(www.)|(http://))+([a-zA-Z0-9@:%._+~#=]{2,63})+\\.([a-z]{2,6}\\b)+(.)*$";
     public static final String WWW_LINK = "^www.([a-zA-Z0-9@:%._+~#=]{2,63})+\\.([a-z]{2,6}\\b)+(.)*$";

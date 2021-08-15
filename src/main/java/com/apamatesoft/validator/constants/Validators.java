@@ -4,6 +4,7 @@ import static com.apamatesoft.validator.constants.RegularExpression.*;
 import static java.lang.Double.parseDouble;
 import static java.util.regex.Pattern.compile;
 
+// TODO: Date
 public class Validators {
 
     /**
@@ -35,7 +36,7 @@ public class Validators {
      */
     public static boolean minLength(String evaluate, int condition) {
         if (!required(evaluate)) return false;
-        return condition<evaluate.length();
+        return evaluate.length()>=condition;
     }
 
     /**
@@ -46,7 +47,7 @@ public class Validators {
      */
     public static boolean maxLength(String evaluate, int condition) {
         if (!required(evaluate)) return false;
-        return condition>evaluate.length();
+        return evaluate.length()<=condition;
     }
 
     /**
@@ -70,8 +71,8 @@ public class Validators {
     }
 
     /**
-     * Validate that the string is a number format. <br/>
-     * <b>Note:</b> This includes so many integers, decimal, and negative values.
+     * Validate that the String is a number format. <br/>
+     * Note: This includes so many integers, decimal, and negative values.
      * @param evaluate String to evaluate.
      * @return true if it meets the condition.
      */
@@ -79,37 +80,118 @@ public class Validators {
         return regExp(evaluate, DECIMAL);
     }
 
+    /**
+     * Validate that the String is a link format.
+     * @param evaluate String to evaluate.
+     * @return true if it meets the condition.
+     */
     public static boolean link(String evaluate) {
         return regExp(evaluate, LINK);
     }
 
+    /**
+     * Validate that the String is a link with www format.
+     * @param evaluate String to evaluate.
+     * @return true if it meets the condition.
+     */
     public static boolean wwwLink(String evaluate) {
         return regExp(evaluate, WWW_LINK);
     }
 
+    /**
+     * Validate that the String is a link with http format.
+     * @param evaluate String to evaluate.
+     * @return true if it meets the condition.
+     */
     public static boolean httpLink(String evaluate) {
         return regExp(evaluate, HTTP_LINK);
     }
 
+    /**
+     * Validate that the String is a link with http format.
+     * @param evaluate String to evaluate.
+     * @return true if it meets the condition.
+     */
     public static boolean httpsLink(String evaluate) {
         return regExp(evaluate, HTTPS_LINK);
     }
 
+    /**
+     * Validate that the String is an ip format.
+     * @param evaluate String to evaluate.
+     * @return true if it meets the condition.
+     */
     public static boolean ip(String evaluate) {
         return regExp(evaluate, IP);
     }
 
+    /**
+     * Validate that the String is an ip with ipv4 format.
+     * @param evaluate String to evaluate.
+     * @return true if it meets the condition.
+     */
     public static boolean ipv4(String evaluate) {
         return regExp(evaluate, IPV4);
     }
 
+    /**
+     * Validate that the String is an ip with ipv6 format.
+     * @param evaluate String to evaluate.
+     * @return true if it meets the condition.
+     */
     public static boolean ipv6(String evaluate) {
         return regExp(evaluate, IPV6);
     }
 
-    // TODO: Aclarar que es genérico
+    /**
+     * Validate that the String is a time format.
+     * @param evaluate String to evaluate.
+     * @return true if it meets the condition.
+     */
+    public static boolean time(String evaluate) {
+        return regExp(evaluate, TIME);
+    }
+
+    /**
+     * Validate that the String is a time with 12 hours format.
+     * @param evaluate String to evaluate.
+     * @return true if it meets the condition.
+     */
+    public static boolean time12(String evaluate) {
+        return regExp(evaluate, TIME12);
+    }
+
+    /**
+     * Validate that the String is a time with 24 hours format.
+     * @param evaluate String to evaluate.
+     * @return true if it meets the condition.
+     */
+    public static boolean time24(String evaluate) {
+        return regExp(evaluate, TIME24);
+    }
+
+    // TODO:
+    //  - Aclarar que es genérico
+    //  - Realizar pruebas
     public static boolean phone(String evaluate) {
         return regExp(evaluate, PHONE);
+    }
+
+    /**
+     * Validate that the String contains only numeric characters.
+     * @param evaluate String to evaluate.
+     * @return true if it meets the condition.
+     */
+    public static boolean onlyNumbers(String evaluate) {
+        return regExp(evaluate, NUMBERS);
+    }
+
+    public static boolean onlyCharacters(String evaluate) {
+        return regExp(evaluate, ALPHABET);
+    }
+
+    public static boolean onlyAlphaNumeric(String evaluate) {
+        return regExp(evaluate, ALPHA_NUMERIC);
     }
 
     /**
@@ -124,15 +206,6 @@ public class Validators {
             if (!condition.contains(String.valueOf(a))) return false;
         }
         return true;
-    }
-
-    /**
-     * Validate that the String contains only numeric characters.
-     * @param evaluate String to evaluate.
-     * @return true if it meets the condition.
-     */
-    public static boolean onlyNumbers(String evaluate) {
-        return regExp(evaluate, ONLY_NUMBERS);
     }
 
     /**
@@ -163,29 +236,28 @@ public class Validators {
         return false;
     }
 
+    // TODO: Traducir
+    /**
+     * Si el String a evaluar es un número, evalúa que sea mayor a la condición.
+     * @param evaluate String to evaluate.
+     * @param condition String to compare.
+     * @return true if it meets the condition.
+     */
     public static boolean gt(String evaluate, double condition) {
         if (!required(evaluate) || !number(evaluate)) return false;
-        return condition> parseDouble(evaluate);
+        return parseDouble(evaluate)>condition;
     }
 
-    public static boolean gte(String evaluate, double condition) {
-        if (!required(evaluate) || !number(evaluate)) return false;
-        return condition>= parseDouble(evaluate);
-    }
-
+    // TODO: Traducir
+    /**
+     * Si el String a evaluar es un número, evalúa que sea menor a la condición.
+     * @param evaluate String to evaluate.
+     * @param condition String to compare.
+     * @return true if it meets the condition.
+     */
     public static boolean ls(String evaluate, double condition) {
         if (!required(evaluate) || !number(evaluate)) return false;
-        return condition< parseDouble(evaluate);
-    }
-
-    public static boolean lse(String evaluate, double condition) {
-        if (!required(evaluate) || !number(evaluate)) return false;
-        return condition<=parseDouble(evaluate);
-    }
-
-    public static boolean equal(String evaluate, String condition) {
-        if (!required(evaluate)) return false;
-        return condition.equals(evaluate);
+        return parseDouble(evaluate)<condition;
     }
 
 }
