@@ -5,7 +5,7 @@ import com.apamatesoft.validator.functions.NotPass;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import static com.apamatesoft.validator.constants.Validators.gt;
+import static com.apamatesoft.validator.constants.Validators.max;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.Mockito.mock;
@@ -26,22 +26,22 @@ public class ValidatorMaxTest {
 
     @Test
     void returnFalseForNullValue() {
-        assertFalse(gt(null, 5));
+        assertFalse(max(null, 5));
     }
 
     @Test
     void returnsFalseForStringDifferentFromNumber() {
-        assertFalse(gt("abc", 5));
+        assertFalse(max("abc", 5));
     }
 
     @Test
     void returnsFalseForValuesGreaterThanCondition() {
-        assertFalse(gt("6", 5));
+        assertFalse(max("6", 5));
     }
 
     @Test
     void returnsTrueForValuesLessThanTheCondition() {
-        assertTrue(gt("2", 5));
+        assertTrue(max("2", 5));
     }
 
     @Test

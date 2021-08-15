@@ -8,7 +8,7 @@
 //  * ip,
 //  * ipv4,
 //  * ipv6,
-//  name (nombre propio dependiendo del idioma debe tener una codificación distinta)
+//  credit card
 //  filepath,
 //  phone?,
 //  date?,
@@ -93,8 +93,7 @@ public class Validator implements Cloneable {
     }
 
     /**
-     * Validate that both Strings match and that they meet all the rules.
-     * <br/><br/>
+     * Validate that both Strings match and that they meet all the rules. <br/>
      * <b>Note:</b>
      * <ul>
      *     <li>
@@ -156,7 +155,7 @@ public class Validator implements Cloneable {
     /**
      * Create a validation rule.
      * <br/><br/>
-     * <b>Ejemplo:<b/><br>
+     * <b>Example:<b/><br>
      * <code>
      * <pre>
      * new Validator().rule("The text is different from 'xxx'", evaluate -> {
@@ -366,7 +365,7 @@ public class Validator implements Cloneable {
      * @param message Error message.
      */
     public void max(double condition, String message) {
-        rule(format(message, condition), it -> Validators.gt(it, condition) );
+        rule(format(message, condition), it -> Validators.max(it, condition) );
     }
 
     /**
@@ -383,7 +382,7 @@ public class Validator implements Cloneable {
      * @param message Error message.
      */
     public void min(double condition, String message) {
-        rule(format(message, condition), it -> Validators.ls(it, condition) );
+        rule(format(message, condition), it -> Validators.min(it, condition) );
     }
 
     /**
@@ -418,7 +417,7 @@ public class Validator implements Cloneable {
     public Validator copy() {
         try {
             return (Validator) this.clone();
-        } catch (Exception e) {
+        } catch (Exception ignored) {
             return null;
         }
     }
@@ -684,7 +683,7 @@ public class Validator implements Cloneable {
          * @return Builder
          */
         public Builder max(double condition, String message) {
-            return rule(format(message, condition), it -> Validators.gt(it, condition) );
+            return rule(format(message, condition), it -> Validators.max(it, condition) );
         }
 
         /**
@@ -703,7 +702,7 @@ public class Validator implements Cloneable {
          * @return Builder
          */
         public Builder min(double condition, String message) {
-            return rule(format(message, condition), it -> Validators.ls(it, condition) );
+            return rule(format(message, condition), it -> Validators.min(it, condition) );
         }
 
         /**

@@ -2,10 +2,10 @@ package com.apamatesoft.validator.constants.validators;
 
 import org.junit.jupiter.api.Test;
 
-import static com.apamatesoft.validator.constants.Validators.gt;
+import static com.apamatesoft.validator.constants.Validators.max;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class GtTest {
+public class MaxTest {
 
     private static final double condition = 2.5;
 
@@ -13,7 +13,7 @@ public class GtTest {
     void notPermit() {
         final String[] strings = { null, "", "2.5", "1,2", "-2.6", "text" };
         for (String string : strings) {
-            if (gt(string, condition)) {
+            if (max(string, condition)) {
                 fail();
                 break;
             }
@@ -25,7 +25,7 @@ public class GtTest {
     void permit() {
         final String[] strings = { "2.51", "30", "91" };
         for (String string : strings) {
-            if (!gt(string, condition)) {
+            if (!max(string, condition)) {
                 fail();
                 break;
             }

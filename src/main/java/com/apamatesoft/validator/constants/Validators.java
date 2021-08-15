@@ -236,28 +236,26 @@ public class Validators {
         return false;
     }
 
-    // TODO: Traducir
     /**
-     * Si el String a evaluar es un número, evalúa que sea mayor a la condición.
+     * Validate that the value of the String is not less than the condition.
      * @param evaluate String to evaluate.
-     * @param condition String to compare.
+     * @param condition Minimum value.
      * @return true if it meets the condition.
      */
-    public static boolean gt(String evaluate, double condition) {
-        if (!required(evaluate) || !number(evaluate)) return false;
-        return parseDouble(evaluate)>condition;
-    }
-
-    // TODO: Traducir
-    /**
-     * Si el String a evaluar es un número, evalúa que sea menor a la condición.
-     * @param evaluate String to evaluate.
-     * @param condition String to compare.
-     * @return true if it meets the condition.
-     */
-    public static boolean ls(String evaluate, double condition) {
+    public static boolean min(String evaluate, double condition) {
         if (!required(evaluate) || !number(evaluate)) return false;
         return parseDouble(evaluate)<condition;
+    }
+
+    /**
+     * Validate that the value of the String is not greater than the condition.
+     * @param evaluate String to evaluate.
+     * @param condition Maximum value.
+     * @return true if it meets the condition.
+     */
+    public static boolean max(String evaluate, double condition) {
+        if (!required(evaluate) || !number(evaluate)) return false;
+        return parseDouble(evaluate)>condition;
     }
 
 }
