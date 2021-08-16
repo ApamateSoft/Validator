@@ -3,29 +3,30 @@ package com.apamatesoft.validator;
 import com.apamatesoft.validator.exceptions.InvalidEvaluationException;
 import com.apamatesoft.validator.functions.NotPass;
 import com.apamatesoft.validator.messages.MessagesEn;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import static java.lang.String.format;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-public class ValidatorOnlyNumbers {
+public class ValidatorMaxLengthTest {
 
-    private static final String[] NOT_PERMIT = { null, "", "text", "Name Lastname", "1a", "a1", "1a1", "a1a", "1.00", "1,00" };
-    private static final String[] PERMIT = { "123456789" };
-    private static final String MESSAGES = new MessagesEn().getOnlyNumbersMessage();
+    private static final int CONDITION = 3;
+    private static final String[] NOT_PERMIT = { null, "", "1234" };
+    private static final String[] PERMIT = { "1", "12", "123" };
+    private static final String MESSAGES = format(new MessagesEn().getMaxLengthMessage(), CONDITION) ;
 
     private Validator validator, builder;
 
     @BeforeEach
     void before() {
         validator = new Validator();
-        validator.onlyNumbers();
+        validator.maxLength(CONDITION);
 
         builder = new Validator.Builder()
-                .onlyNumbers()
+                .maxLength(CONDITION)
                 .build();
 
     }
@@ -47,7 +48,7 @@ public class ValidatorOnlyNumbers {
                 fail();
                 break;
             }
-        Assertions.assertTrue(true);
+        assertTrue(true);
     }
 
     @Test
@@ -67,7 +68,7 @@ public class ValidatorOnlyNumbers {
                 fail();
                 break;
             }
-        Assertions.assertTrue(true);
+        assertTrue(true);
     }
 
     @Test
@@ -75,7 +76,7 @@ public class ValidatorOnlyNumbers {
         NotPass notPass = mock(NotPass.class);
         validator.onNotPass(notPass);
         validator.isValid(null);
-        verify(notPass).invoke(MESSAGES);
+        verify(notPass).invoke( MESSAGES );
     }
 
     @Test
@@ -83,7 +84,7 @@ public class ValidatorOnlyNumbers {
         NotPass notPass = mock(NotPass.class);
         builder.onNotPass(notPass);
         builder.isValid(null);
-        verify(notPass).invoke(MESSAGES);
+        verify(notPass).invoke( MESSAGES );
     }
 
     @Test

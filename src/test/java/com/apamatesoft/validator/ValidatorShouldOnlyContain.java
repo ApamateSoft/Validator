@@ -1,101 +1,103 @@
 package com.apamatesoft.validator;
 
+import com.apamatesoft.validator.exceptions.InvalidEvaluationException;
 import com.apamatesoft.validator.functions.NotPass;
-import org.junit.jupiter.api.BeforeAll;
+import com.apamatesoft.validator.messages.MessagesEn;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static com.apamatesoft.validator.constants.Constants.OCT;
+import static java.lang.String.format;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 public class ValidatorShouldOnlyContain {
 
-    private final static Validator validator = new Validator();
-    private final static Validator validatorBuilder = new Validator.Builder()
-            .shouldOnlyContain("abc")
-            .build();
+    private static final String CONDITION = OCT;
+    private static final String[] NOT_PERMIT = { null, "", "text", "012345678", "/*" };
+    private static final String[] PERMIT = { "01234567", "00" };
+    private static final String MESSAGES = format( new MessagesEn().getShouldOnlyContainMessage(), CONDITION );
 
-    @BeforeAll
-    static void beforeAll() {
-        validator.shouldOnlyContain("abc");
+    private Validator validator, builder;
+
+    @BeforeEach
+    void before() {
+        validator = new Validator();
+        validator.shouldOnlyContain(CONDITION);
+
+        builder = new Validator.Builder()
+                .shouldOnlyContain(CONDITION)
+                .build();
+
     }
 
     @Test
-    void returnFalseForNullValue() {
-        assertFalse(validator.isValid(null));
+    void notPermit() {
+        for (String s : NOT_PERMIT)
+            if (validator.isValid(s)) {
+                fail();
+                break;
+            }
+        assertFalse(false);
     }
 
     @Test
-    void returnFalseForEmptyValue() {
-        assertFalse(validator.isValid(""));
+    void permit() {
+        for (String string : PERMIT)
+            if (!validator.isValid(string)) {
+                fail();
+                break;
+            }
+        Assertions.assertTrue(true);
     }
 
     @Test
-    void returnFalseForStringWithoutAbcCharacters() {
-        assertFalse(validator.isValid("dfe"));
+    void notPermit_Builder() {
+        for (String s : NOT_PERMIT)
+            if (builder.isValid(s)) {
+                fail();
+                break;
+            }
+        assertFalse(false);
     }
 
     @Test
-    void returnFalseForStringContainingA() {
-        assertFalse(validator.isValid("adf"));
-    }
-
-    @Test
-    void returnFalseForStringContainingABC_andMore() {
-        assertFalse(validator.isValid("abcxyz"));
-    }
-
-    @Test
-    void returnTrueForStringOnlyWith_abc() {
-        assertTrue(validator.isValid("abccbbabc"));
+    void permit_Builder() {
+        for (String string : PERMIT)
+            if (!builder.isValid(string)) {
+                fail();
+                break;
+            }
+        Assertions.assertTrue(true);
     }
 
     @Test
     void verifyCallback() {
-        final NotPass notPass = mock(NotPass.class);
+        NotPass notPass = mock(NotPass.class);
         validator.onNotPass(notPass);
         validator.isValid(null);
-        verify(notPass).invoke("They are just admitted the following characters abc");
+        verify(notPass).invoke(MESSAGES);
     }
 
     @Test
-    void returnFalseForNullValue_build() {
-        assertFalse(validatorBuilder.isValid(null));
+    void verifyCallback_Builder() {
+        NotPass notPass = mock(NotPass.class);
+        builder.onNotPass(notPass);
+        builder.isValid(null);
+        verify(notPass).invoke(MESSAGES);
     }
 
     @Test
-    void returnFalseForEmptyValue_build() {
-        assertFalse(validatorBuilder.isValid(""));
+    void throwInvalidEvaluationException() {
+        assertThrows(InvalidEvaluationException.class, () -> validator.isValidOrFail(null) );
     }
 
     @Test
-    void returnFalseForStringWithoutAbcCharacters_build() {
-        assertFalse(validatorBuilder.isValid("dfe"));
+    void throwInvalidEvaluationException_Builder() {
+        assertThrows(InvalidEvaluationException.class, () -> builder.isValidOrFail(null) );
     }
-
-    @Test
-    void returnFalseForStringContainingA_build() {
-        assertFalse(validatorBuilder.isValid("adf"));
-    }
-
-    @Test
-    void returnFalseForStringContainingABC_andMore_build() {
-        assertFalse(validatorBuilder.isValid("abcxyz"));
-    }
-
-    @Test
-    void returnTrueForStringOnlyWith_abc_build() {
-        assertTrue(validatorBuilder.isValid("abccbbabc"));
-    }
-
-    @Test
-    void verifyCallback_build() {
-        final NotPass notPass = mock(NotPass.class);
-        validatorBuilder.onNotPass(notPass);
-        validatorBuilder.isValid(null);
-        verify(notPass).invoke("They are just admitted the following characters abc");
-    }
-
 
 }

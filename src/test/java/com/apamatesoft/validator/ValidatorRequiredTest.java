@@ -1,69 +1,96 @@
 package com.apamatesoft.validator;
 
+import com.apamatesoft.validator.exceptions.InvalidEvaluationException;
 import com.apamatesoft.validator.functions.NotPass;
-import org.junit.jupiter.api.BeforeAll;
+import com.apamatesoft.validator.messages.MessagesEn;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 class ValidatorRequiredTest {
 
-    private final static Validator validator = new Validator();
-    private final static Validator validatorBuilder = new Validator.Builder()
+    private static final String[] NOT_PERMIT = { null, "",  };
+    private static final String[] PERMIT = { " ", "xxx", "123", "Name Lastname", "@nick", "@nick01", "@nick_01" };
+    private static final String MESSAGES = new MessagesEn().getRequireMessage();
+
+    private Validator validator, builder;
+
+    @BeforeEach
+    void before() {
+        validator = new Validator();
+        validator.required();
+
+        builder = new Validator.Builder()
             .required()
             .build();
-
-    @BeforeAll
-    static void beforeAll() {
-        validator.required();
     }
 
     @Test
-    void returnFalseForNullValue() {
-        assertFalse(validator.isValid(null));
+    void notPermit() {
+        for (String s : NOT_PERMIT)
+            if (validator.isValid(s)) {
+                fail();
+                break;
+            }
+        assertFalse(false);
     }
 
     @Test
-    void returnFalseForEmptyValue() {
-        assertFalse(validator.isValid(""));
+    void permit() {
+        for (String string : PERMIT)
+            if (!validator.isValid(string)) {
+                fail();
+                break;
+            }
+        assertTrue(true);
     }
 
     @Test
-    void returnTrueForAnyString() {
-        assertTrue(validator.isValid("xxx"));
+    void notPermit_Builder() {
+        for (String s : NOT_PERMIT)
+            if (builder.isValid(s)) {
+                fail();
+                break;
+            }
+        assertFalse(false);
+    }
+
+    @Test
+    void permit_Builder() {
+        for (String string : PERMIT)
+            if (!builder.isValid(string)) {
+                fail();
+                break;
+            }
+        assertTrue(true);
     }
 
     @Test
     void verifyCallback() {
-        final NotPass notPass = mock(NotPass.class);
+        NotPass notPass = mock(NotPass.class);
         validator.onNotPass(notPass);
         validator.isValid(null);
-        verify(notPass).invoke("Required");
+        verify(notPass).invoke(MESSAGES);
     }
 
     @Test
-    void returnFalseForNullValue_build() {
-        assertFalse(validatorBuilder.isValid(null));
+    void verifyCallback_Builder() {
+        NotPass notPass = mock(NotPass.class);
+        builder.onNotPass(notPass);
+        builder.isValid(null);
+        verify(notPass).invoke(MESSAGES);
     }
 
     @Test
-    void returnFalseForEmptyValue_build() {
-        assertFalse(validatorBuilder.isValid(""));
+    void throwInvalidEvaluationException() {
+        assertThrows(InvalidEvaluationException.class, () -> validator.isValidOrFail(null) );
     }
 
     @Test
-    void returnTrueForAnyString_build() {
-        assertTrue(validatorBuilder.isValid("xxx"));
-    }
-
-    @Test
-    void verifyCallback_build() {
-        final NotPass notPass = mock(NotPass.class);
-        validatorBuilder.onNotPass(notPass);
-        validatorBuilder.isValid(null);
-        verify(notPass).invoke("Required");
+    void throwInvalidEvaluationException_Builder() {
+        assertThrows(InvalidEvaluationException.class, () -> builder.isValidOrFail(null) );
     }
 
 }

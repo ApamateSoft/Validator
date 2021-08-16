@@ -278,15 +278,15 @@ public class Validator implements Cloneable {
      * Validate that the String is in numeric format.
      * @param message Error message.
      */
-    public void numericFormat(String message) {
+    public void number(String message) {
         rule(message, Validators::number);
     }
 
     /**
      * Validate that the String is in numeric format.
      */
-    public void numericFormat() {
-        numericFormat(messages.getNumericFormat());
+    public void number() {
+        number(messages.getNumberMessage());
     }
 
     //</editor-fold>
@@ -586,7 +586,7 @@ public class Validator implements Cloneable {
          * @param message Error message.
          * @return Builder
          */
-        public Builder numericFormat(String message) {
+        public Builder number(String message) {
             return rule(message, Validators::number);
         }
 
@@ -594,8 +594,8 @@ public class Validator implements Cloneable {
          * Validate that the String is in numeric format.
          * @return Builder
          */
-        public Builder numericFormat() {
-            return numericFormat(messages.getNumericFormat());
+        public Builder number() {
+            return number(messages.getNumberMessage());
         }
 
         //</editor-fold>
@@ -691,7 +691,7 @@ public class Validator implements Cloneable {
          * @param condition maximum value.
          * @return Builder
          */
-        public Builder max(int condition) {
+        public Builder max(double condition) {
             return max(condition, messages.getMaxMessage());
         }
 

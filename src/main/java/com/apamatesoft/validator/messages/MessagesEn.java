@@ -33,8 +33,58 @@ public class MessagesEn implements Messages {
     }
 
     @Override
-    public String getNumericFormat() {
+    public String getNumberMessage() {
         return "It is not a number";
+    }
+
+    @Override
+    public String getLinkMessage() {
+        return "It is not a link";
+    }
+
+    @Override
+    public String getWwwLinkMessage() {
+        return "It is not a www link";
+    }
+
+    @Override
+    public String getHttpLinkMessage() {
+        return "It is not a http link";
+    }
+
+    @Override
+    public String getHttpsLinkMessage() {
+        return "It is not a https link";
+    }
+
+    @Override
+    public String getIpMessage() {
+        return "It is not a ip";
+    }
+
+    @Override
+    public String getIpv4Message() {
+        return "It is not a ipv4";
+    }
+
+    @Override
+    public String getIpv6Message() {
+        return "It is not a ipv6";
+    }
+
+    @Override
+    public String getTimeMessage() {
+        return "It is not a time";
+    }
+
+    @Override
+    public String getTime12Message() {
+        return "It is not a 12h format time";
+    }
+
+    @Override
+    public String getTime24Message() {
+        return "It is not a 24h format time";
     }
 
     @Override
@@ -45,6 +95,16 @@ public class MessagesEn implements Messages {
     @Override
     public String getOnlyNumbersMessage() {
         return "Just numbers";
+    }
+
+    @Override
+    public String getOnlyCharactersMessage() {
+        return "Just characters";
+    }
+
+    @Override
+    public String getOnlyAlphanumericMessage() {
+        return "Just alphanumeric characters";
     }
 
     @Override

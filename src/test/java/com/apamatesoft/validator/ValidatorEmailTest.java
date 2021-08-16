@@ -1,73 +1,96 @@
 package com.apamatesoft.validator;
 
+import com.apamatesoft.validator.exceptions.InvalidEvaluationException;
 import com.apamatesoft.validator.functions.NotPass;
-import org.junit.jupiter.api.BeforeAll;
+import com.apamatesoft.validator.messages.MessagesEn;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.junit.Assert.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 public class ValidatorEmailTest {
 
-    private final static Validator validator = new Validator();
-    private final static Validator validatorBuild = new Validator.Builder()
-            .email()
-            .build();
+    private static final String[] NOT_PERMIT = { null, "", "example", "@mail", "example@mail", "example@mail.", "mail.com", "@mail.com" };
+    private static final String[] PERMIT = { "example@mail.com" };
+    private static final String MESSAGES = new MessagesEn().getEmailMessage();
 
-    @BeforeAll
-    static void beforeAll() {
+    private Validator validator, builder;
+
+    @BeforeEach
+    void before() {
+        validator = new Validator();
         validator.email();
+
+        builder = new Validator.Builder()
+                .email()
+                .build();
+
     }
 
     @Test
-    void returnFalseForNullValue() {
-        assertFalse(validator.isValid(null));
+    void notPermit() {
+        for (String s : NOT_PERMIT)
+            if (validator.isValid(s)) {
+                fail();
+                break;
+            }
+        assertFalse(false);
     }
 
     @Test
-    void returnFalseForStringWithDifferentEmailFormat() {
-        assertFalse(validator.isValid("xxx"));
+    void permit() {
+        for (String string : PERMIT)
+            if (!validator.isValid(string)) {
+                fail();
+                break;
+            }
+        assertTrue(true);
     }
 
     @Test
-    void returnTrueForAnEmailFormattedString() {
-        assertTrue(validator.isValid("example@mail.com"));
+    void notPermit_Builder() {
+        for (String s : NOT_PERMIT)
+            if (builder.isValid(s)) {
+                fail();
+                break;
+            }
+        assertFalse(false);
+    }
+
+    @Test
+    void permit_Builder() {
+        for (String string : PERMIT)
+            if (!builder.isValid(string)) {
+                fail();
+                break;
+            }
+        assertTrue(true);
     }
 
     @Test
     void verifyCallback() {
-        final NotPass notPass = mock(NotPass.class);
+        NotPass notPass = mock(NotPass.class);
         validator.onNotPass(notPass);
         validator.isValid(null);
-        verify(notPass).invoke("Email invalid");
-    }
-
-    @BeforeAll
-    static void beforeAll_build() {
-        validatorBuild.email();
+        verify(notPass).invoke( MESSAGES );
     }
 
     @Test
-    void returnFalseForNullValue_build() {
-        assertFalse(validatorBuild.isValid(null));
+    void verifyCallback_Builder() {
+        NotPass notPass = mock(NotPass.class);
+        builder.onNotPass(notPass);
+        builder.isValid(null);
+        verify(notPass).invoke( MESSAGES );
     }
 
     @Test
-    void returnFalseForStringWithDifferentEmailFormat_build() {
-        assertFalse(validatorBuild.isValid("xxx"));
+    void throwInvalidEvaluationException() {
+        assertThrows(InvalidEvaluationException.class, () -> validator.isValidOrFail(null) );
     }
 
     @Test
-    void returnTrueForAnEmailFormattedString_build() {
-        assertTrue(validatorBuild.isValid("example@mail.com"));
-    }
-
-    @Test
-    void verifyCallback_build() {
-        final NotPass notPass = mock(NotPass.class);
-        validatorBuild.onNotPass(notPass);
-        validatorBuild.isValid(null);
-        verify(notPass).invoke("Email invalid");
+    void throwInvalidEvaluationException_Builder() {
+        assertThrows(InvalidEvaluationException.class, () -> builder.isValidOrFail(null) );
     }
 
 }

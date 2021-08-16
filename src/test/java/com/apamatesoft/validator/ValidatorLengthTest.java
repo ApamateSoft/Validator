@@ -1,80 +1,100 @@
 package com.apamatesoft.validator;
 
+import com.apamatesoft.validator.exceptions.InvalidEvaluationException;
 import com.apamatesoft.validator.functions.NotPass;
-import org.junit.jupiter.api.BeforeAll;
+import com.apamatesoft.validator.messages.MessagesEn;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static java.lang.String.format;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 public class ValidatorLengthTest {
 
-    private final static Validator validator = new Validator();
-    private final static Validator validatorBuild = new Validator.Builder()
-            .length(2)
-            .build();
+    private static final int CONDITION = 3;
+    private static final String[] NOT_PERMIT = { null, "", "12", "1234" };
+    private static final String[] PERMIT = { "123" };
+    private static final String MESSAGES = format(new MessagesEn().getLengthMessage(), CONDITION) ;
 
-    @BeforeAll
-    static void beforeAll() {
-        validator.length(2);
+    private Validator validator, builder;
+
+    @BeforeEach
+    void before() {
+        validator = new Validator();
+        validator.length(CONDITION);
+
+        builder = new Validator.Builder()
+                .length(CONDITION)
+                .build();
+
     }
 
     @Test
-    void returnFalseForNullValue() {
-        assertFalse(validator.isValid(null));
+    void notPermit() {
+        for (String s : NOT_PERMIT)
+            if (validator.isValid(s)) {
+                fail();
+                break;
+            }
+        assertFalse(false);
     }
 
     @Test
-    void returnFalseForStringWithLengthLessThan2() {
-        assertFalse(validator.isValid("x"));
+    void permit() {
+        for (String string : PERMIT)
+            if (!validator.isValid(string)) {
+                fail();
+                break;
+            }
+        assertTrue(true);
     }
 
     @Test
-    void returnFalseForStringWithLengthGreaterThan2() {
-        assertFalse(validator.isValid("xxx"));
+    void notPermit_Builder() {
+        for (String s : NOT_PERMIT)
+            if (builder.isValid(s)) {
+                fail();
+                break;
+            }
+        assertFalse(false);
     }
 
     @Test
-    void returnTrueForStringWithLengthEqualThan2() {
-        assertTrue(validator.isValid("xx"));
+    void permit_Builder() {
+        for (String string : PERMIT)
+            if (!builder.isValid(string)) {
+                fail();
+                break;
+            }
+        assertTrue(true);
     }
 
     @Test
     void verifyCallback() {
-        final NotPass notPass = mock(NotPass.class);
+        NotPass notPass = mock(NotPass.class);
         validator.onNotPass(notPass);
         validator.isValid(null);
-        verify(notPass).invoke("It requires 2 characters");
+        verify(notPass).invoke( MESSAGES );
     }
 
     @Test
-    void returnFalseForNullValue_build() {
-        assertFalse(validatorBuild.isValid(null));
+    void verifyCallback_Builder() {
+        NotPass notPass = mock(NotPass.class);
+        builder.onNotPass(notPass);
+        builder.isValid(null);
+        verify(notPass).invoke( MESSAGES );
     }
 
     @Test
-    void returnFalseForStringWithLengthLessThan2_build() {
-        assertFalse(validatorBuild.isValid("x"));
+    void throwInvalidEvaluationException() {
+        assertThrows(InvalidEvaluationException.class, () -> validator.isValidOrFail(null) );
     }
 
     @Test
-    void returnFalseForStringWithLengthGreaterThan2_build() {
-        assertFalse(validatorBuild.isValid("xxx"));
-    }
-
-    @Test
-    void returnTrueForStringWithLengthEqualThan2_build() {
-        assertTrue(validatorBuild.isValid("xx"));
-    }
-
-    @Test
-    void verifyCallback_build() {
-        final NotPass notPass = mock(NotPass.class);
-        validatorBuild.onNotPass(notPass);
-        validatorBuild.isValid(null);
-        verify(notPass).invoke("It requires 2 characters");
+    void throwInvalidEvaluationException_Builder() {
+        assertThrows(InvalidEvaluationException.class, () -> builder.isValidOrFail(null) );
     }
 
 }

@@ -6,26 +6,27 @@ import com.apamatesoft.validator.messages.MessagesEn;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-public class ValidatorOnlyNumbers {
+public class ValidatorNumberTest {
 
-    private static final String[] NOT_PERMIT = { null, "", "text", "Name Lastname", "1a", "a1", "1a1", "a1a", "1.00", "1,00" };
-    private static final String[] PERMIT = { "123456789" };
-    private static final String MESSAGES = new MessagesEn().getOnlyNumbersMessage();
+    private static final String[] NOT_PERMIT = { null, "", "text", "a1", "1a", "12345,6789", "123.456.789" };
+    private static final String[] PERMIT = { "123456789", "-123456789", "12345.6789", "-12345.6789", "1" };
+    private static final String MESSAGES = new MessagesEn().getNumberMessage();
 
     private Validator validator, builder;
 
     @BeforeEach
     void before() {
         validator = new Validator();
-        validator.onlyNumbers();
+        validator.number();
 
         builder = new Validator.Builder()
-                .onlyNumbers()
+                .number()
                 .build();
 
     }
@@ -95,5 +96,6 @@ public class ValidatorOnlyNumbers {
     void throwInvalidEvaluationException_Builder() {
         assertThrows(InvalidEvaluationException.class, () -> builder.isValidOrFail(null) );
     }
+
 
 }

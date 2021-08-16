@@ -2,70 +2,98 @@ package com.apamatesoft.validator;
 
 import com.apamatesoft.validator.exceptions.InvalidEvaluationException;
 import com.apamatesoft.validator.functions.NotPass;
-import org.junit.jupiter.api.BeforeAll;
+import com.apamatesoft.validator.messages.MessagesEn;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static com.apamatesoft.validator.constants.Validators.min;
+import static java.lang.String.format;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 public class ValidatorMinTest {
 
-    private final static NotPass notPass = mock(NotPass.class);
-    private final static Validator validator = new Validator();
-    private final static Validator validatorBuild = new Validator.Builder()
-            .min(5)
-            .build();
+    private static final double CONDITION = 2.5;
+    private static final String[] NOT_PERMIT = { null, "", "text", "2.5", "2.51", "2,00" };
+    private static final String[] PERMIT = { "2.49", "-1.01", "1", "0" };
+    private static final String MESSAGES = format(new MessagesEn().getMinMessage(), CONDITION);
 
-    @BeforeAll
-    static void beforeAll() {
-        validator.min(5);
+    private Validator validator, builder;
+
+    @BeforeEach
+    void before() {
+        validator = new Validator();
+        validator.min(CONDITION);
+
+        builder = new Validator.Builder()
+                .min(CONDITION)
+                .build();
+
     }
 
     @Test
-    void returnFalseForNullValue() {
-        assertFalse(min(null, 5));
+    void notPermit() {
+        for (String s : NOT_PERMIT)
+            if (validator.isValid(s)) {
+                fail();
+                break;
+            }
+        assertFalse(false);
     }
 
     @Test
-    void returnsFalseForStringDifferentFromNumber() {
-        assertFalse(min("abc", 5));
+    void permit() {
+        for (String string : PERMIT)
+            if (!validator.isValid(string)) {
+                fail();
+                break;
+            }
+        assertTrue(true);
     }
 
     @Test
-    void returnsTrueForValuesGreaterThanCondition() {
-        assertTrue(min("6", 5));
+    void notPermit_Builder() {
+        for (String s : NOT_PERMIT)
+            if (builder.isValid(s)) {
+                fail();
+                break;
+            }
+        assertFalse(false);
     }
 
     @Test
-    void returnsFalseForValuesLessThanTheCondition() {
-        assertFalse(min("2", 5));
-    }
-
-    @Test
-    void ExceptionIsExpectedIfTextIsEmpty() {
-        assertThrows(InvalidEvaluationException.class, () -> validator.isValidOrFail(null) );
-    }
-
-    @Test
-    void noExceptionExpectedIfTextMatches() {
-        assertDoesNotThrow( () -> validator.isValidOrFail("6") );
+    void permit_Builder() {
+        for (String string : PERMIT)
+            if (!builder.isValid(string)) {
+                fail();
+                break;
+            }
+        assertTrue(true);
     }
 
     @Test
     void verifyCallback() {
+        NotPass notPass = mock(NotPass.class);
         validator.onNotPass(notPass);
         validator.isValid(null);
-        verify(notPass).invoke("The value cannot be less than 5.00");
+        verify(notPass).invoke(MESSAGES);
     }
 
     @Test
-    void verifyCallback_build() {
-        validatorBuild.onNotPass(notPass);
-        validatorBuild.isValid(null);
-        verify(notPass).invoke("The value cannot be less than 5.00");
+    void verifyCallback_Builder() {
+        NotPass notPass = mock(NotPass.class);
+        builder.onNotPass(notPass);
+        builder.isValid(null);
+        verify(notPass).invoke(MESSAGES);
+    }
+
+    @Test
+    void throwInvalidEvaluationException() {
+        assertThrows(InvalidEvaluationException.class, () -> validator.isValidOrFail(null) );
+    }
+
+    @Test
+    void throwInvalidEvaluationException_Builder() {
+        assertThrows(InvalidEvaluationException.class, () -> builder.isValidOrFail(null) );
     }
 
 }

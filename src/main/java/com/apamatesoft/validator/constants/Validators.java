@@ -4,7 +4,7 @@ import static com.apamatesoft.validator.constants.RegularExpression.*;
 import static java.lang.Double.parseDouble;
 import static java.util.regex.Pattern.compile;
 
-// TODO: Date
+// TODO: Date, Cambiar de paquete
 public class Validators {
 
     /**
@@ -80,6 +80,7 @@ public class Validators {
         return regExp(evaluate, DECIMAL);
     }
 
+    // TODO: Pendiente por sin integrado en Validator
     /**
      * Validate that the String is a link format.
      * @param evaluate String to evaluate.
@@ -89,6 +90,7 @@ public class Validators {
         return regExp(evaluate, LINK);
     }
 
+    // TODO: Pendiente por sin integrado en Validator
     /**
      * Validate that the String is a link with www format.
      * @param evaluate String to evaluate.
@@ -98,6 +100,7 @@ public class Validators {
         return regExp(evaluate, WWW_LINK);
     }
 
+    // TODO: Pendiente por sin integrado en Validator
     /**
      * Validate that the String is a link with http format.
      * @param evaluate String to evaluate.
@@ -107,6 +110,7 @@ public class Validators {
         return regExp(evaluate, HTTP_LINK);
     }
 
+    // TODO: Pendiente por sin integrado en Validator
     /**
      * Validate that the String is a link with http format.
      * @param evaluate String to evaluate.
@@ -116,6 +120,7 @@ public class Validators {
         return regExp(evaluate, HTTPS_LINK);
     }
 
+    // TODO: Pendiente por sin integrado en Validator
     /**
      * Validate that the String is an ip format.
      * @param evaluate String to evaluate.
@@ -125,6 +130,7 @@ public class Validators {
         return regExp(evaluate, IP);
     }
 
+    // TODO: Pendiente por sin integrado en Validator
     /**
      * Validate that the String is an ip with ipv4 format.
      * @param evaluate String to evaluate.
@@ -134,6 +140,7 @@ public class Validators {
         return regExp(evaluate, IPV4);
     }
 
+    // TODO: Pendiente por sin integrado en Validator
     /**
      * Validate that the String is an ip with ipv6 format.
      * @param evaluate String to evaluate.
@@ -143,6 +150,7 @@ public class Validators {
         return regExp(evaluate, IPV6);
     }
 
+    // TODO: Pendiente por sin integrado en Validator
     /**
      * Validate that the String is a time format.
      * @param evaluate String to evaluate.
@@ -152,6 +160,7 @@ public class Validators {
         return regExp(evaluate, TIME);
     }
 
+    // TODO: Pendiente por sin integrado en Validator
     /**
      * Validate that the String is a time with 12 hours format.
      * @param evaluate String to evaluate.
@@ -161,6 +170,7 @@ public class Validators {
         return regExp(evaluate, TIME12);
     }
 
+    // TODO: Pendiente por sin integrado en Validator
     /**
      * Validate that the String is a time with 24 hours format.
      * @param evaluate String to evaluate.
@@ -186,11 +196,23 @@ public class Validators {
         return regExp(evaluate, NUMBERS);
     }
 
+    // TODO: Pendiente por sin integrado en Validator
+    /**
+     * Validate that the String contains only alphabetic characters.
+     * @param evaluate String to evaluate.
+     * @return true if it meets the condition.
+     */
     public static boolean onlyCharacters(String evaluate) {
         return regExp(evaluate, ALPHABET);
     }
 
-    public static boolean onlyAlphaNumeric(String evaluate) {
+    // TODO: Pendiente por sin integrado en Validator
+    /**
+     * Validate that the String contains only alphanumeric characters.
+     * @param evaluate String to evaluate.
+     * @return true if it meets the condition.
+     */
+    public static boolean onlyAlphanumeric(String evaluate) {
         return regExp(evaluate, ALPHA_NUMERIC);
     }
 
