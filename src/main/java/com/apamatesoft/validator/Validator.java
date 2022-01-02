@@ -1,27 +1,26 @@
 // TODO:
 //  - Regla de fecha
+//  - Rango
 //  - RegEgx: [
-//  * link,
-//  * httpsLink,
-//  * httpLink,
-//  * wwwLink,
 //  * ip,
 //  * ipv4,
 //  * ipv6,
-//  credit card
-//  filepath,
-//  phone?,
-//  date?,
-//  password(low, medium, hard)?,
-//  onlyNumbers,
-//  onlyAlphabet]
+//  - credit card (number, extDate, code)
+//  - filepath,
+//  - phone?,
+//  - date?,
+//  - dateFormat
+//  - password(low, medium, hard)?,
+//  - onlyNumbers,
+//  - onlyAlphabet]
+//  - Number template
 package com.apamatesoft.validator;
 
 import com.apamatesoft.validator.constants.Validators;
 import com.apamatesoft.validator.exceptions.InvalidEvaluationException;
 import com.apamatesoft.validator.messages.Messages;
 import com.apamatesoft.validator.messages.MessagesEn;
-import com.apamatesoft.validator.functions.NotPass;
+import com.apamatesoft.validator.functions.OnInvalidEvaluation;
 import com.apamatesoft.validator.functions.Validate;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,14 +34,14 @@ import static java.lang.String.format;
  * rules.
  *
  * @author ApamateSoft
- * @version 1.1.0
+ * @version 2.0.0
  */
 public class Validator implements Cloneable {
 
     private static Messages messages = new MessagesEn();
 
     private final List<Rule> rules = new ArrayList<>();
-    private NotPass notPass;
+    private OnInvalidEvaluation onInvalidEvaluation;
     private String notMatchMessage = messages.getNotMatchMessage();
 
     // <editor-fold defaulted="collapsed" desc="CONSTRUCTORS">
@@ -50,7 +49,7 @@ public class Validator implements Cloneable {
 
     private Validator(Builder builder) {
         rules.addAll(builder.rules);
-        notPass = builder.notPass;
+        onInvalidEvaluation = builder.onInvalidEvaluation;
         notMatchMessage = builder.notMatchMessage;
     }
     //</editor-fold>
@@ -66,7 +65,7 @@ public class Validator implements Cloneable {
 
     /**
      * Validate that the String to evaluate meets all the rules.<br>
-     * <b>Note:</b> If the String does not meet any rule, the {@link #onNotPass(NotPass)} event will be invoked with the
+     * <b>Note:</b> If the String does not meet any rule, the {@link #onInvalidEvaluation(OnInvalidEvaluation)} event will be invoked with the
      * corresponding error message.
      * @param evaluate String to evaluate.
      * @return true: if validation passes.
@@ -74,7 +73,7 @@ public class Validator implements Cloneable {
     public boolean isValid(String evaluate) {
         for (Rule rule: rules) {
             if (!rule.validate(evaluate)) {
-                if (notPass!=null) notPass.invoke(rule.getMessage());
+                if (onInvalidEvaluation !=null) onInvalidEvaluation.invoke(rule.getMessage());
                 return false;
             }
         }
@@ -97,7 +96,7 @@ public class Validator implements Cloneable {
      * <b>Note:</b>
      * <ul>
      *     <li>
-     *         If the Strings do not comply with some of the rules, the onNotPass {@link #onNotPass(NotPass)} event will
+     *         If the Strings do not comply with some of the rules, the onNotPass {@link #onInvalidEvaluation(OnInvalidEvaluation)} event will
      *         be invoked, with the corresponding error message.
      *     </li>
      *     <li>
@@ -111,7 +110,7 @@ public class Validator implements Cloneable {
      */
     public boolean compare(String evaluate, String compare) {
         if (!evaluate.equals(compare)) {
-            if (notPass!=null) notPass.invoke(notMatchMessage);
+            if (onInvalidEvaluation !=null) onInvalidEvaluation.invoke(notMatchMessage);
             return false;
         }
         return isValid(evaluate);
@@ -123,7 +122,7 @@ public class Validator implements Cloneable {
      * <b>Note:</b>
      * <ul>
      *     <li>
-     *         If the Strings do not comply with some of the rules, the onNotPass {@link #onNotPass(NotPass)} event will
+     *         If the Strings do not comply with some of the rules, the onNotPass {@link #onInvalidEvaluation(OnInvalidEvaluation)} event will
      *         be invoked, with the corresponding error message.
      *     </li>
      *     <li>
@@ -170,8 +169,9 @@ public class Validator implements Cloneable {
         rules.add(new Rule(message, validate));
     }
 
-    //<editor-fold desc=" - LENGTH RULES">
+    //<editor-fold desc="LENGTH RULES">
 
+    //<editor-fold desc="required">
     /**
      * Validate that the String to evaluate is different from empty and null.
      * @param message Error message.
@@ -186,7 +186,9 @@ public class Validator implements Cloneable {
     public void required() {
         required(messages.getRequireMessage());
     }
+    //</editor-fold>
 
+    //<editor-fold desc="length">
     /**
      * Validate that the String to evaluate has the exact length of characters to the condition.
      * @param condition character length.
@@ -203,7 +205,9 @@ public class Validator implements Cloneable {
     public void length(int condition) {
         length(condition, messages.getLengthMessage());
     }
+    //</editor-fold>
 
+    //<editor-fold desc="minLength">
     /**
      * Validate that the String to evaluate has a minimum character length to the condition.
      * @param condition Minimum character length.
@@ -220,7 +224,9 @@ public class Validator implements Cloneable {
     public void minLength(int condition) {
         minLength(condition, messages.getMinLengthMessage());
     }
+    //</editor-fold>
 
+    //<editor-fold desc="maxLength">
     /**
      * Validate that the String to evaluate has a maximum length of characters to the condition.
      * @param condition maximum character length.
@@ -237,11 +243,13 @@ public class Validator implements Cloneable {
     public void maxLength(int condition) {
         maxLength(condition, messages.getMaxLengthMessage());
     }
+    //</editor-fold>
 
     //</editor-fold>
 
-    //<editor-fold desc=" - FORMAT RULES">
+    //<editor-fold desc="FORMAT RULES">
 
+    //<editor-fold desc="regExp">
     /**
      * Validate that the value matches the regular expression.
      * @param condition Regular expression
@@ -258,7 +266,9 @@ public class Validator implements Cloneable {
     public void regExp(String condition) {
         regExp(condition, messages.getRegExpMessage());
     }
+    //</editor-fold>
 
+    //<editor-fold desc="email">
     /**
      * Validate that the String has an email format.
      * @param message Error message.
@@ -273,7 +283,9 @@ public class Validator implements Cloneable {
     public void email() {
         email(messages.getEmailMessage());
     }
+    //</editor-fold>
 
+    //<editor-fold desc="number">
     /**
      * Validate that the String is in numeric format.
      * @param message Error message.
@@ -288,11 +300,64 @@ public class Validator implements Cloneable {
     public void number() {
         number(messages.getNumberMessage());
     }
+    //</editor-fold>
+
+    //<editor-fold desc="link">
+    /**
+     * Validate that the String is a link format.
+     * @param message Error message.
+     */
+    public void link(String message) {
+        rule(message, Validators::link);
+    }
+
+    /**
+     * Validate that the String is a link format.
+     */
+    public void link() {
+        link(messages.getLinkMessage());
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="wwwLink">
+    /**
+     * Validate that the String is a link with www format.
+     * @param message Error message.
+     */
+    public void wwwLink(String message) {
+        rule(message, Validators::wwwLink);
+    }
+
+    /**
+     * Validate that the String is a link with www format.
+     */
+    public void wwwLink() {
+        wwwLink(messages.getWwwLinkMessage());
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="httpLink">
+    /**
+     * Validate that the String is a link with http format.
+     * @param message Error message.
+     */
+    public void httpLink(String message) {
+        rule(message, Validators::httpLink);
+    }
+
+    /**
+     * Validate that the String is a link with http format.
+     */
+    public void httpLink() {
+        httpLink(messages.getHttpLinkMessage());
+    }
+    //</editor-fold>
 
     //</editor-fold>
 
-    //<editor-fold desc=" - CONTENT RULES">
+    //<editor-fold desc="CONTENT RULES">
 
+    //<editor-fold desc="shouldOnlyContain">
     /**
      * Validate that the String only contains characters included in the condition String.
      * @param condition String with allowed characters.
@@ -309,7 +374,9 @@ public class Validator implements Cloneable {
     public void shouldOnlyContain(String condition) {
         shouldOnlyContain(condition, messages.getShouldOnlyContainMessage());
     }
+    //</editor-fold>
 
+    //<editor-fold desc="onlyNumbers">
     /**
      * Validate that the String contains only numeric characters.
      * @param message Error message.
@@ -324,7 +391,9 @@ public class Validator implements Cloneable {
     public void onlyNumbers() {
         onlyNumbers(messages.getOnlyNumbersMessage());
     }
+    //</editor-fold>
 
+    //<editor-fold desc="notContain">
     /**
      * Validate that the String does not contain any character included in the String of the condition.
      * @param condition String with invalid characters.
@@ -341,7 +410,9 @@ public class Validator implements Cloneable {
     public void notContain(String condition) {
         notContain(condition, messages.getNotContainMessage());
     }
+    //</editor-fold>
 
+    //<editor-fold desc="mustContainOne">
     /**
      * Validates that the String contains at least one character included in the String of the condition.
      * @param condition String with desired characters.
@@ -358,7 +429,10 @@ public class Validator implements Cloneable {
     public void mustContainOne(String condition) {
         mustContainOne(condition, messages.getMustContainOneMessage());
     }
+    //</editor-fold>
 
+    //<editor-fold desc="max">
+    // TODO: Quizas sea mejor llamarlo maxValue
     /**
      * Validate that the value of the String is not greater than the condition.
      * @param condition maximum value.
@@ -375,7 +449,9 @@ public class Validator implements Cloneable {
     public void max(double condition) {
         max(condition, messages.getMaxMessage());
     }
+    //</editor-fold>
 
+    //<editor-fold desc="min">
     /**
      * Validate that the value of the String is not less than the condition.
      * @param condition minimum value.
@@ -392,6 +468,7 @@ public class Validator implements Cloneable {
     public void min(double condition) {
         min(condition, messages.getMinMessage());
     }
+    //</editor-fold>
 
     //</editor-fold>
 
@@ -399,10 +476,10 @@ public class Validator implements Cloneable {
 
     /**
      * Event that is invoked when some rule is not fulfilled.
-     * @param notPass Function with the error message.
+     * @param onInvalidEvaluation Function with the error message.
      */
-    public void onNotPass(NotPass notPass) {
-        this.notPass = notPass;
+    public void onInvalidEvaluation(OnInvalidEvaluation onInvalidEvaluation) {
+        this.onInvalidEvaluation = onInvalidEvaluation;
     }
 
     @Override
@@ -428,7 +505,7 @@ public class Validator implements Cloneable {
     public static class Builder {
 
         private final List<Rule> rules = new ArrayList<>();
-        private NotPass notPass;
+        private OnInvalidEvaluation onInvalidEvaluation;
         private String notMatchMessage = messages.getNotMatchMessage();
 
         /**
@@ -465,8 +542,9 @@ public class Validator implements Cloneable {
             return this;
         }
 
-        //<editor-fold desc=" - LENGTH RULES">
+        //<editor-fold desc="LENGTH RULES">
 
+        //<editor-fold desc="required">
         /**
          * Validate that the String to evaluate is different from empty and null.
          * @param message Error message.
@@ -483,7 +561,9 @@ public class Validator implements Cloneable {
         public Builder required() {
             return required(messages.getRequireMessage());
         }
+        //</editor-fold>
 
+        //<editor-fold desc="length">
         /**
          * Validate that the String to evaluate has the exact length of characters to the condition.
          * @param condition character length.
@@ -502,7 +582,9 @@ public class Validator implements Cloneable {
         public Builder length(int condition) {
             return length(condition, messages.getLengthMessage());
         }
+        //</editor-fold>
 
+        //<editor-fold desc="minLength">
         /**
          * Validate that the String to evaluate has a minimum character length to the condition.
          * @param condition Minimum character length.
@@ -521,7 +603,9 @@ public class Validator implements Cloneable {
         public Builder minLength(int condition) {
             return minLength(condition, messages.getMinLengthMessage());
         }
+        //</editor-fold>
 
+        //<editor-fold desc="maxLength">
         /**
          * Validate that the String to evaluate has a maximum length of characters to the condition.
          * @param condition maximum character length.
@@ -540,11 +624,13 @@ public class Validator implements Cloneable {
         public Builder maxLength(int condition) {
             return maxLength(condition, messages.getMaxLengthMessage());
         }
+        //</editor-fold>
 
         //</editor-fold>
 
-        //<editor-fold desc=" - FORMAT RULES">
+        //<editor-fold desc="FORMAT RULES">
 
+        //<editor-fold desc="regExp">
         /**
          * Validate that the value matches the regular expression.
          * @param condition Regular expression
@@ -563,7 +649,9 @@ public class Validator implements Cloneable {
         public Builder regExp(String condition) {
             return regExp(condition, messages.getRegExpMessage());
         }
+        //</editor-fold>
 
+        //<editor-fold desc="email">
         /**
          * Validate that the String has an email format
          * @param message Error message.
@@ -580,7 +668,9 @@ public class Validator implements Cloneable {
         public Builder email() {
             return email(messages.getEmailMessage());
         }
+        //</editor-fold>
 
+        //<editor-fold desc="number">
         /**
          * Validate that the String is in numeric format.
          * @param message Error message.
@@ -597,11 +687,70 @@ public class Validator implements Cloneable {
         public Builder number() {
             return number(messages.getNumberMessage());
         }
+        //</editor-fold>
+
+        //<editor-fold desc="link">
+        /**
+         * Validate that the String is a link format.
+         * @param message Error message.
+         * @return Builder
+         */
+        public Builder link(String message) {
+            return rule(message, Validators::link);
+        }
+
+        /**
+         * Validate that the String is a link format.
+         * @return Builder
+         */
+        public Builder link() {
+            return link(messages.getLinkMessage());
+        }
+        //</editor-fold>
+
+        //<editor-fold desc="wwwLink">
+        /**
+         * Validate that the String is a link with www format.
+         * @param message Error message.
+         * @return Builder
+         */
+        public Builder wwwLink(String message) {
+            return rule(message, Validators::wwwLink);
+        }
+
+        /**
+         * Validate that the String is a link with www format.
+         * @return Builder
+         */
+        public Builder wwwLink() {
+            return wwwLink(messages.getWwwLinkMessage());
+        }
+        //</editor-fold>
+
+        //<editor-fold desc="httpLink">
+        /**
+         * Validate that the String is a link with http format.
+         * @param message Error message.
+         * @return Builder
+         */
+        public Builder httpLink(String message) {
+            return rule(message, Validators::httpLink);
+        }
+
+        /**
+         * Validate that the String is a link with http format.
+         * @return Builder
+         */
+        public Builder httpLink() {
+            return httpLink(messages.getHttpLinkMessage());
+        }
+        //</editor-fold>
 
         //</editor-fold>
 
-        //<editor-fold desc=" - CONTENT RULES">
+        //<editor-fold desc="CONTENT RULES">
 
+        //<editor-fold desc="shouldOnlyContain">
         /**
          * Validate that the String only contains characters included in the condition String.
          * @param condition String with allowed characters.
@@ -620,7 +769,9 @@ public class Validator implements Cloneable {
         public Builder shouldOnlyContain(String condition) {
             return shouldOnlyContain(condition, messages.getShouldOnlyContainMessage());
         }
+        //</editor-fold>
 
+        //<editor-fold desc="onlyNumbers">
         /**
          * Validate that the String contains only numeric characters.
          * @param message Error message.
@@ -637,7 +788,9 @@ public class Validator implements Cloneable {
         public Builder onlyNumbers() {
             return onlyNumbers(messages.getOnlyNumbersMessage());
         }
+        //</editor-fold>
 
+        //<editor-fold desc="notContain">
         /**
          * Validate that the String does not contain any character included in the String of the condition.
          * @param condition String with invalid characters.
@@ -656,7 +809,9 @@ public class Validator implements Cloneable {
         public Builder notContain(String condition) {
             return notContain(condition, messages.getNotContainMessage());
         }
+        //</editor-fold>
 
+        //<editor-fold desc="mustContainOne">
         /**
          * Validates that the String contains at least one character included in the String of the condition.
          * @param condition String with desired characters.
@@ -675,7 +830,9 @@ public class Validator implements Cloneable {
         public Builder mustContainOne(String condition) {
             return mustContainOne(condition, messages.getMustContainOneMessage());
         }
+        //</editor-fold>
 
+        //<editor-fold desc="max">
         /**
          * Validate that the value of the String is not greater than the condition.
          * @param condition maximum value.
@@ -694,7 +851,9 @@ public class Validator implements Cloneable {
         public Builder max(double condition) {
             return max(condition, messages.getMaxMessage());
         }
+        //</editor-fold>
 
+        //<editor-fold desc="min">
         /**
          * Validate that the value of the String is not less than the condition.
          * @param condition minimum value.
@@ -713,6 +872,7 @@ public class Validator implements Cloneable {
         public Builder min(double condition) {
             return min(condition, messages.getMinMessage());
         }
+        //</editor-fold>
 
         //</editor-fold>
 
@@ -720,11 +880,11 @@ public class Validator implements Cloneable {
 
         /**
          * Event that is invoked when some rule is not fulfilled.
-         * @param notPass Function with the error message.
+         * @param onInvalidEvaluation Function with the error message.
          * @return Builder
          */
-        public Builder onNotPass(NotPass notPass) {
-            this.notPass = notPass;
+        public Builder onInvalidEvaluation(OnInvalidEvaluation onInvalidEvaluation) {
+            this.onInvalidEvaluation = onInvalidEvaluation;
             return this;
         }
 

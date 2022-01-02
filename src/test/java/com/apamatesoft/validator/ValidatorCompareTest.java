@@ -1,7 +1,7 @@
 package com.apamatesoft.validator;
 
 import com.apamatesoft.validator.exceptions.InvalidEvaluationException;
-import com.apamatesoft.validator.functions.NotPass;
+import com.apamatesoft.validator.functions.OnInvalidEvaluation;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
@@ -40,10 +40,10 @@ public class ValidatorCompareTest {
 
     @Test
     void verifyCallback() {
-        final NotPass notPass = mock(NotPass.class);
-        validator.onNotPass(notPass);
+        final OnInvalidEvaluation onInvalidEvaluation = mock(OnInvalidEvaluation.class);
+        validator.onInvalidEvaluation(onInvalidEvaluation);
         validator.compare("abc", "xyz");
-        verify(notPass).invoke("Not match");
+        verify(onInvalidEvaluation).invoke("Not match");
     }
 
 }

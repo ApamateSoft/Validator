@@ -1,7 +1,7 @@
 package com.apamatesoft.validator;
 
 import com.apamatesoft.validator.exceptions.InvalidEvaluationException;
-import com.apamatesoft.validator.functions.NotPass;
+import com.apamatesoft.validator.functions.OnInvalidEvaluation;
 import com.apamatesoft.validator.messages.MessagesEn;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -74,18 +74,18 @@ public class ValidatorMaxTest {
 
     @Test
     void verifyCallback() {
-        NotPass notPass = mock(NotPass.class);
-        validator.onNotPass(notPass);
+        OnInvalidEvaluation onInvalidEvaluation = mock(OnInvalidEvaluation.class);
+        validator.onInvalidEvaluation(onInvalidEvaluation);
         validator.isValid(null);
-        verify(notPass).invoke(MESSAGES);
+        verify(onInvalidEvaluation).invoke(MESSAGES);
     }
 
     @Test
     void verifyCallback_Builder() {
-        NotPass notPass = mock(NotPass.class);
-        builder.onNotPass(notPass);
+        OnInvalidEvaluation onInvalidEvaluation = mock(OnInvalidEvaluation.class);
+        builder.onInvalidEvaluation(onInvalidEvaluation);
         builder.isValid(null);
-        verify(notPass).invoke(MESSAGES);
+        verify(onInvalidEvaluation).invoke(MESSAGES);
     }
 
     @Test

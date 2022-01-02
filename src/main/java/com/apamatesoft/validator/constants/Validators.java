@@ -1,11 +1,15 @@
 package com.apamatesoft.validator.constants;
 
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 import static com.apamatesoft.validator.constants.RegularExpression.*;
 import static java.lang.Double.parseDouble;
 import static java.util.regex.Pattern.compile;
 
 // TODO: Date, Cambiar de paquete
 public class Validators {
+
+    //<editor-fold desc="LENGTH VALIDATORS">
 
     /**
      * Validate that the String is different from null and empty.
@@ -50,6 +54,10 @@ public class Validators {
         return evaluate.length()<=condition;
     }
 
+    //</editor-fold>
+
+    //<editor-fold desc="FORMAT VALIDATION">
+
     /**
      * Validate that the String matches the regular expression.
      * @param evaluate String to evaluate.
@@ -80,7 +88,6 @@ public class Validators {
         return regExp(evaluate, DECIMAL);
     }
 
-    // TODO: Pendiente por sin integrado en Validator
     /**
      * Validate that the String is a link format.
      * @param evaluate String to evaluate.
@@ -90,7 +97,6 @@ public class Validators {
         return regExp(evaluate, LINK);
     }
 
-    // TODO: Pendiente por sin integrado en Validator
     /**
      * Validate that the String is a link with www format.
      * @param evaluate String to evaluate.
@@ -100,7 +106,11 @@ public class Validators {
         return regExp(evaluate, WWW_LINK);
     }
 
-    // TODO: Pendiente por sin integrado en Validator
+    // TODO:
+    //  - add Rule
+    //  - add Rule builder
+    //  - Rule description
+    //  - Rule test
     /**
      * Validate that the String is a link with http format.
      * @param evaluate String to evaluate.
@@ -109,112 +119,9 @@ public class Validators {
     public static boolean httpLink(String evaluate) {
         return regExp(evaluate, HTTP_LINK);
     }
+    //</editor-fold>
 
-    // TODO: Pendiente por sin integrado en Validator
-    /**
-     * Validate that the String is a link with http format.
-     * @param evaluate String to evaluate.
-     * @return true if it meets the condition.
-     */
-    public static boolean httpsLink(String evaluate) {
-        return regExp(evaluate, HTTPS_LINK);
-    }
-
-    // TODO: Pendiente por sin integrado en Validator
-    /**
-     * Validate that the String is an ip format.
-     * @param evaluate String to evaluate.
-     * @return true if it meets the condition.
-     */
-    public static boolean ip(String evaluate) {
-        return regExp(evaluate, IP);
-    }
-
-    // TODO: Pendiente por sin integrado en Validator
-    /**
-     * Validate that the String is an ip with ipv4 format.
-     * @param evaluate String to evaluate.
-     * @return true if it meets the condition.
-     */
-    public static boolean ipv4(String evaluate) {
-        return regExp(evaluate, IPV4);
-    }
-
-    // TODO: Pendiente por sin integrado en Validator
-    /**
-     * Validate that the String is an ip with ipv6 format.
-     * @param evaluate String to evaluate.
-     * @return true if it meets the condition.
-     */
-    public static boolean ipv6(String evaluate) {
-        return regExp(evaluate, IPV6);
-    }
-
-    // TODO: Pendiente por sin integrado en Validator
-    /**
-     * Validate that the String is a time format.
-     * @param evaluate String to evaluate.
-     * @return true if it meets the condition.
-     */
-    public static boolean time(String evaluate) {
-        return regExp(evaluate, TIME);
-    }
-
-    // TODO: Pendiente por sin integrado en Validator
-    /**
-     * Validate that the String is a time with 12 hours format.
-     * @param evaluate String to evaluate.
-     * @return true if it meets the condition.
-     */
-    public static boolean time12(String evaluate) {
-        return regExp(evaluate, TIME12);
-    }
-
-    // TODO: Pendiente por sin integrado en Validator
-    /**
-     * Validate that the String is a time with 24 hours format.
-     * @param evaluate String to evaluate.
-     * @return true if it meets the condition.
-     */
-    public static boolean time24(String evaluate) {
-        return regExp(evaluate, TIME24);
-    }
-
-    // TODO:
-    //  - Aclarar que es genérico
-    //  - Realizar pruebas
-    public static boolean phone(String evaluate) {
-        return regExp(evaluate, PHONE);
-    }
-
-    /**
-     * Validate that the String contains only numeric characters.
-     * @param evaluate String to evaluate.
-     * @return true if it meets the condition.
-     */
-    public static boolean onlyNumbers(String evaluate) {
-        return regExp(evaluate, NUMBERS);
-    }
-
-    // TODO: Pendiente por sin integrado en Validator
-    /**
-     * Validate that the String contains only alphabetic characters.
-     * @param evaluate String to evaluate.
-     * @return true if it meets the condition.
-     */
-    public static boolean onlyCharacters(String evaluate) {
-        return regExp(evaluate, ALPHABET);
-    }
-
-    // TODO: Pendiente por sin integrado en Validator
-    /**
-     * Validate that the String contains only alphanumeric characters.
-     * @param evaluate String to evaluate.
-     * @return true if it meets the condition.
-     */
-    public static boolean onlyAlphanumeric(String evaluate) {
-        return regExp(evaluate, ALPHA_NUMERIC);
-    }
+    //<editor-fold desc="CONTENT VALIDATIONS">
 
     /**
      * Validate that the String only contains characters included in the condition.
@@ -228,6 +135,15 @@ public class Validators {
             if (!condition.contains(String.valueOf(a))) return false;
         }
         return true;
+    }
+
+    /**
+     * Validate that the String contains only numeric characters.
+     * @param evaluate String to evaluate.
+     * @return true if it meets the condition.
+     */
+    public static boolean onlyNumbers(String evaluate) {
+        return regExp(evaluate, NUMBERS);
     }
 
     /**
@@ -259,6 +175,17 @@ public class Validators {
     }
 
     /**
+     * Validate that the value of the String is not greater than the condition.
+     * @param evaluate String to evaluate.
+     * @param condition Maximum value.
+     * @return true if it meets the condition.
+     */
+    public static boolean max(String evaluate, double condition) {
+        if (!required(evaluate) || !number(evaluate)) return false;
+        return parseDouble(evaluate)>condition;
+    }
+
+    /**
      * Validate that the value of the String is not less than the condition.
      * @param evaluate String to evaluate.
      * @param condition Minimum value.
@@ -269,15 +196,190 @@ public class Validators {
         return parseDouble(evaluate)<condition;
     }
 
+    //</editor-fold>
+
+    // TODO:
+    //  - Description
+    //  - Validators test
+    //  - Messages
+    //  - add Rule
+    //  - add Rule builder
+    //  - Rule description
+    //  - Rule test
+    public static boolean dateFormat(String evaluate, String format) {
+        final SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.getDefault());
+        sdf.setLenient(false);
+        try {
+            sdf.parse(evaluate);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    // TODO:
+    //  - Description
+    //  - Validators test
+    //  - Messages
+    //  - add Rule
+    //  - add Rule builder
+    //  - Rule description
+    //  - Rule test
     /**
-     * Validate that the value of the String is not greater than the condition.
+     * Validate that the String is a link with http format.
      * @param evaluate String to evaluate.
-     * @param condition Maximum value.
      * @return true if it meets the condition.
      */
-    public static boolean max(String evaluate, double condition) {
-        if (!required(evaluate) || !number(evaluate)) return false;
-        return parseDouble(evaluate)>condition;
+    public static boolean httpsLink(String evaluate) {
+        return regExp(evaluate, HTTPS_LINK);
+    }
+
+    // TODO:
+    //  - Description
+    //  - Validators test
+    //  - Messages
+    //  - add Rule
+    //  - add Rule builder
+    //  - Rule description
+    //  - Rule test
+    /**
+     * Validate that the String is an ip format.
+     * @param evaluate String to evaluate.
+     * @return true if it meets the condition.
+     */
+    public static boolean ip(String evaluate) {
+        return regExp(evaluate, IP);
+    }
+
+    // TODO:
+    //  - Description
+    //  - Validators test
+    //  - Messages
+    //  - add Rule
+    //  - add Rule builder
+    //  - Rule description
+    //  - Rule test
+    /**
+     * Validate that the String is an ip with ipv4 format.
+     * @param evaluate String to evaluate.
+     * @return true if it meets the condition.
+     */
+    public static boolean ipv4(String evaluate) {
+        return regExp(evaluate, IPV4);
+    }
+
+    // TODO:
+    //  - Description
+    //  - Validators test
+    //  - Messages
+    //  - add Rule
+    //  - add Rule builder
+    //  - Rule description
+    //  - Rule test
+    /**
+     * Validate that the String is an ip with ipv6 format.
+     * @param evaluate String to evaluate.
+     * @return true if it meets the condition.
+     */
+    public static boolean ipv6(String evaluate) {
+        return regExp(evaluate, IPV6);
+    }
+
+    // TODO:
+    //  - Description
+    //  - Validators test
+    //  - Messages
+    //  - add Rule
+    //  - add Rule builder
+    //  - Rule description
+    //  - Rule test
+    /**
+     * Validate that the String is a time format.
+     * @param evaluate String to evaluate.
+     * @return true if it meets the condition.
+     */
+    public static boolean time(String evaluate) {
+        return regExp(evaluate, TIME);
+    }
+
+    // TODO:
+    //  - Description
+    //  - Validators test
+    //  - Messages
+    //  - add Rule
+    //  - add Rule builder
+    //  - Rule description
+    //  - Rule test
+    /**
+     * Validate that the String is a time with 12 hours format.
+     * @param evaluate String to evaluate.
+     * @return true if it meets the condition.
+     */
+    public static boolean time12(String evaluate) {
+        return regExp(evaluate, TIME12);
+    }
+
+    // TODO:
+    //  - Description
+    //  - Validators test
+    //  - Messages
+    //  - add Rule
+    //  - add Rule builder
+    //  - Rule description
+    //  - Rule test
+    /**
+     * Validate that the String is a time with 24 hours format.
+     * @param evaluate String to evaluate.
+     * @return true if it meets the condition.
+     */
+    public static boolean time24(String evaluate) {
+        return regExp(evaluate, TIME24);
+    }
+
+    // TODO:
+    //  - Description
+    //  - Validators test
+    //  - Messages
+    //  - add Rule
+    //  - add Rule builder
+    //  - Rule description
+    //  - Rule test
+    public static boolean phone(String evaluate) {
+        return regExp(evaluate, PHONE);
+    }
+
+    // TODO:
+    //  - Description
+    //  - Validators test
+    //  - Messages
+    //  - add Rule
+    //  - add Rule builder
+    //  - Rule description
+    //  - Rule test
+    /**
+     * Validate that the String contains only alphabetic characters.
+     * @param evaluate String to evaluate.
+     * @return true if it meets the condition.
+     */
+    public static boolean onlyCharacters(String evaluate) {
+        return regExp(evaluate, ALPHABET);
+    }
+
+    // TODO:
+    //  - Description
+    //  - Validators test
+    //  - Messages
+    //  - add Rule
+    //  - add Rule builder
+    //  - Rule description
+    //  - Rule test
+    /**
+     * Validate that the String contains only alphanumeric characters.
+     * @param evaluate String to evaluate.
+     * @return true if it meets the condition.
+     */
+    public static boolean onlyAlphanumeric(String evaluate) {
+        return regExp(evaluate, ALPHA_NUMERIC);
     }
 
 }

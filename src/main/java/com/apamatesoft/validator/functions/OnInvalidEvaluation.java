@@ -1,6 +1,6 @@
 package com.apamatesoft.validator.functions;
 
 @FunctionalInterface
-public interface NotPass {
+public interface OnInvalidEvaluation {
     void invoke(String message);
 }

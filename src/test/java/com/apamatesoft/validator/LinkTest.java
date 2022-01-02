@@ -6,28 +6,26 @@ import com.apamatesoft.validator.messages.MessagesEn;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static com.apamatesoft.validator.constants.Constants.OCT;
-import static java.lang.String.format;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-public class ValidatorNotContainTest {
+public class LinkTest {
 
-    private static final String CONDITION = OCT;
-    private static final String[] NOT_PERMIT = { null, "", "0", "1", "2", "3", "4", "5", "6", "7", "text4" };
-    private static final String[] PERMIT = { "89", "text", "@nic89" };
-    private static final String MESSAGES = format(new MessagesEn().getNotContainMessage(), CONDITION);
+    private static final String[] NOT_PERMIT = { null, "", "google.com", "text", "a1", "1a", "12345,6789", "123.456.789" };
+    private static final String[] PERMIT = { "www.google.com", "http://google.com", "https://google.com", "http://google.com/api/auth?name=Name&lastName=LastName" };
+    private static final String MESSAGES = new MessagesEn().getLinkMessage();
 
     private Validator validator, builder;
 
     @BeforeEach
     void before() {
         validator = new Validator();
-        validator.notContain(CONDITION);
+        validator.link();
 
         builder = new Validator.Builder()
-                .notContain(CONDITION)
+                .link()
                 .build();
 
     }
@@ -39,7 +37,7 @@ public class ValidatorNotContainTest {
                 fail();
                 break;
             }
-        assertFalse(false);
+        assertTrue(true);
     }
 
     @Test
@@ -59,7 +57,7 @@ public class ValidatorNotContainTest {
                 fail();
                 break;
             }
-        assertFalse(false);
+        assertTrue(true);
     }
 
     @Test
@@ -77,7 +75,7 @@ public class ValidatorNotContainTest {
         OnInvalidEvaluation onInvalidEvaluation = mock(OnInvalidEvaluation.class);
         validator.onInvalidEvaluation(onInvalidEvaluation);
         validator.isValid(null);
-        verify(onInvalidEvaluation).invoke(MESSAGES);
+        verify(onInvalidEvaluation).invoke( MESSAGES );
     }
 
     @Test
@@ -85,7 +83,7 @@ public class ValidatorNotContainTest {
         OnInvalidEvaluation onInvalidEvaluation = mock(OnInvalidEvaluation.class);
         builder.onInvalidEvaluation(onInvalidEvaluation);
         builder.isValid(null);
-        verify(onInvalidEvaluation).invoke(MESSAGES);
+        verify(onInvalidEvaluation).invoke( MESSAGES );
     }
 
     @Test
