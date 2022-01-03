@@ -132,4 +132,9 @@ public class MessagesEs implements Messages {
         return "El valor no coincide con el patrón %s";
     }
 
+    @Override
+    public String getNumberPatternMessage() {
+        return "No coincide con el patrón %s";
+    }
+
 }

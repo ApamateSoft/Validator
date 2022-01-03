@@ -13,7 +13,6 @@
 //  - password(low, medium, hard)?,
 //  - onlyNumbers,
 //  - onlyAlphabet]
-//  - Number template
 package com.apamatesoft.validator;
 
 import com.apamatesoft.validator.constants.Validators;
@@ -23,6 +22,7 @@ import com.apamatesoft.validator.messages.MessagesEn;
 import com.apamatesoft.validator.functions.OnInvalidEvaluation;
 import com.apamatesoft.validator.functions.Validate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static java.lang.String.format;
@@ -61,6 +61,10 @@ public class Validator implements Cloneable {
     public static void setMessages(Messages messages) {
         if (messages==null) return;
         Validator.messages = messages;
+    }
+
+    public static Messages getMessages() {
+        return messages;
     }
 
     /**
@@ -167,6 +171,15 @@ public class Validator implements Cloneable {
      */
     public void rule(String message, Validate validate) {
         rules.add(new Rule(message, validate));
+    }
+
+    /**
+     * Validate that the value passes at least one of the validators
+     * @param message Error message.
+     * @param validators Validators.
+     */
+    public void any(String message, Validate... validators) {
+        rule(message, it -> Arrays.stream(validators).anyMatch( validate -> validate.invoke(it) ) );
     }
 
     //<editor-fold desc="LENGTH RULES">
@@ -350,6 +363,45 @@ public class Validator implements Cloneable {
      */
     public void httpLink() {
         httpLink(messages.getHttpLinkMessage());
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="numberPattern">
+    /**
+     * Evaluate that the text matches the pattern, replacing the x's with numbers.
+     * <br/> <br/>
+     * <b>Example:</b>
+     * <br/>
+     * For the pattern +xx (xxx) xxx-xx-xx, the following Strings are valid:
+     * <ul>
+     *     <li>+12 (345) 678-90-12</li>
+     *     <li>+11 (111) 111-11-11</li>
+     *     <li>+xx (345) 678-90-12</li>
+     *     <li>+xx (xxx) xxx-xx-xx</li>
+     * <ul/>
+     * @param pattern String with the pattern.
+     * @param message Error message.
+     */
+    public void numberPattern(String pattern, String message) {
+        rule(format(message, pattern), it -> Validators.numberPattern(it, pattern) );
+    }
+
+    /**
+     * Evaluate that the text matches the pattern, replacing the x's with numbers.
+     * <br/> <br/>
+     * <b>Example:</b>
+     * <br/>
+     * For the pattern +xx (xxx) xxx-xx-xx, the following Strings are valid:
+     * <ul>
+     *     <li>+12 (345) 678-90-12</li>
+     *     <li>+11 (111) 111-11-11</li>
+     *     <li>+xx (345) 678-90-12</li>
+     *     <li>+xx (xxx) xxx-xx-xx</li>
+     * <ul/>
+     * @param pattern String with the pattern.
+     */
+    public void numberPattern(String pattern) {
+        numberPattern(pattern, messages.getNumberPatternMessage());
     }
     //</editor-fold>
 
@@ -540,6 +592,16 @@ public class Validator implements Cloneable {
         public Builder rule(String message, Validate validate) {
             rules.add(new Rule(message, validate));
             return this;
+        }
+
+        /**
+         * Validate that the value passes at least one of the validators.
+         * @param message Error message.
+         * @param validators Validators.
+         * @return Builder
+         */
+        public Builder any(String message, Validate... validators) {
+            return rule(message, it -> Arrays.stream(validators).anyMatch( validate -> validate.invoke(it) ) );
         }
 
         //<editor-fold desc="LENGTH RULES">
@@ -743,6 +805,47 @@ public class Validator implements Cloneable {
          */
         public Builder httpLink() {
             return httpLink(messages.getHttpLinkMessage());
+        }
+        //</editor-fold>
+
+        //<editor-fold desc="numberPattern">
+        /**
+         * Evaluate that the text matches the pattern, replacing the x's with numbers.
+         * <br/> <br/>
+         * <b>Example:</b>
+         * <br/>
+         * For the pattern +xx (xxx) xxx-xx-xx, the following Strings are valid:
+         * <ul>
+         *     <li>+12 (345) 678-90-12</li>
+         *     <li>+11 (111) 111-11-11</li>
+         *     <li>+xx (345) 678-90-12</li>
+         *     <li>+xx (xxx) xxx-xx-xx</li>
+         * <ul/>
+         * @param pattern String with the pattern.
+         * @param message Error message.
+         * @return Builder
+         */
+        public Builder numberPattern(String pattern, String message) {
+            return rule(format(message, pattern), it -> Validators.numberPattern(it, pattern) );
+        }
+
+        /**
+         * Evaluate that the text matches the pattern, replacing the x's with numbers.
+         * <br/> <br/>
+         * <b>Example:</b>
+         * <br/>
+         * For the pattern +xx (xxx) xxx-xx-xx, the following Strings are valid:
+         * <ul>
+         *     <li>+12 (345) 678-90-12</li>
+         *     <li>+11 (111) 111-11-11</li>
+         *     <li>+xx (345) 678-90-12</li>
+         *     <li>+xx (xxx) xxx-xx-xx</li>
+         * <ul/>
+         * @param pattern String with the pattern.
+         * @return Builder
+         */
+        public Builder numberPattern(String pattern) {
+            return numberPattern(pattern, messages.getNumberPatternMessage());
         }
         //</editor-fold>
 

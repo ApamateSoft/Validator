@@ -27,4 +27,5 @@ public interface Messages {
     String getMustContainOneMessage();
     String getMinMessage();
     String getMaxMessage();
+    String getNumberPatternMessage();
 }

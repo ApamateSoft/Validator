@@ -107,9 +107,6 @@ public class Validators {
     }
 
     // TODO:
-    //  - add Rule
-    //  - add Rule builder
-    //  - Rule description
     //  - Rule test
     /**
      * Validate that the String is a link with http format.
@@ -119,6 +116,40 @@ public class Validators {
     public static boolean httpLink(String evaluate) {
         return regExp(evaluate, HTTP_LINK);
     }
+
+    /**
+     * Evaluate that the text matches the pattern, replacing the x's with numbers.
+     * <br/> <br/>
+     * <b>Example:</b>
+     * <br/>
+     * For the pattern +xx (xxx) xxx-xx-xx, the following Strings are valid:
+     * <ul>
+     *     <li>+12 (345) 678-90-12</li>
+     *     <li>+11 (111) 111-11-11</li>
+     *     <li>+xx (345) 678-90-12</li>
+     *     <li>+xx (xxx) xxx-xx-xx</li>
+     * <ul/>
+     * @param evaluate String to evaluate.
+     * @param pattern String with the pattern.
+     * @return true if it meets the condition.
+     */
+    public static boolean numberPattern(String evaluate, String pattern) {
+        if (evaluate==null || pattern==null) return false;
+        if (evaluate.length()!=pattern.length()) return false;
+        for (int i = 0; i < pattern.length(); i++) {
+            char patternChar = pattern.charAt(i);
+            char evaluateChar = evaluate.charAt(i);
+            if (patternChar=='x' || patternChar == 'X') {
+                if (!onlyNumbers( String.valueOf(evaluateChar)) )
+                    if (patternChar!=evaluateChar)
+                        return false;
+            } else {
+                if (patternChar!=evaluateChar) return false;
+            }
+        }
+        return true;
+    }
+
     //</editor-fold>
 
     //<editor-fold desc="CONTENT VALIDATIONS">

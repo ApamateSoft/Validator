@@ -132,4 +132,9 @@ public class MessagesEn implements Messages {
         return "Value does not match pattern %s";
     }
 
+    @Override
+    public String getNumberPatternMessage() {
+        return "Does not match pattern %s";
+    }
+
 }
