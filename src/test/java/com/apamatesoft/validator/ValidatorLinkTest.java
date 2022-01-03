@@ -11,21 +11,21 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-public class WwwLinkTest {
+public class ValidatorLinkTest {
 
-    private static final String[] NOT_PERMIT = { null, "", "google.com", "http://google.com", "https://google.com" };
-    private static final String[] PERMIT = { "www.google.com", "www.google.com/api/auth?name=Name&lastName=LastName" };
-    private static final String MESSAGES = new MessagesEn().getWwwLinkMessage();
+    private static final String[] NOT_PERMIT = { null, "", "google.com", "text", "a1", "1a", "12345,6789", "123.456.789" };
+    private static final String[] PERMIT = { "www.google.com", "http://google.com", "https://google.com", "http://google.com/api/auth?name=Name&lastName=LastName" };
+    private static final String MESSAGES = new MessagesEn().getLinkMessage();
 
     private Validator validator, builder;
 
     @BeforeEach
     void before() {
         validator = new Validator();
-        validator.wwwLink();
+        validator.link();
 
         builder = new Validator.Builder()
-                .wwwLink()
+                .link()
                 .build();
 
     }
@@ -34,7 +34,6 @@ public class WwwLinkTest {
     void notPermit() {
         for (String s : NOT_PERMIT)
             if (validator.isValid(s)) {
-                System.out.println(">>: s: "+s);
                 fail();
                 break;
             }

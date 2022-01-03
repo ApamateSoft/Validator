@@ -106,8 +106,6 @@ public class Validators {
         return regExp(evaluate, WWW_LINK);
     }
 
-    // TODO:
-    //  - Rule test
     /**
      * Validate that the String is a link with http format.
      * @param evaluate String to evaluate.
@@ -211,7 +209,7 @@ public class Validators {
      * @param condition Maximum value.
      * @return true if it meets the condition.
      */
-    public static boolean max(String evaluate, double condition) {
+    public static boolean maxValue(String evaluate, double condition) {
         if (!required(evaluate) || !number(evaluate)) return false;
         return parseDouble(evaluate)>condition;
     }
@@ -222,7 +220,7 @@ public class Validators {
      * @param condition Minimum value.
      * @return true if it meets the condition.
      */
-    public static boolean min(String evaluate, double condition) {
+    public static boolean minValue(String evaluate, double condition) {
         if (!required(evaluate) || !number(evaluate)) return false;
         return parseDouble(evaluate)<condition;
     }
@@ -230,13 +228,14 @@ public class Validators {
     //</editor-fold>
 
     // TODO:
-    //  - Description
-    //  - Validators test
-    //  - Messages
-    //  - add Rule
-    //  - add Rule builder
-    //  - Rule description
     //  - Rule test
+
+    /**
+     * Validates that the text to evaluate matches the specified date format.
+     * @param evaluate String to evaluate.
+     * @param format Describing the date and time format.
+     * @return true if it meets the condition.
+     */
     public static boolean dateFormat(String evaluate, String format) {
         final SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.getDefault());
         sdf.setLenient(false);

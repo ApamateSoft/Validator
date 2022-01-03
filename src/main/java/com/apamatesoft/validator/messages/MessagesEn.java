@@ -118,12 +118,12 @@ public class MessagesEn implements Messages {
     }
 
     @Override
-    public String getMaxMessage() {
+    public String getMaxValueMessage() {
         return "The value cannot be greater than %1$.2f";
     }
 
     @Override
-    public String getMinMessage() {
+    public String getMinValueMessage() {
         return "The value cannot be less than %1$.2f";
     }
 
@@ -135,6 +135,11 @@ public class MessagesEn implements Messages {
     @Override
     public String getNumberPatternMessage() {
         return "Does not match pattern %s";
+    }
+
+    @Override
+    public String getDateFormatMessage() {
+        return "It does not match the specified date format %s.";
     }
 
 }

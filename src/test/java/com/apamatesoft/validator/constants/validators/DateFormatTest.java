@@ -12,8 +12,7 @@ public class DateFormatTest {
     @Test
     void notPermit() {
         final String[] strings = { null, "", "example", "", "21091991", "21-09-1991", "1991/09/21", "09/21/1991" };
-        final boolean b = Arrays.stream(strings)
-                .anyMatch( it -> dateFormat(it, "dd/MM/yyyy") );
+        final boolean b = Arrays.stream(strings).anyMatch( it -> dateFormat(it, "dd/MM/yyyy") );
         assertFalse(b);
     }
 

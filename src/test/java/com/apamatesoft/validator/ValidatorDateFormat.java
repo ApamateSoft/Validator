@@ -5,27 +5,29 @@ import com.apamatesoft.validator.functions.OnInvalidEvaluation;
 import com.apamatesoft.validator.messages.MessagesEn;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import static java.lang.String.format;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-public class ValidatorMinTest {
+public class ValidatorDateFormat {
 
-    private static final double CONDITION = 2.5;
-    private static final String[] NOT_PERMIT = { null, "", "text", "2.5", "2.51", "2,00" };
-    private static final String[] PERMIT = { "2.49", "-1.01", "1", "0" };
-    private static final String MESSAGES = format(new MessagesEn().getMinMessage(), CONDITION);
+    private static final String[] NOT_PERMIT = { null, "", "example", "", "21091991", "21-09-1991", "1991/09/21", "09/21/1991" };
+    private static final String[] PERMIT = { "21/08/1991" };
+    private static final String FORMAT = "dd/MM/yyyy";
+    private static final String MESSAGES = format(new MessagesEn().getDateFormatMessage(), FORMAT);
 
     private Validator validator, builder;
 
     @BeforeEach
     void before() {
         validator = new Validator();
-        validator.min(CONDITION);
+        validator.dateFormat(FORMAT);
 
         builder = new Validator.Builder()
-                .min(CONDITION)
+                .dateFormat(FORMAT)
                 .build();
 
     }
@@ -37,7 +39,7 @@ public class ValidatorMinTest {
                 fail();
                 break;
             }
-        assertFalse(false);
+        assertTrue(true);
     }
 
     @Test
@@ -57,7 +59,7 @@ public class ValidatorMinTest {
                 fail();
                 break;
             }
-        assertFalse(false);
+        assertTrue(true);
     }
 
     @Test
@@ -75,7 +77,7 @@ public class ValidatorMinTest {
         OnInvalidEvaluation onInvalidEvaluation = mock(OnInvalidEvaluation.class);
         validator.onInvalidEvaluation(onInvalidEvaluation);
         validator.isValid(null);
-        verify(onInvalidEvaluation).invoke(MESSAGES);
+        verify(onInvalidEvaluation).invoke( MESSAGES );
     }
 
     @Test
@@ -83,7 +85,7 @@ public class ValidatorMinTest {
         OnInvalidEvaluation onInvalidEvaluation = mock(OnInvalidEvaluation.class);
         builder.onInvalidEvaluation(onInvalidEvaluation);
         builder.isValid(null);
-        verify(onInvalidEvaluation).invoke(MESSAGES);
+        verify(onInvalidEvaluation).invoke( MESSAGES );
     }
 
     @Test

@@ -12,22 +12,22 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-public class ValidatorMaxTest {
+public class ValidatorMaxValueTest {
 
     private static final double CONDITION = 2.5;
     private static final String[] NOT_PERMIT = { null, "", "2.5", "1,2", "-2.6", "text" };
     private static final String[] PERMIT = { "2.51", "30", "91" };
-    private static final String MESSAGES = format(new MessagesEn().getMaxMessage(), CONDITION);
+    private static final String MESSAGES = format(new MessagesEn().getMaxValueMessage(), CONDITION);
 
     private Validator validator, builder;
 
     @BeforeEach
     void before() {
         validator = new Validator();
-        validator.max(CONDITION);
+        validator.maxValue(CONDITION);
 
         builder = new Validator.Builder()
-                .max(CONDITION)
+                .maxValue(CONDITION)
                 .build();
 
     }

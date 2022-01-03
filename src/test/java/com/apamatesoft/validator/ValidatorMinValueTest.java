@@ -5,29 +5,27 @@ import com.apamatesoft.validator.functions.OnInvalidEvaluation;
 import com.apamatesoft.validator.messages.MessagesEn;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import static java.lang.String.format;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-public class NumberPatternTest {
+public class ValidatorMinValueTest {
 
-    private static final String[] NOT_PERMIT = { null, "", "example", "128", "+58 (412) 756-41-79 ", " +58 (412) 756-41-79", "+a8 (412) 756-41-79" };
-    private static final String[] PERMIT = {"+12 (345) 678-90-12", "+11 (111) 111-11-11", "+xx (345) 678-90-12", "+xx (xxx) xxx-xx-xx" };
-    private static final String PATTERN = "+xx (xxx) xxx-xx-xx";
-    private static final String MESSAGES = format(new MessagesEn().getNumberPatternMessage(), PATTERN);
+    private static final double CONDITION = 2.5;
+    private static final String[] NOT_PERMIT = { null, "", "text", "2.5", "2.51", "2,00" };
+    private static final String[] PERMIT = { "2.49", "-1.01", "1", "0" };
+    private static final String MESSAGES = format(new MessagesEn().getMinValueMessage(), CONDITION);
 
     private Validator validator, builder;
 
     @BeforeEach
     void before() {
         validator = new Validator();
-        validator.numberPattern(PATTERN);
+        validator.minValue(CONDITION);
 
         builder = new Validator.Builder()
-                .numberPattern(PATTERN)
+                .minValue(CONDITION)
                 .build();
 
     }
@@ -36,11 +34,10 @@ public class NumberPatternTest {
     void notPermit() {
         for (String s : NOT_PERMIT)
             if (validator.isValid(s)) {
-                System.out.println(">>: s: "+s);
                 fail();
                 break;
             }
-        assertTrue(true);
+        assertFalse(false);
     }
 
     @Test
@@ -60,7 +57,7 @@ public class NumberPatternTest {
                 fail();
                 break;
             }
-        assertTrue(true);
+        assertFalse(false);
     }
 
     @Test
@@ -78,7 +75,7 @@ public class NumberPatternTest {
         OnInvalidEvaluation onInvalidEvaluation = mock(OnInvalidEvaluation.class);
         validator.onInvalidEvaluation(onInvalidEvaluation);
         validator.isValid(null);
-        verify(onInvalidEvaluation).invoke( MESSAGES );
+        verify(onInvalidEvaluation).invoke(MESSAGES);
     }
 
     @Test
@@ -86,7 +83,7 @@ public class NumberPatternTest {
         OnInvalidEvaluation onInvalidEvaluation = mock(OnInvalidEvaluation.class);
         builder.onInvalidEvaluation(onInvalidEvaluation);
         builder.isValid(null);
-        verify(onInvalidEvaluation).invoke( MESSAGES );
+        verify(onInvalidEvaluation).invoke(MESSAGES);
     }
 
     @Test

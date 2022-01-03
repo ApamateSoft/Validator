@@ -7,7 +7,7 @@ import static com.apamatesoft.validator.constants.Validators.length;
 import static org.junit.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class AnyTest {
+public class ValidatorAnyTest {
 
     private final static Validator validator = new Validator.Builder()
             .any(
