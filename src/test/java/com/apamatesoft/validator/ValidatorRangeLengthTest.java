@@ -5,29 +5,31 @@ import com.apamatesoft.validator.functions.OnInvalidEvaluation;
 import com.apamatesoft.validator.messages.MessagesEn;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import static java.lang.String.format;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-public class ValidatorMaxLengthTest {
+public class ValidatorRangeLengthTest {
 
-    private static final int CONDITION = 3;
-    private static final String[] NOT_PERMIT = { null, "", "1234" };
-    private static final String[] PERMIT = { "1", "12", "123" };
-    private static final String MESSAGES = format(new MessagesEn().getMaxLengthMessage(), CONDITION);
+    private static final int MIN = 3;
+    private static final int MAX = 5;
+    private static final String[] NOT_PERMIT = { null, "", "12", "123456" };
+    private static final String[] PERMIT = { "123", "1234" ,"12345" };
+    private static final String MESSAGES = format(new MessagesEn().getRangeLengthMessage(), MIN, MAX);
 
     private Validator validator, builder;
 
     @BeforeEach
     void before() {
         validator = new Validator();
-        validator.maxLength(CONDITION);
+        validator.rangeLength(MIN, MAX);
 
         builder = new Validator.Builder()
-                .maxLength(CONDITION)
-                .build();
+            .rangeLength(MIN, MAX)
+            .build();
 
     }
 

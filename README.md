@@ -34,20 +34,28 @@ implementation group: 'io.github.ApamateSoft', name: 'Validator', version: '1.1.
 ## Getting started
 
 ```java
-// Instantiating a new validator
-Validator validator = new Validator();
+import com.apamatesoft.validator.Validator;
 
-// 1º rule: it will only be approved if the String to evaluate is different from null, otherwise it will show the 
-// message "Enter a text other than null"
-validator.rule("Enter a text other than null", (String evaluate) -> {
-    return evaluate!=null;
-} );
+public class Example {
 
-// 2º rule: it will only be approved if the String to evaluate is equal to "xxx", otherwise it will show the message 
-// "The text is different from 'xxx'"
-validator.rule("The text is different from 'xxx'", (String evaluate) -> {
-    return evaluate.equals("xxx");
-} );
+  // Instantiating a new validator
+  private Validator validator = new Validator();
+  
+    public Example() {
+      // 1º rule: it will only be approved if the String to evaluate is different from null, otherwise it will show the 
+      // message "Enter a text other than null"
+      validator.rule("Enter a text other than null", (String evaluate) -> {
+        return evaluate!=null;
+      } );
+      
+      // 2º rule: it will only be approved if the String to evaluate is equal to "xxx", otherwise it will show the message 
+      // "The text is different from 'xxx'"
+      validator.rule("The text is different from 'xxx'", (String evaluate) -> {
+        return evaluate.equals("xxx");
+      } );
+    }
+    
+}
 ```
 
 ##### Note:
@@ -61,10 +69,18 @@ validator.rule("The text is different from 'xxx'", (String evaluate) -> {
 You can create a Validator instance using `.Builder()`.
 
 ```java
-Validator validator = new Validator.Builder()
+import com.apamatesoft.validator.Validator;
+
+public class Example {
+
+  // Instantiating a new validator with builder
+  private Validator validator = new Validator.Builder()
     .rule("Enter a text other than null", Objects::nonNull)
     .rule("The text is different from 'xxx'", evaluate -> evaluate.equals("xxx"))
     .build();
+  
+}
+
 ```
 
 ### Validating a String

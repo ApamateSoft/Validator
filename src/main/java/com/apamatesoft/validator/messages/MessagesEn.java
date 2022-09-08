@@ -28,6 +28,11 @@ public class MessagesEn implements Messages {
     }
 
     @Override
+    public String getRangeLengthMessage() {
+        return "The text must contain between %d to %d characters";
+    }
+
+    @Override
     public String getEmailMessage() {
         return "Email invalid";
     }

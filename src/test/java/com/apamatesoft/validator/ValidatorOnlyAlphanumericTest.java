@@ -5,70 +5,51 @@ import com.apamatesoft.validator.functions.OnInvalidEvaluation;
 import com.apamatesoft.validator.messages.MessagesEn;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static java.lang.String.format;
+
+import static com.apamatesoft.validator.constants.Constants.ALPHA_NUMERIC;
+import static java.util.Arrays.stream;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-public class ValidatorMaxLengthTest {
+public class ValidatorOnlyAlphanumericTest {
 
-    private static final int CONDITION = 3;
-    private static final String[] NOT_PERMIT = { null, "", "1234" };
-    private static final String[] PERMIT = { "1", "12", "123" };
-    private static final String MESSAGES = format(new MessagesEn().getMaxLengthMessage(), CONDITION);
+    private static final String[] NOT_PERMIT = { null, "", "-", "a*", ">text", "a-", "-1.61", "$10,320.00", "a b" };
+    private static final String[] PERMIT = { ALPHA_NUMERIC };
+    private static final String MESSAGES = new MessagesEn().getOnlyAlphanumericMessage();
 
     private Validator validator, builder;
 
     @BeforeEach
     void before() {
         validator = new Validator();
-        validator.maxLength(CONDITION);
+        validator.onlyAlphanumeric();
 
         builder = new Validator.Builder()
-                .maxLength(CONDITION)
-                .build();
+            .onlyAlphanumeric()
+            .build();
 
     }
 
     @Test
     void notPermit() {
-        for (String s : NOT_PERMIT)
-            if (validator.isValid(s)) {
-                fail();
-                break;
-            }
-        assertFalse(false);
+        assertFalse(stream(NOT_PERMIT).anyMatch(validator::isValid));
     }
 
     @Test
     void permit() {
-        for (String string : PERMIT)
-            if (!validator.isValid(string)) {
-                fail();
-                break;
-            }
-        assertTrue(true);
+        assertTrue(stream(PERMIT).allMatch(validator::isValid));
     }
 
     @Test
     void notPermit_Builder() {
-        for (String s : NOT_PERMIT)
-            if (builder.isValid(s)) {
-                fail();
-                break;
-            }
-        assertFalse(false);
+        assertFalse(stream(NOT_PERMIT).anyMatch(builder::isValid));
     }
 
     @Test
     void permit_Builder() {
-        for (String string : PERMIT)
-            if (!builder.isValid(string)) {
-                fail();
-                break;
-            }
-        assertTrue(true);
+        assertTrue(stream(PERMIT).allMatch(builder::isValid));
     }
 
     @Test

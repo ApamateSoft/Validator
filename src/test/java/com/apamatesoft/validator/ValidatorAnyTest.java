@@ -29,5 +29,4 @@ public class ValidatorAnyTest {
         assertFalse(validator.isValid(evaluate));
     }
 
-
 }

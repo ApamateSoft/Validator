@@ -6,6 +6,7 @@ public interface Messages {
     String getLengthMessage();
     String getMinLengthMessage();
     String getMaxLengthMessage();
+    String getRangeLengthMessage();
     String getRegExpMessage();
     String getEmailMessage();
     String getNumberMessage();

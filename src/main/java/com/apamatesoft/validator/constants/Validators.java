@@ -6,10 +6,9 @@ import static com.apamatesoft.validator.constants.RegularExpression.*;
 import static java.lang.Double.parseDouble;
 import static java.util.regex.Pattern.compile;
 
-// TODO: Date, Cambiar de paquete
 public class Validators {
 
-    //<editor-fold desc="LENGTH VALIDATORS">
+    //<editor-fold default-state="collapsed" desc="LENGTH VALIDATORS">
 
     /**
      * Validate that the String is different from null and empty.
@@ -54,9 +53,20 @@ public class Validators {
         return evaluate.length()<=condition;
     }
 
-    //</editor-fold>
+    /**
+     * valid that the length of the String is between the minimum and the maximum.
+     * @param evaluate String to evaluate.
+     * @param min Minimum character length.
+     * @param max Maximum character length.
+     * @return true if it meets the condition.
+     */
+    public static boolean rangeLength(String evaluate, int min, int max) {
+        if (!required(evaluate)) return false;
+        return (evaluate.length() >= min) && (evaluate.length() <= max);
+    }
+    //</editor-fold default-state="collapsed">
 
-    //<editor-fold desc="FORMAT VALIDATION">
+    //<editor-fold default-state="collapsed" desc="FORMAT VALIDATION">
 
     /**
      * Validate that the String matches the regular expression.
@@ -123,7 +133,6 @@ public class Validators {
      * For the pattern +xx (xxx) xxx-xx-xx, the following Strings are valid:
      * <ul>
      *     <li>+12 (345) 678-90-12</li>
-     *     <li>+11 (111) 111-11-11</li>
      *     <li>+xx (345) 678-90-12</li>
      *     <li>+xx (xxx) xxx-xx-xx</li>
      * <ul/>
@@ -148,9 +157,9 @@ public class Validators {
         return true;
     }
 
-    //</editor-fold>
+    //</editor-fold default-state="collapsed">
 
-    //<editor-fold desc="CONTENT VALIDATIONS">
+    //<editor-fold default-state="collapsed" desc="CONTENT VALIDATIONS">
 
     /**
      * Validate that the String only contains characters included in the condition.
@@ -225,15 +234,19 @@ public class Validators {
         return parseDouble(evaluate)<condition;
     }
 
+    /**
+     * Validates that the value of the string is in the established range.
+     * @param evaluate String to evaluate.
+     * @param min minimum value.
+     * @param max maximum value
+     * @return true if it meets the condition.
+     */
     public static boolean rangeValue(String evaluate, double min, double max) {
         if (!required(evaluate) || !number(evaluate)) return false;
         double value = parseDouble(evaluate);
-        return (value >= min) && (value<=max);
+        return (value >= min) && (value <= max);
     }
-    //</editor-fold>
-
-    // TODO:
-    //  - Rule test
+    //</editor-fold default-state="collapsed">
 
     /**
      * Validates that the text to evaluate matches the specified date format.
@@ -252,16 +265,8 @@ public class Validators {
         }
     }
 
-    // TODO:
-    //  - Description
-    //  - Validators test
-    //  - Messages
-    //  - add Rule
-    //  - add Rule builder
-    //  - Rule description
-    //  - Rule test
     /**
-     * Validate that the String is a link with http format.
+     * Validate that the String is a link with https format.
      * @param evaluate String to evaluate.
      * @return true if it meets the condition.
      */
@@ -269,14 +274,6 @@ public class Validators {
         return regExp(evaluate, HTTPS_LINK);
     }
 
-    // TODO:
-    //  - Description
-    //  - Validators test
-    //  - Messages
-    //  - add Rule
-    //  - add Rule builder
-    //  - Rule description
-    //  - Rule test
     /**
      * Validate that the String is an ip format.
      * @param evaluate String to evaluate.
@@ -286,14 +283,6 @@ public class Validators {
         return regExp(evaluate, IP);
     }
 
-    // TODO:
-    //  - Description
-    //  - Validators test
-    //  - Messages
-    //  - add Rule
-    //  - add Rule builder
-    //  - Rule description
-    //  - Rule test
     /**
      * Validate that the String is an ip with ipv4 format.
      * @param evaluate String to evaluate.
@@ -303,14 +292,6 @@ public class Validators {
         return regExp(evaluate, IPV4);
     }
 
-    // TODO:
-    //  - Description
-    //  - Validators test
-    //  - Messages
-    //  - add Rule
-    //  - add Rule builder
-    //  - Rule description
-    //  - Rule test
     /**
      * Validate that the String is an ip with ipv6 format.
      * @param evaluate String to evaluate.
@@ -320,14 +301,6 @@ public class Validators {
         return regExp(evaluate, IPV6);
     }
 
-    // TODO:
-    //  - Description
-    //  - Validators test
-    //  - Messages
-    //  - add Rule
-    //  - add Rule builder
-    //  - Rule description
-    //  - Rule test
     /**
      * Validate that the String is a time format.
      * @param evaluate String to evaluate.
@@ -337,14 +310,6 @@ public class Validators {
         return regExp(evaluate, TIME);
     }
 
-    // TODO:
-    //  - Description
-    //  - Validators test
-    //  - Messages
-    //  - add Rule
-    //  - add Rule builder
-    //  - Rule description
-    //  - Rule test
     /**
      * Validate that the String is a time with 12 hours format.
      * @param evaluate String to evaluate.
@@ -354,14 +319,6 @@ public class Validators {
         return regExp(evaluate, TIME12);
     }
 
-    // TODO:
-    //  - Description
-    //  - Validators test
-    //  - Messages
-    //  - add Rule
-    //  - add Rule builder
-    //  - Rule description
-    //  - Rule test
     /**
      * Validate that the String is a time with 24 hours format.
      * @param evaluate String to evaluate.
@@ -371,26 +328,6 @@ public class Validators {
         return regExp(evaluate, TIME24);
     }
 
-    // TODO:
-    //  - Description
-    //  - Validators test
-    //  - Messages
-    //  - add Rule
-    //  - add Rule builder
-    //  - Rule description
-    //  - Rule test
-    public static boolean phone(String evaluate) {
-        return regExp(evaluate, PHONE);
-    }
-
-    // TODO:
-    //  - Description
-    //  - Validators test
-    //  - Messages
-    //  - add Rule
-    //  - add Rule builder
-    //  - Rule description
-    //  - Rule test
     /**
      * Validate that the String contains only alphabetic characters.
      * @param evaluate String to evaluate.
@@ -400,14 +337,6 @@ public class Validators {
         return regExp(evaluate, ALPHABET);
     }
 
-    // TODO:
-    //  - Description
-    //  - Validators test
-    //  - Messages
-    //  - add Rule
-    //  - add Rule builder
-    //  - Rule description
-    //  - Rule test
     /**
      * Validate that the String contains only alphanumeric characters.
      * @param evaluate String to evaluate.

@@ -5,70 +5,50 @@ import com.apamatesoft.validator.functions.OnInvalidEvaluation;
 import com.apamatesoft.validator.messages.MessagesEn;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static java.lang.String.format;
+
+import static java.util.Arrays.stream;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-public class ValidatorMaxLengthTest {
+public class ValidatorTime24Test {
 
-    private static final int CONDITION = 3;
-    private static final String[] NOT_PERMIT = { null, "", "1234" };
-    private static final String[] PERMIT = { "1", "12", "123" };
-    private static final String MESSAGES = format(new MessagesEn().getMaxLengthMessage(), CONDITION);
+    private static final String[] NOT_PERMIT = { null, "", "text", "12:59 am", "1:00 pm", "01:00AM", "01:00pm", "1200", "01/01/2020", "12-30", "12.50", "25:00", "13:00 am" };
+    private static final String[] PERMIT = { "13:00", "23:59", "00:00" };
+    private static final String MESSAGES = new MessagesEn().getTime24Message();
 
     private Validator validator, builder;
 
     @BeforeEach
     void before() {
         validator = new Validator();
-        validator.maxLength(CONDITION);
+        validator.time24();
 
         builder = new Validator.Builder()
-                .maxLength(CONDITION)
-                .build();
+            .time24()
+            .build();
 
     }
 
     @Test
     void notPermit() {
-        for (String s : NOT_PERMIT)
-            if (validator.isValid(s)) {
-                fail();
-                break;
-            }
-        assertFalse(false);
+        assertFalse(stream(NOT_PERMIT).anyMatch(validator::isValid));
     }
 
     @Test
     void permit() {
-        for (String string : PERMIT)
-            if (!validator.isValid(string)) {
-                fail();
-                break;
-            }
-        assertTrue(true);
+        assertTrue(stream(PERMIT).allMatch(validator::isValid));
     }
 
     @Test
     void notPermit_Builder() {
-        for (String s : NOT_PERMIT)
-            if (builder.isValid(s)) {
-                fail();
-                break;
-            }
-        assertFalse(false);
+        assertFalse(stream(NOT_PERMIT).anyMatch(builder::isValid));
     }
 
     @Test
     void permit_Builder() {
-        for (String string : PERMIT)
-            if (!builder.isValid(string)) {
-                fail();
-                break;
-            }
-        assertTrue(true);
+        assertTrue(stream(PERMIT).allMatch(builder::isValid));
     }
 
     @Test
@@ -96,5 +76,6 @@ public class ValidatorMaxLengthTest {
     void throwInvalidEvaluationException_Builder() {
         assertThrows(InvalidEvaluationException.class, () -> builder.isValidOrFail(null) );
     }
+
 
 }

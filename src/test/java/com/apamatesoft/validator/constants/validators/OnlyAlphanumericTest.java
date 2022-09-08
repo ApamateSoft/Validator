@@ -1,28 +1,25 @@
 package com.apamatesoft.validator.constants.validators;
 
+import com.apamatesoft.validator.constants.Validators;
 import org.junit.jupiter.api.Test;
 
 import static com.apamatesoft.validator.constants.Constants.ALPHA_NUMERIC;
-import static com.apamatesoft.validator.constants.Validators.onlyAlphanumeric;
+import static java.util.Arrays.stream;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class OnlyAlphanumericTest {
 
+    private static final String[] NOT_PERMIT = { null, "", "-", "a*", ">text", "a-", "-1.61", "$10,320.00", "a b" };
+    private static final String[] PERMIT = { ALPHA_NUMERIC };
+
     @Test
     void notPermit() {
-        final String[] strings = { null, "", "-", "a*", ">text", "a-", "-1.61", "$10,320.00" };
-        for (String string : strings) {
-            if (onlyAlphanumeric(string)) {
-                fail();
-                break;
-            }
-        }
-        assertFalse(false);
+        assertFalse(stream(NOT_PERMIT).anyMatch(Validators::onlyAlphanumeric));
     }
 
     @Test
     void permit() {
-        assertTrue(onlyAlphanumeric(ALPHA_NUMERIC));
+        assertTrue(stream(PERMIT).allMatch(Validators::onlyAlphanumeric));
     }
 
 }

@@ -1,18 +1,12 @@
 // TODO:
-//  - dateFormat
-//  - Rango. (valores y longitud de caracteres)
-//  - Regla de fecha
+//  - Contener al menos n cantidad de caracteres.?
+//  - mayor a cierta edad.
+//  - password?
 //  - RegEgx: [
-//  * ip,
-//  * ipv4,
-//  * ipv6,
-//  - credit card (number, extDate, code) [no]
-//  - filepath,
-//  - phone?,
-//  - date?,
-//  - password(low, medium, hard)?,
-//  - onlyNumbers,
-//  - onlyAlphabet]
+//  - nombre *,
+//  - credit card, (number, expiration, cvv) *
+//  - filepath]
+//  - Eliminar el metodo any o simplificar el uso.
 package com.apamatesoft.validator;
 
 import com.apamatesoft.validator.constants.Validators;
@@ -258,6 +252,27 @@ public class Validator implements Cloneable {
     }
     //</editor-fold>
 
+    //<editor-fold default-state="collapsed" desc="rangeLength">
+    /**
+     * valid that the length of the String is between the minimum and the maximum.
+     * @param min Minimum character length.
+     * @param max Maximum character length.
+     * @param message Error message.
+     */
+    public void rangeLength(int min, int max, String message) {
+        rule(format(message, min, max), it -> Validators.rangeLength(it, min, max) );
+    }
+
+    /**
+     * valid that the length of the String is between the minimum and the maximum.
+     * @param min Minimum character length.
+     * @param max Maximum character length.
+     */
+    public void rangeLength(int min, int max) {
+        rangeLength(min, max, messages.getRangeLengthMessage());
+    }
+    //</editor-fold>
+
     //</editor-fold>
 
     //<editor-fold default-state="collapsed" desc="FORMAT RULES">
@@ -363,6 +378,159 @@ public class Validator implements Cloneable {
      */
     public void httpLink() {
         httpLink(messages.getHttpLinkMessage());
+    }
+    //</editor-fold>
+
+    //<editor-fold default-state="collapsed" desc="httpsLink">
+    /**
+     * Validate that the String is a link with https format.
+     * @param message Error message.
+     */
+    public void httpsLink(String message) {
+        rule(message, Validators::httpsLink);
+    }
+
+    /**
+     * Validate that the String is a link with https format.
+     */
+    public void httpsLink() {
+        httpsLink(messages.getHttpsLinkMessage());
+    }
+    //</editor-fold>
+
+    //<editor-fold default-state="collapsed" desc="ip">
+    /**
+     * Validate that the String is an ip format.
+     * @param message Error message.
+     */
+    public void ip(String message) {
+        rule(message, Validators::ip);
+    }
+
+    /**
+     * Validate that the String is an ip format.
+     */
+    public void ip() {
+        ip(messages.getIpMessage());
+    }
+    //</editor-fold>
+
+    //<editor-fold default-state="collapsed" desc="ipv4">
+    /**
+     * Validate that the String is an ip with ipv4 format.
+     * @param message Error message.
+     */
+    public void ipv4(String message) {
+        rule(message, Validators::ipv4);
+    }
+
+    /**
+     * Validate that the String is an ip with ipv4 format.
+     */
+    public void ipv4() {
+        ipv4(messages.getIpv4Message());
+    }
+    //</editor-fold>
+
+    //<editor-fold default-state="collapsed" desc="ipv6">
+    /**
+     * Validate that the String is an ip with ipv6 format.
+     * @param message Error message.
+     */
+    public void ipv6(String message) {
+        rule(message, Validators::ipv6);
+    }
+
+    /**
+     * Validate that the String is an ip with ipv6 format.
+     */
+    public void ipv6() {
+        ipv6(messages.getIpv6Message());
+    }
+    //</editor-fold>
+
+    //<editor-fold default-state="collapsed" desc="time">
+    /**
+     * Validate that the String is a time format.
+     * @param message Error message.
+     */
+    public void time(String message) {
+        rule(message, Validators::time);
+    }
+
+    /**
+     * Validate that the String is a time format.
+     */
+    public void time() {
+        time(messages.getTimeMessage());
+    }
+    //</editor-fold>
+
+    //<editor-fold default-state="collapsed" desc="time12">
+    /**
+     * Validate that the String is a time with 12 hours format.
+     * @param message Error message.
+     */
+    public void time12(String message) {
+        rule(message, Validators::time12);
+    }
+
+    /**
+     * Validate that the String is a time with 12 hours format.
+     */
+    public void time12() {
+        time12(messages.getTime12Message());
+    }
+    //</editor-fold>
+
+    //<editor-fold default-state="collapsed" desc="time24">
+    /**
+     * Validate that the String is a time with 24 hours format.
+     * @param message Error message.
+     */
+    public void time24(String message) {
+        rule(message, Validators::time24);
+    }
+
+    /**
+     * Validate that the String is a time with 24 hours format.
+     */
+    public void time24() {
+        time24(messages.getTime24Message());
+    }
+    //</editor-fold>
+
+    //<editor-fold default-state="collapsed" desc="onlyCharacters">
+    /**
+     * Validate that the String contains only alphabetic characters.
+     * @param message Error message.
+     */
+    public void onlyCharacters(String message) {
+        rule(message, Validators::onlyCharacters);
+    }
+
+    /**
+     * Validate that the String contains only alphabetic characters.
+     */
+    public void onlyCharacters() {
+        onlyCharacters(messages.getOnlyCharactersMessage());
+    }
+    //</editor-fold>
+
+    //<editor-fold default-state="collapsed" desc="onlyAlphanumeric">
+    /**
+     * Validate that the String contains only alphanumeric characters.
+     * @param message Error message.
+     */
+    public void onlyAlphanumeric(String message) {
+        rule(message, Validators::onlyAlphanumeric);
+    }
+
+    /**
+     * Validate that the String contains only alphanumeric characters.
+     */
+    public void onlyAlphanumeric() {
+        onlyAlphanumeric(messages.getOnlyAlphanumericMessage());
     }
     //</editor-fold>
 
@@ -728,6 +896,29 @@ public class Validator implements Cloneable {
         }
         //</editor-fold>
 
+        //<editor-fold default-state="collapsed" desc="rangeLength">
+        /**
+         * valid that the length of the String is between the minimum and the maximum.
+         * @param min Minimum character length.
+         * @param max Maximum character length.
+         * @param message Error message.
+         * @return Builder
+         */
+        public Builder rangeLength(int min, int max, String message) {
+            return rule(format(message, min, max), it -> Validators.rangeLength(it, min, max) );
+        }
+
+        /**
+         * valid that the length of the String is between the minimum and the maximum.
+         * @param min Minimum character length.
+         * @param max Maximum character length.
+         * @return Builder
+         */
+        public Builder rangeLength(int min, int max) {
+            return rangeLength(min, max, messages.getRangeLengthMessage());
+        }
+        //</editor-fold>
+
         //</editor-fold>
 
         //<editor-fold default-state="collapsed" desc="FORMAT RULES">
@@ -848,6 +1039,178 @@ public class Validator implements Cloneable {
         }
         //</editor-fold>
 
+        //<editor-fold default-state="collapsed" desc="httpsLink">
+        /**
+         * Validate that the String is a link with https format.
+         * @param message Error message.
+         * @return Builder
+         */
+        public Builder httpsLink(String message) {
+            return rule(message, Validators::httpsLink);
+        }
+
+        /**
+         * Validate that the String is a link with https format.
+         * @return Builder
+         */
+        public Builder httpsLink() {
+            return httpsLink(messages.getHttpsLinkMessage());
+        }
+        //</editor-fold>
+
+        //<editor-fold default-state="collapsed" desc="ip">
+        /**
+         * Validate that the String is an ip format.
+         * @param message Error message.
+         * @return Builder
+         */
+        public Builder ip(String message) {
+            return rule(message, Validators::ip);
+        }
+
+        /**
+         * Validate that the String is an ip format.
+         * @return Builder
+         */
+        public Builder ip() {
+            return ip(messages.getIpMessage());
+        }
+        //</editor-fold>
+
+        //<editor-fold default-state="collapsed" desc="ipv4">
+        /**
+         * Validate that the String is an ip with ipv4 format.
+         * @param message Error message.
+         * @return Builder
+         */
+        public Builder ipv4(String message) {
+            return rule(message, Validators::ipv4);
+        }
+
+        /**
+         * Validate that the String is an ip with ipv4 format.
+         * @return Builder
+         */
+        public Builder ipv4() {
+            return ipv4(messages.getIpv4Message());
+        }
+        //</editor-fold>
+
+        //<editor-fold default-state="collapsed" desc="ipv6">
+        /**
+         * Validate that the String is an ip with ipv6 format.
+         * @param message Error message.
+         * @return Builder
+         */
+        public Builder ipv6(String message) {
+            return rule(message, Validators::ipv6);
+        }
+
+        /**
+         * Validate that the String is an ip with ipv6 format.
+         * @return Builder
+         */
+        public Builder ipv6() {
+            return ipv6(messages.getIpv6Message());
+        }
+
+        //<editor-fold default-state="collapsed" desc="time">
+        /**
+         * Validate that the String is a time format.
+         * @param message Error message.
+         * @return Builder
+         */
+        public Builder time(String message) {
+            return rule(message, Validators::time);
+        }
+
+        /**
+         * Validate that the String is a time format.
+         * @return Builder
+         */
+        public Builder time() {
+            return time(messages.getTimeMessage());
+        }
+        //</editor-fold>
+
+        //<editor-fold default-state="collapsed" desc="time12">
+        /**
+         * Validate that the String is a time with 12 hours format.
+         * @param message Error message.
+         * @return Builder
+         */
+        public Builder time12(String message) {
+            return rule(message, Validators::time12);
+        }
+
+        /**
+         * Validate that the String is a time with 12 hours format.
+         * @return Builder
+         */
+        public Builder time12() {
+            return time12(messages.getTime12Message());
+        }
+        //</editor-fold>
+
+        //<editor-fold default-state="collapsed" desc="time24">
+        /**
+         * Validate that the String is a time with 24 hours format.
+         * @param message Error message.
+         * @return Builder
+         */
+        public Builder time24(String message) {
+            return rule(message, Validators::time24);
+        }
+
+        /**
+         * Validate that the String is a time with 24 hours format.
+         * @return Builder
+         */
+        public Builder time24() {
+            return time24(messages.getTime24Message());
+        }
+        //</editor-fold>
+
+        //<editor-fold default-state="collapsed" desc="onlyCharacters">
+        /**
+         * Validate that the String contains only alphabetic characters.
+         * @param message Error message.
+         * @return Builder
+         */
+        public Builder onlyCharacters(String message) {
+            return rule(message, Validators::onlyCharacters);
+        }
+
+        /**
+         * Validate that the String contains only alphabetic characters.
+         * @return Builder
+         */
+        public Builder onlyCharacters() {
+            return onlyCharacters(messages.getOnlyCharactersMessage());
+        }
+        //</editor-fold>
+
+        //<editor-fold default-state="collapsed" desc="onlyAlphanumeric">
+        /**
+         * Validate that the String contains only alphanumeric characters.
+         * @param message Error message.
+         * @return Builder
+         */
+        public Builder onlyAlphanumeric(String message) {
+            return rule(message, Validators::onlyAlphanumeric);
+        }
+
+        /**
+         * Validate that the String contains only alphanumeric characters.
+         * @return Builder
+         */
+        public Builder onlyAlphanumeric() {
+            return onlyAlphanumeric(messages.getOnlyAlphanumericMessage());
+        }
+        //</editor-fold>
+
+        //</editor-fold>
+
         //<editor-fold default-state="collapsed" desc="numberPattern">
         /**
          * Evaluate that the text matches the pattern, replacing the x's with numbers.
@@ -857,7 +1220,6 @@ public class Validator implements Cloneable {
          * For the pattern +xx (xxx) xxx-xx-xx, the following Strings are valid:
          * <ul>
          *     <li>+12 (345) 678-90-12</li>
-         *     <li>+11 (111) 111-11-11</li>
          *     <li>+xx (345) 678-90-12</li>
          *     <li>+xx (xxx) xxx-xx-xx</li>
          * <ul/>
@@ -877,7 +1239,6 @@ public class Validator implements Cloneable {
          * For the pattern +xx (xxx) xxx-xx-xx, the following Strings are valid:
          * <ul>
          *     <li>+12 (345) 678-90-12</li>
-         *     <li>+11 (111) 111-11-11</li>
          *     <li>+xx (345) 678-90-12</li>
          *     <li>+xx (xxx) xxx-xx-xx</li>
          * <ul/>

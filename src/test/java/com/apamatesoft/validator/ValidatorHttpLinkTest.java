@@ -6,6 +6,7 @@ import com.apamatesoft.validator.messages.MessagesEn;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static java.util.Arrays.stream;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
@@ -32,43 +33,26 @@ public class ValidatorHttpLinkTest {
 
     @Test
     void notPermit() {
-        for (String s : NOT_PERMIT)
-            if (validator.isValid(s)) {
-                System.out.println(">>: s: "+s);
-                fail();
-                break;
-            }
-        assertTrue(true);
+        boolean b = stream(NOT_PERMIT).anyMatch(validator::isValid);
+        assertFalse(b);
     }
 
     @Test
     void permit() {
-        for (String string : PERMIT)
-            if (!validator.isValid(string)) {
-                fail();
-                break;
-            }
-        assertTrue(true);
+        boolean b = stream(PERMIT).allMatch(validator::isValid);
+        assertTrue(b);
     }
 
     @Test
     void notPermit_Builder() {
-        for (String s : NOT_PERMIT)
-            if (builder.isValid(s)) {
-                fail();
-                break;
-            }
-        assertTrue(true);
+        boolean b = stream(NOT_PERMIT).anyMatch(builder::isValid);
+        assertFalse(b);
     }
 
     @Test
     void permit_Builder() {
-        for (String string : PERMIT)
-            if (!builder.isValid(string)) {
-                fail();
-                break;
-            }
-        assertTrue(true);
+        boolean b = stream(PERMIT).allMatch(builder::isValid);
+        assertTrue(b);
     }
 
     @Test
