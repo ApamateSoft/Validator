@@ -225,6 +225,11 @@ public class Validators {
         return parseDouble(evaluate)<condition;
     }
 
+    public static boolean rangeValue(String evaluate, double min, double max) {
+        if (!required(evaluate) || !number(evaluate)) return false;
+        double value = parseDouble(evaluate);
+        return (value >= min) && (value<=max);
+    }
     //</editor-fold>
 
     // TODO:

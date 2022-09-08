@@ -1,15 +1,15 @@
 // TODO:
+//  - dateFormat
+//  - Rango. (valores y longitud de caracteres)
 //  - Regla de fecha
-//  - Rango
 //  - RegEgx: [
 //  * ip,
 //  * ipv4,
 //  * ipv6,
-//  - credit card (number, extDate, code)
+//  - credit card (number, extDate, code) [no]
 //  - filepath,
 //  - phone?,
 //  - date?,
-//  - dateFormat
 //  - password(low, medium, hard)?,
 //  - onlyNumbers,
 //  - onlyAlphabet]
@@ -34,7 +34,7 @@ import static java.lang.String.format;
  * rules.
  *
  * @author ApamateSoft
- * @version 2.0.0
+ * @version 1.2.0
  */
 public class Validator implements Cloneable {
 
@@ -44,7 +44,7 @@ public class Validator implements Cloneable {
     private OnInvalidEvaluation onInvalidEvaluation;
     private String notMatchMessage = messages.getNotMatchMessage();
 
-    // <editor-fold defaultstate="collapsed" defaulted="collapsed" desc="CONSTRUCTORS">
+    // <editor-fold default-state="collapsed" defaulted="collapsed" desc="CONSTRUCTORS">
     public Validator() { }
 
     private Validator(Builder builder) {
@@ -153,7 +153,7 @@ public class Validator implements Cloneable {
         this.notMatchMessage = message;
     }
 
-    //<editor-fold defaultstate="collapsed" desc="RULES">
+    //<editor-fold default-state="collapsed" desc="RULES">
 
     /**
      * Create a validation rule.
@@ -182,9 +182,9 @@ public class Validator implements Cloneable {
         rule(message, it -> Arrays.stream(validators).anyMatch( validate -> validate.invoke(it) ) );
     }
 
-    //<editor-fold defaultstate="collapsed" desc="LENGTH RULES">
+    //<editor-fold default-state="collapsed" desc="LENGTH RULES">
 
-    //<editor-fold defaultstate="collapsed" desc="required">
+    //<editor-fold default-state="collapsed" desc="required">
     /**
      * Validate that the String to evaluate is different from empty and null.
      * @param message Error message.
@@ -201,7 +201,7 @@ public class Validator implements Cloneable {
     }
     //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="length">
+    //<editor-fold default-state="collapsed" desc="length">
     /**
      * Validate that the String to evaluate has the exact length of characters to the condition.
      * @param condition character length.
@@ -220,7 +220,7 @@ public class Validator implements Cloneable {
     }
     //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="minLength">
+    //<editor-fold default-state="collapsed" desc="minLength">
     /**
      * Validate that the String to evaluate has a minimum character length to the condition.
      * @param condition Minimum character length.
@@ -239,7 +239,7 @@ public class Validator implements Cloneable {
     }
     //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="maxLength">
+    //<editor-fold default-state="collapsed" desc="maxLength">
     /**
      * Validate that the String to evaluate has a maximum length of characters to the condition.
      * @param condition maximum character length.
@@ -260,9 +260,9 @@ public class Validator implements Cloneable {
 
     //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="FORMAT RULES">
+    //<editor-fold default-state="collapsed" desc="FORMAT RULES">
 
-    //<editor-fold defaultstate="collapsed" desc="regExp">
+    //<editor-fold default-state="collapsed" desc="regExp">
     /**
      * Validate that the value matches the regular expression.
      * @param condition Regular expression
@@ -281,7 +281,7 @@ public class Validator implements Cloneable {
     }
     //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="email">
+    //<editor-fold default-state="collapsed" desc="email">
     /**
      * Validate that the String has an email format.
      * @param message Error message.
@@ -298,7 +298,7 @@ public class Validator implements Cloneable {
     }
     //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="number">
+    //<editor-fold default-state="collapsed" desc="number">
     /**
      * Validate that the String is in numeric format.
      * @param message Error message.
@@ -315,7 +315,7 @@ public class Validator implements Cloneable {
     }
     //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="link">
+    //<editor-fold default-state="collapsed" desc="link">
     /**
      * Validate that the String is a link format.
      * @param message Error message.
@@ -332,7 +332,7 @@ public class Validator implements Cloneable {
     }
     //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="wwwLink">
+    //<editor-fold default-state="collapsed" desc="wwwLink">
     /**
      * Validate that the String is a link with www format.
      * @param message Error message.
@@ -349,7 +349,7 @@ public class Validator implements Cloneable {
     }
     //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="httpLink">
+    //<editor-fold default-state="collapsed" desc="httpLink">
     /**
      * Validate that the String is a link with http format.
      * @param message Error message.
@@ -366,7 +366,7 @@ public class Validator implements Cloneable {
     }
     //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="numberPattern">
+    //<editor-fold default-state="collapsed" desc="numberPattern">
     /**
      * Evaluate that the text matches the pattern, replacing the x's with numbers.
      * <br/> <br/>
@@ -405,7 +405,7 @@ public class Validator implements Cloneable {
     }
     //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="dateFormat">
+    //<editor-fold default-state="collapsed" desc="dateFormat">
     /**
      * Validates that the text to evaluate matches the specified date format.
      * @param format Describing the date and time format.
@@ -426,9 +426,9 @@ public class Validator implements Cloneable {
 
     //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="CONTENT RULES">
+    //<editor-fold default-state="collapsed" desc="CONTENT RULES">
 
-    //<editor-fold defaultstate="collapsed" desc="shouldOnlyContain">
+    //<editor-fold default-state="collapsed" desc="shouldOnlyContain">
     /**
      * Validate that the String only contains characters included in the condition String.
      * @param condition String with allowed characters.
@@ -447,7 +447,7 @@ public class Validator implements Cloneable {
     }
     //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="onlyNumbers">
+    //<editor-fold default-state="collapsed" desc="onlyNumbers">
     /**
      * Validate that the String contains only numeric characters.
      * @param message Error message.
@@ -464,7 +464,7 @@ public class Validator implements Cloneable {
     }
     //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="notContain">
+    //<editor-fold default-state="collapsed" desc="notContain">
     /**
      * Validate that the String does not contain any character included in the String of the condition.
      * @param condition String with invalid characters.
@@ -483,7 +483,7 @@ public class Validator implements Cloneable {
     }
     //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="mustContainOne">
+    //<editor-fold default-state="collapsed" desc="mustContainOne">
     /**
      * Validates that the String contains at least one character included in the String of the condition.
      * @param condition String with desired characters.
@@ -502,8 +502,7 @@ public class Validator implements Cloneable {
     }
     //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="maxValue">
-    // TODO: Quizas sea mejor llamarlo maxValue
+    //<editor-fold default-state="collapsed" desc="maxValue">
     /**
      * Validate that the value of the String is not greater than the condition.
      * @param condition maximum value.
@@ -522,7 +521,7 @@ public class Validator implements Cloneable {
     }
     //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="minValue">
+    //<editor-fold default-state="collapsed" desc="minValue">
     /**
      * Validate that the value of the String is not less than the condition.
      * @param condition minimum value.
@@ -538,6 +537,28 @@ public class Validator implements Cloneable {
      */
     public void minValue(double condition) {
         minValue(condition, messages.getMinValueMessage());
+    }
+    //</editor-fold>
+
+    //<editor-fold default-state="collapsed" desc="rangeValue">
+
+    /**
+     * Validates that the value of the string is in the established range.
+     * @param min minimum value.
+     * @param max maximum value
+     * @param message Error message.
+     */
+    public void rangeValue(double min, double max, String message) {
+        rule( format(message, min, max), it -> Validators.rangeValue(it, min, max) );
+    }
+
+    /**
+     * Validates that the value of the string is in the established range.
+     * @param min minimum value.
+     * @param max maximum value
+     */
+    public void rangeValue(double min, double max) {
+        rangeValue(min, max, messages.getRangeValueMessage());
     }
     //</editor-fold>
 
@@ -590,7 +611,7 @@ public class Validator implements Cloneable {
             return this;
         }
 
-        //<editor-fold defaultstate="collapsed" desc="RULES">
+        //<editor-fold default-state="collapsed" desc="RULES">
 
         /**
          * Create a validation rule.
@@ -623,9 +644,9 @@ public class Validator implements Cloneable {
             return rule(message, it -> Arrays.stream(validators).anyMatch( validate -> validate.invoke(it) ) );
         }
 
-        //<editor-fold defaultstate="collapsed" desc="LENGTH RULES">
+        //<editor-fold default-state="collapsed" desc="LENGTH RULES">
 
-        //<editor-fold defaultstate="collapsed" desc="required">
+        //<editor-fold default-state="collapsed" desc="required">
         /**
          * Validate that the String to evaluate is different from empty and null.
          * @param message Error message.
@@ -644,7 +665,7 @@ public class Validator implements Cloneable {
         }
         //</editor-fold>
 
-        //<editor-fold defaultstate="collapsed" desc="length">
+        //<editor-fold default-state="collapsed" desc="length">
         /**
          * Validate that the String to evaluate has the exact length of characters to the condition.
          * @param condition character length.
@@ -665,7 +686,7 @@ public class Validator implements Cloneable {
         }
         //</editor-fold>
 
-        //<editor-fold defaultstate="collapsed" desc="minLength">
+        //<editor-fold default-state="collapsed" desc="minLength">
         /**
          * Validate that the String to evaluate has a minimum character length to the condition.
          * @param condition Minimum character length.
@@ -686,7 +707,7 @@ public class Validator implements Cloneable {
         }
         //</editor-fold>
 
-        //<editor-fold defaultstate="collapsed" desc="maxLength">
+        //<editor-fold default-state="collapsed" desc="maxLength">
         /**
          * Validate that the String to evaluate has a maximum length of characters to the condition.
          * @param condition maximum character length.
@@ -709,9 +730,9 @@ public class Validator implements Cloneable {
 
         //</editor-fold>
 
-        //<editor-fold defaultstate="collapsed" desc="FORMAT RULES">
+        //<editor-fold default-state="collapsed" desc="FORMAT RULES">
 
-        //<editor-fold defaultstate="collapsed" desc="regExp">
+        //<editor-fold default-state="collapsed" desc="regExp">
         /**
          * Validate that the value matches the regular expression.
          * @param condition Regular expression
@@ -732,7 +753,7 @@ public class Validator implements Cloneable {
         }
         //</editor-fold>
 
-        //<editor-fold defaultstate="collapsed" desc="email">
+        //<editor-fold default-state="collapsed" desc="email">
         /**
          * Validate that the String has an email format
          * @param message Error message.
@@ -751,7 +772,7 @@ public class Validator implements Cloneable {
         }
         //</editor-fold>
 
-        //<editor-fold defaultstate="collapsed" desc="number">
+        //<editor-fold default-state="collapsed" desc="number">
         /**
          * Validate that the String is in numeric format.
          * @param message Error message.
@@ -770,7 +791,7 @@ public class Validator implements Cloneable {
         }
         //</editor-fold>
 
-        //<editor-fold defaultstate="collapsed" desc="link">
+        //<editor-fold default-state="collapsed" desc="link">
         /**
          * Validate that the String is a link format.
          * @param message Error message.
@@ -789,7 +810,7 @@ public class Validator implements Cloneable {
         }
         //</editor-fold>
 
-        //<editor-fold defaultstate="collapsed" desc="wwwLink">
+        //<editor-fold default-state="collapsed" desc="wwwLink">
         /**
          * Validate that the String is a link with www format.
          * @param message Error message.
@@ -808,7 +829,7 @@ public class Validator implements Cloneable {
         }
         //</editor-fold>
 
-        //<editor-fold defaultstate="collapsed" desc="httpLink">
+        //<editor-fold default-state="collapsed" desc="httpLink">
         /**
          * Validate that the String is a link with http format.
          * @param message Error message.
@@ -827,7 +848,7 @@ public class Validator implements Cloneable {
         }
         //</editor-fold>
 
-        //<editor-fold defaultstate="collapsed" desc="numberPattern">
+        //<editor-fold default-state="collapsed" desc="numberPattern">
         /**
          * Evaluate that the text matches the pattern, replacing the x's with numbers.
          * <br/> <br/>
@@ -868,7 +889,7 @@ public class Validator implements Cloneable {
         }
         //</editor-fold>
 
-        //<editor-fold defaultstate="collapsed" desc="dateFormat">
+        //<editor-fold default-state="collapsed" desc="dateFormat">
         /**
          * Validates that the text to evaluate matches the specified date format.
          * @param format Describing the date and time format.
@@ -891,9 +912,9 @@ public class Validator implements Cloneable {
 
         //</editor-fold>
 
-        //<editor-fold defaultstate="collapsed" desc="CONTENT RULES">
+        //<editor-fold default-state="collapsed" desc="CONTENT RULES">
 
-        //<editor-fold defaultstate="collapsed" desc="shouldOnlyContain">
+        //<editor-fold default-state="collapsed" desc="shouldOnlyContain">
         /**
          * Validate that the String only contains characters included in the condition String.
          * @param condition String with allowed characters.
@@ -914,7 +935,7 @@ public class Validator implements Cloneable {
         }
         //</editor-fold>
 
-        //<editor-fold defaultstate="collapsed" desc="onlyNumbers">
+        //<editor-fold default-state="collapsed" desc="onlyNumbers">
         /**
          * Validate that the String contains only numeric characters.
          * @param message Error message.
@@ -933,7 +954,7 @@ public class Validator implements Cloneable {
         }
         //</editor-fold>
 
-        //<editor-fold defaultstate="collapsed" desc="notContain">
+        //<editor-fold default-state="collapsed" desc="notContain">
         /**
          * Validate that the String does not contain any character included in the String of the condition.
          * @param condition String with invalid characters.
@@ -954,7 +975,7 @@ public class Validator implements Cloneable {
         }
         //</editor-fold>
 
-        //<editor-fold defaultstate="collapsed" desc="mustContainOne">
+        //<editor-fold default-state="collapsed" desc="mustContainOne">
         /**
          * Validates that the String contains at least one character included in the String of the condition.
          * @param condition String with desired characters.
@@ -975,7 +996,7 @@ public class Validator implements Cloneable {
         }
         //</editor-fold>
 
-        //<editor-fold defaultstate="collapsed" desc="max">
+        //<editor-fold default-state="collapsed" desc="max">
         /**
          * Validate that the value of the String is not greater than the condition.
          * @param condition maximum value.
@@ -996,7 +1017,7 @@ public class Validator implements Cloneable {
         }
         //</editor-fold>
 
-        //<editor-fold defaultstate="collapsed" desc="min">
+        //<editor-fold default-state="collapsed" desc="min">
         /**
          * Validate that the value of the String is not less than the condition.
          * @param condition minimum value.
@@ -1014,6 +1035,29 @@ public class Validator implements Cloneable {
          */
         public Builder minValue(double condition) {
             return minValue(condition, messages.getMinValueMessage());
+        }
+        //</editor-fold>
+
+        //<editor-fold default-state="collapsed" desc="rangeValue">
+        /**
+         * Validates that the value of the string is in the established range.
+         * @param min minimum value.
+         * @param max maximum value
+         * @param message Error message.
+         * @return Builder
+         */
+        public Builder rangeValue(double min, double max, String message) {
+            return rule( format(message, min, max), it -> Validators.rangeValue(it, min, max) );
+        }
+
+        /**
+         * Validates that the value of the string is in the established range.
+         * @param min minimum value.
+         * @param max maximum value
+         * @return Builder
+         */
+        public Builder rangeValue(double min, double max) {
+            return rangeValue(min, max, messages.getRangeValueMessage());
         }
         //</editor-fold>
 

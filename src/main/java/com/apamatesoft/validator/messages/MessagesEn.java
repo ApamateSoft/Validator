@@ -123,6 +123,11 @@ public class MessagesEn implements Messages {
     }
 
     @Override
+    public String getRangeValueMessage() {
+        return "The value must be between %1$.2f and %1$.2f";
+    }
+
+    @Override
     public String getMinValueMessage() {
         return "The value cannot be less than %1$.2f";
     }
