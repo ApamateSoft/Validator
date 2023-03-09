@@ -1,9 +1,9 @@
 package com.apamatesoft.validator;
 
-import com.apamatesoft.validator.constants.Validators;
+import com.apamatesoft.validator.utils.Validators;
 import org.junit.jupiter.api.Test;
 
-import static com.apamatesoft.validator.constants.Validators.length;
+import static com.apamatesoft.validator.utils.Validators.length;
 import static org.junit.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 

@@ -157,7 +157,7 @@ Validator offers a series of predefined rules.
 | Rule	              | Condition      | Message (`String`)  | Description                                                                                                  |
 |---------------------|----------------|---------------------|--------------------------------------------------------------------------------------------------------------|
 | `required`	      | No             | Optional            | Validate that the String to evaluate is different from empty and null                                        |
-| `length`	          | Yes (`int`)    | Optional            | Validate that the String to evaluate has the exact length of characters to the condition                     |
+| `length`	      | Yes (`int`)    | Optional            | Validate that the String to evaluate has the exact length of characters to the condition                     |
 | `minLength`	      | Yes (`int`)    | Optional            | Validate that the String to evaluate has a minimum character length to the condition                         |
 | `maxLength`	      | Yes (`int`)    | Optional            | Validate that the String to evaluate has a maximum length of characters to the condition                     |
 | `email`             | No             | Optional            | Validate that the String to evaluate has an email format                                                     |

@@ -1,0 +1,29 @@
+package com.apamatesoft.validator.utils.validators;
+
+import com.apamatesoft.validator.utils.Validators;
+import org.junit.jupiter.api.Test;
+
+import static java.util.Arrays.stream;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+public class NameTest {
+
+    private static final String[] NOT_PERMIT = { null, "", "10", "1jose", "@omar", "Jesús", "jesus 1alberto", " jesus", "jesus " };
+    private static final String[] PERMIT = { "jesus", "Jesus", "JESUS", "jesus alberto", "Jesus Alberto", "JESUS ALBERTO", "jose de rosa" };
+
+    @Test
+    void notPermit() {
+        assertFalse(stream(NOT_PERMIT).anyMatch(Validators::name));
+    }
+
+    @Test
+    void permit() {
+        assertTrue(stream(PERMIT).allMatch( it -> {
+            boolean b = Validators.name(it);
+            if (!b) System.out.println(it);
+            return b;
+        } ));
+    }
+
+}

@@ -6,7 +6,7 @@ import com.apamatesoft.validator.messages.MessagesEn;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static com.apamatesoft.validator.constants.Constants.ALPHABET;
+import static com.apamatesoft.validator.utils.Constants.ALPHABET;
 import static java.util.Arrays.stream;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;

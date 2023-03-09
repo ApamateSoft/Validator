@@ -5,7 +5,7 @@ import com.apamatesoft.validator.functions.OnInvalidEvaluation;
 import com.apamatesoft.validator.messages.MessagesEn;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static com.apamatesoft.validator.constants.RegularExpression.EMAIL;
+import static com.apamatesoft.validator.utils.RegularExpression.EMAIL;
 import static java.lang.String.format;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;

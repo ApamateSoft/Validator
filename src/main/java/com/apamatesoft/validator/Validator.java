@@ -6,10 +6,10 @@
 //  - nombre *,
 //  - credit card, (number, expiration, cvv) *
 //  - filepath]
-//  - Eliminar el metodo any o simplificar el uso.
+//  - Eliminar el método any o simplificar el uso.
 package com.apamatesoft.validator;
 
-import com.apamatesoft.validator.constants.Validators;
+import com.apamatesoft.validator.utils.Validators;
 import com.apamatesoft.validator.exceptions.InvalidEvaluationException;
 import com.apamatesoft.validator.messages.Messages;
 import com.apamatesoft.validator.messages.MessagesEn;
@@ -167,14 +167,14 @@ public class Validator implements Cloneable {
         rules.add(new Rule(message, validate));
     }
 
-    /**
-     * Validate that the value passes at least one of the validators
-     * @param message Error message.
-     * @param validators Validators.
-     */
-    public void any(String message, Validate... validators) {
-        rule(message, it -> Arrays.stream(validators).anyMatch( validate -> validate.invoke(it) ) );
-    }
+//    /**
+//     * Validate that the value passes at least one of the validators
+//     * @param message Error message.
+//     * @param validators Validators.
+//     */
+//    public void any(String message, Validate... validators) {
+//        rule(message, it -> Arrays.stream(validators).anyMatch( validate -> validate.invoke(it) ) );
+//    }
 
     //<editor-fold default-state="collapsed" desc="LENGTH RULES">
 
