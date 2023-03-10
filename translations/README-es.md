@@ -1,17 +1,40 @@
-Versión original: [Inglés](../README.md)
+Versión en [Inglés](../README.md)
 
 # Validator
 
-Validador es una librería escrita en Java, que pretende simplificar la validación de Strings declarando una series de
-reglas.
+Facilita la validación de Strings en java encadenando una serie de reglas.
 
+## Notas de version
 
-## Notas de lanzamiento
+### Versión 1.2.0
+Se ha renombrado la regla `numericFormat` a `number`.
 
-### Versión 1.1.0
-
-- Se ha agregado el método `.isValidOrFail`.
-- Se ha agregado el método `.compareOrFail`.
+Se han agregado las siguientes reglas:
+- `rangeLength`
+- `rangeLength`
+- `regExp`
+- `link`
+- `wwwLink`
+- `httpLink`
+- `httpsLink`
+- `ip`
+- `ipv4`
+- `ipv6`
+- `time`
+- `time12`
+- `time24`
+- `onlyCharacters`
+- `onlyAlphanumeric`
+- `numberPattern`
+- `dateFormat`
+- `notContain`
+- `mustContainOne`
+- `maxValue`
+- `minValue`
+- `rangeValue`
+- `minAge`
+- `expirationDate`
+- `mustContainMinimum`
 
 ## Instalación
 
@@ -35,20 +58,26 @@ implementation group: 'io.github.ApamateSoft', name: 'Validator', version: '1.1.
 ## Empezando
 
 ```java
-// Instanciando un nuevo validator
-Validator validator = new Validator();
+public class HelloValidator {
 
-// 1º regla: solo se aprobara si el String a evaluar es difefente de null, en caso contrario mostrara el mensaje
-// "Ingrese un texto diferente de null"
-validator.rule("Ingrese un texto diferente de null", (String evaluate) -> {
-    return evaluate!=null;
-} );
+  public static void main(String[] args) {
+    // Instanciando un nuevo validator
+    Validator validator = new Validator();
 
-// 2º regla: solo se aprobara si el String a evaluar es igual a "xxx", en caso contrario mostrara el mensaje
-// "El texto es diferente de 'xxx'"
-validator.rule("El texto es diferente de 'xxx'", (String evaluate) -> {
-    return evaluate.equals("xxx");
-} );
+    // Primera regla, solo se aprobará si el String a evaluar es diferente de null, en caso contrario mostrara el
+    // mensaje "Ingrese un texto diferente de null"
+    validator.rule("Ingrese un texto diferente de null", (String evaluate) -> {
+      return evaluate!=null;
+    } );
+
+    // Secunda regla, solo se aprobará si el String a evaluar es igual a "xxx", en caso contrario mostrara el mensaje
+    // "El texto es diferente de 'xxx'"
+    validator.rule("El texto es diferente de 'xxx'", (String evaluate) -> {
+      return evaluate.equals("xxx");
+    } );
+  }
+  
+}
 ```
 
 ##### Nota:
@@ -59,13 +88,17 @@ validator.rule("El texto es diferente de 'xxx'", (String evaluate) -> {
 
 ### Simplificando código
 
-Puedes crear una instancia de Validator utilizando `.Builder()`.
+Puedes crear una instancia de Validator utilizando `.Builder()`. A continuación el ejemplo anterior simplificado.
 
 ```java
-Validator validator = new Validator.Builder()
-    .rule("Ingrese un texto diferente de null", Objects::nonNull)
-    .rule("El texto es diferente de 'xxx'", evaluate -> evaluate.equals("xxx"))
-    .build();
+public class HelloValidator {
+
+  Validator validator = new Validator.Builder()
+          .rule("Ingrese un texto diferente de null", Objects::nonNull)
+          .rule("El texto es diferente de 'xxx'", evaluate -> evaluate.equals("xxx"))
+          .build();
+    
+}
 ```
 
 #### Validando un String
@@ -73,63 +106,80 @@ Validator validator = new Validator.Builder()
 Se hace uso del método `.isValid` para saber si el String es válido.
 
 ```java
-Validator validator = new Validator.Builder()
-    .rule("El texto es diferente de 'xxx'", evaluate -> evaluate.equals("xxx"))
-    .build();
+public class HelloValidator {
 
-validator.isValid("yyy"); // false
-validator.isValid("xxx"); // true
+  Validator validator = new Validator.Builder()
+          .rule("El texto es diferente de 'xxx'", evaluate -> evaluate.equals("xxx"))
+          .build();
+    
+  public static void main(String[] args) {
+    validator.isValid("yyy"); // false
+    validator.isValid("xxx"); // true
+  }
+    
+}
 ```
 
-En caso de querer comparar dos String, lo cual es muy útil para validar contraseñas, se puede hacer uso del método.
-`.compare`. Opcionalmente se puede utilizar el método `.setNotMatchMessage` para definir el mensaje de error en caso de
+En caso de querer comparar dos String, lo cual es muy útil para validar contraseñas, se puede hacer uso del método
+`.compare`, Opcionalmente se puede utilizar el método `.setNotMatchMessage` para definir el mensaje de error en caso de
 no coincidir.
 
 ```java
-final Validator validator = new Validator.Builder()
-    .rule("Requerido", evaluate -> !evaluate.isEmpty() )
-    .setNotMatchMessage("No coinciden")
-    .build();
+public class HelloValidator {
 
-validator.compare("abc", "xyz"); // false
-validator.compare("abc", "abc"); // true
+  Validator validator = new Validator.Builder()
+          .rule("Requerido", evaluate -> !evaluate.isEmpty() )
+          .setNotMatchMessage("No coinciden")
+          .build();
+    
+  public static void main(String[] args) {
+    validator.compare("abc", "xyz"); // false
+    validator.compare("abc", "abc"); // true
+  }
+    
+}
 ```
 
 #### Capturando los mensajes de error
-El evento `.onNotPass` se ejecuta al momento de fallar una regla al momento de su validación y devuelve su mensaje.
+El evento `.onNotPass` se ejecuta al fallar una regla cuando es evaluada y devuelve el mensaje asociado a la misma.
 
 ```java
-Validator validator = new Validator.Builder()
-    .rule("El texto es diferente de 'xxx'", evaluate -> evaluate.equals("xxx"))
-    .build();
+public class HelloValidator {
 
-// Solo se ejecuta si falla la validación de alguna regla
-validator.onNotPass( message -> System.out.println(message) ); // "El texto es diferente de 'xxx'"
+  public static void main(String[] args) {
+    Validator validator = new Validator.Builder()
+            .rule("El texto es diferente de 'xxx'", evaluate -> evaluate.equals("xxx"))
+            .build();
 
-validator.isValid("yyy"); // false
+    // Solo se ejecuta si falla la validación de alguna regla
+    validator.onNotPass( message -> System.out.println(message) ); // "El texto es diferente de 'xxx'"
+
+    validator.isValid("yyy"); // false
+  }
+    
+}
 ```
 
-Si prefiere no trabajar con el evento `.onNotPass`, puede usar los métodos `.isValidOrFail` y `.compareOrFail` en
+Si prefiere no utilizar el evento `.onNotPass`, puedes usar los métodos `.isValidOrFail` y `.compareOrFail` en
 sustitución de los métodos `.isValid` y `.comapre` respectivamente.
 
 La principal diferencia es que estos métodos no retorna valor alguno y en caso de fallar arrojan una excepción del tipo
 `InvalidEvaluationException` que contiene el mensaje de error de la regla junto con el valor del String a evaluar.
 
 ```java
-class Example {
+class HelloValidator {
 
-    private Validator validator = new Validator.Builder()
+    Validator validator = new Validator.Builder()
             .rule("El texto es diferente de 'xxx'", evaluate -> evaluate.equals("xxx"))
             .build();
 
     private void submit() {
         try {
             validator.isValidOrFail("yyy");
-            // validator.compareOrFail("XXX", "YYY");
+            validator.compareOrFail("XXX", "YYY");
         } catch (InvalidEvaluationException e) {
             System.out.println(e.getMessage());
         }
-        // TODO
     }
 
 }
@@ -139,37 +189,45 @@ class Example {
 
 Validator ofrece una serie de reglas predefinidas.
 
-| Regla	              | Condición     | Mensaje (`String`)  | Descripción                                                                                        |
-|---------------------|---------------|---------------------|----------------------------------------------------------------------------------------------------|
-| `required`	      | No            | Opcional            | Valida que el String a evaluar sea diferente de un vacío y null                                    |
-| `length`	          | Si (`int`)    | Opcional            | Valida que el String a evaluar tenga la longitud exacta de caracteres a la condición               |
-| `minLength`	      | Si (`int`)    | Opcional            | Valida que el String a evaluar tenga una longitud de caracteres minima a la condición              |
-| `maxLength`	      | Si (`int`)    | Opcional            | Valida que el String a evaluar tenga una longitud maxima de caracteres a la condición              |
-| `email`             | No            | Opcional            | Valida que el String a evaluar tenga formato de email                                              |
-| `numericFormat`     | No            | Opcional            | Valida que el String a evaluar tenga un formato numérico                                           |
-| `shouldOnlyContain` | Si (`String`) | Opcional            | Valida que el String a evaluar solo contenga caracteres incluidos en el String de condición        |
-| `onlyNumbers`       | No            | Opcional            | Valida que el String a evaluar solo contenga caracteres numéricos                                 |
-| `notContain`        | Si (`String`) | Opcional            | Valida que el String a evaluar no contenga algún carácter incluido en el String de la condición    |
-| `mustContainOne`    | Si (`String`) | Opcional            | Valida que el String a evaluar contenga al menos un carácter incluido en el String de la condición |
+| Regla	              | Descripción                                                                                        |
+|---------------------|----------------------------------------------------------------------------------------------------|
+| `required`	      | Valida que el String a evaluar sea diferente de un vacío y null                                    |
+| `length`	          | Valida que el String a evaluar tenga la longitud exacta de caracteres a la condición               |
+| `minLength`	      | Valida que el String a evaluar tenga una longitud de caracteres minima a la condición              |
+| `maxLength`	      | Valida que el String a evaluar tenga una longitud maxima de caracteres a la condición              |
+| `email`             | Valida que el String a evaluar tenga formato de email                                              |
+| `numericFormat`     | Valida que el String a evaluar tenga un formato numérico                                           |
+| `shouldOnlyContain` | Valida que el String a evaluar solo contenga caracteres incluidos en el String de condición        |
+| `onlyNumbers`       | Valida que el String a evaluar solo contenga caracteres numéricos                                  |
+| `notContain`        | Valida que el String a evaluar no contenga algún carácter incluido en el String de la condición    |
+| `mustContainOne`    | Valida que el String a evaluar contenga al menos un carácter incluido en el String de la condición |
 
 Las reglas predefinidas pueden simplificar la definición de un Validator.
 
 ```java
-final Validator validator = new Validator.Builder()
-    .required("Requerido")
-    .minLength(6, "Se requieren más caracteres")
-    .onlyNumbers("Solo números")
-    .build();
+public class HelloValidator {
+      
+    Validator validator = new Validator.Builder()
+            .required("Requerido")
+            .minLength(6, "Se requieren más caracteres")
+            .onlyNumbers("Solo números")
+            .build();
+    
+}
 ```
 
 El mensaje en las reglas predefinidas es opcional, ya que Validator ofrece mensajes predeterminados para cada una.
 
 ```java
-final Validator validator = new Validator.Builder()
-    .required()
-    .minLength(6)
-    .onlyNumbers()
-    .build();
+public class HelloValidator {
+
+   Validator validator = new Validator.Builder()
+          .required()
+          .minLength(6)
+          .onlyNumbers()
+          .build();
+    
+}
 ```
 
 Los mensajes predeterminados se encuentran en las clases `MessagesEn` para los mensajes en inglés, y en `MessagesEs`
@@ -196,48 +254,60 @@ para los mensajes en español, ambas clases implementan la interfaz `Messages`.
 Validator posee un método estático llamado `.setMessages` el cual recibe como parámetro un objeto del tipo `Messages`.
 
 ```java
-Validator.setMessages(new MessagesEs());
+public class HelloValidator {
+    
+  public static void main(String[] args) {
+    Validator.setMessages(new MessagesEs());
+  }
+  
+}
 ```
 
 La interfaz `Messages` permite crear mensajes predeterminados personalizados.
 
 ```java
-Validator.setMessages(new Messages() {
+public class HelloValidator {
 
-    @Override
-    public String getNotMatchMessage() { return "Mensaje personalizado"; }
+  public static void main(String[] args) {
+    Validator.setMessages(new Messages() {
 
-    @Override
-    public String getRequireMessage() { return "Mensaje personalizado"; }
+      @Override
+      public String getNotMatchMessage() { return "Mensaje personalizado"; }
 
-    @Override
-    public String getLengthMessage() { return "Mensaje personalizado"; }
+      @Override
+      public String getRequireMessage() { return "Mensaje personalizado"; }
 
-    @Override
-    public String getMinLengthMessage() { return "Mensaje personalizado"; }
+      @Override
+      public String getLengthMessage() { return "Mensaje personalizado"; }
 
-    @Override
-    public String getMaxLengthMessage() { return "Mensaje personalizado"; }
+      @Override
+      public String getMinLengthMessage() { return "Mensaje personalizado"; }
 
-    @Override
-    public String getEmailMessage() { return "Mensaje personalizado"; }
+      @Override
+      public String getMaxLengthMessage() { return "Mensaje personalizado"; }
 
-    @Override
-    public String getNumericFormat() { return "Mensaje personalizado"; }
+      @Override
+      public String getEmailMessage() { return "Mensaje personalizado"; }
 
-    @Override
-    public String getShouldOnlyContainMessage() { return "Mensaje personalizado"; }
+      @Override
+      public String getNumericFormat() { return "Mensaje personalizado"; }
 
-    @Override
-    public String getOnlyNumbersMessage() { return "Mensaje personalizado"; }
+      @Override
+      public String getShouldOnlyContainMessage() { return "Mensaje personalizado"; }
 
-    @Override
-    public String getNotContainMessage() { return "Mensaje personalizado"; }
+      @Override
+      public String getOnlyNumbersMessage() { return "Mensaje personalizado"; }
 
-    @Override
-    public String getMustContainOneMessage() { return "Mensaje personalizado"; }
+      @Override
+      public String getNotContainMessage() { return "Mensaje personalizado"; }
 
-});
+      @Override
+      public String getMustContainOneMessage() { return "Mensaje personalizado"; }
+
+    });
+  }
+    
+}
 ```
 
 ##### Nota:
@@ -252,36 +322,48 @@ se recomienda definir los Validators por contexto, con el fin de definir nuestro
 lógica es posible, ya que Validator incluye el método `.copy` el cual genera copias del mismo.
 
 ```java
-class Validators {
+public class Validators {
 
-    public static final Validator email = new Validator.Builder()
-        .required()
-        .email()
-        .build();
+  public static final Validator email = new Validator.Builder()
+          .required()
+          .email()
+          .build();
 
-    public static final Validator password = new Validator.Builder()
-        .required()
-        .minLength(6)
-        .build();
+  public static final Validator password = new Validator.Builder()
+          .required()
+          .minLength(6)
+          .build();
 
 }
 
-class Login {
+public class Login {
 
-    private final Validator emailValidator = Validators.email.copy();
-    private final Validator pswValidator = Validators.password.copy();
+  private final Validator emailValidator = Validators.email.copy();
+  private final Validator pswValidator = Validators.password.copy();
 
-    private String email, psw, pswConfirmation;
+  private String email, psw, pswConfirmation;
 
-    public Login() {
-        emailValidator.onNotPass(System.out::println);
-        passwordValidator.onNotPass(System.out::println);
+  public Login() {
+    emailValidator.onNotPass(System.out::println);
+    passwordValidator.onNotPass(System.out::println);
+  }
+
+  // Utilizando eventos.
+  public void submit() {
+    if (!emailValidator.isValid(email) || !pswValidator.compare(psw, pswConfirmation)) return;
+    // TODO
+  }
+
+  // Utilizando excepciones
+  public void submit() {
+    try {
+      emailValidator.isValidOrFail(email);
+      pswValidator.compareOrFail(psw, pswConfirmation);
+      // TODO
+    } catch (InvalidEvaluationException e) {
+      System.out.println(e.getMessage());
     }
-
-    public void submit() {
-        if (!emailValidator.isValid(email) || !pswValidator.compare(psw, pswConfirmation)) return;
-        // ...
-    }
+  }
 
 }
 ```
