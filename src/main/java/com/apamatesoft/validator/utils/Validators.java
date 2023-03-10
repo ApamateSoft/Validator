@@ -1,6 +1,12 @@
 package com.apamatesoft.validator.utils;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZoneId;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.Locale;
 import static com.apamatesoft.validator.utils.RegularExpression.*;
 import static java.lang.Double.parseDouble;
@@ -163,7 +169,9 @@ public class Validators {
      * @return true if it meets the condition.
      */
     public static boolean dateFormat(String evaluate, String format) {
+        if (!required(evaluate)) return false;
         final SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.getDefault());
+        if (evaluate.length()!=format.length()) return false;
         sdf.setLenient(false);
         try {
             sdf.parse(evaluate);
@@ -344,7 +352,7 @@ public class Validators {
      * Validates that the value of the string is in the established range.
      * @param evaluate String to evaluate.
      * @param min minimum value.
-     * @param max maximum value
+     * @param max maximum value.
      * @return true if it meets the condition.
      */
     public static boolean rangeValue(String evaluate, double min, double max) {
@@ -353,6 +361,73 @@ public class Validators {
         return (value >= min) && (value <= max);
     }
 
+    /**
+     * Validates that the period from the entered date to the current date is greater than or equal to a minimum age.
+     * <br/>
+     * <b>warning: </b>
+     * This function makes use of the current date of the device.
+     * @param evaluate String to evaluate.
+     * @param format Describing the date and time format.
+     * @param age minimum age.
+     * @return true if it meets the condition.
+     */
+    public static boolean minAge(String evaluate, String format, int age) {
+        if (!required(evaluate)) return false;
+        if (!dateFormat(evaluate, format)) return false;
+        LocalDate now = new Date()
+            .toInstant()
+            .atZone(ZoneId.systemDefault())
+            .toLocalDate();
+        SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.getDefault());
+        sdf.setLenient(false);
+        try {
+            LocalDate evaluateDate = sdf.parse(evaluate).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            Period period = evaluateDate.until(now);
+            int periodInYears = period.getYears();
+            return periodInYears >= age;
+        } catch (ParseException e) {
+            return false;
+        }
+    }
+
+    /**
+     * Valid that the entered date has not expired.
+     * <br/>
+     * <b>warning: </b>
+     * This function makes use of the current date of the device.
+     * @param evaluate String to evaluate.
+     * @param format Describing the date and time format.
+     * @return true if it meets the condition.
+     */
+    public static boolean expirationDate(String evaluate, String format) {
+        if (!required(evaluate)) return false;
+        if (!dateFormat(evaluate, format)) return false;
+        Date now = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.getDefault());
+        sdf.setLenient(false);
+        try {
+            Date evaluateDate = sdf.parse(evaluate);
+            return now.getTime() > evaluateDate.getTime();
+        } catch (ParseException e) {
+            return false;
+        }
+    }
+
+    /**
+     * Valid that a regular expression repeats a minimum amount.
+     * @param evaluate Valid that the entered date has not expired.
+     * @param regExp Regular expression.
+     * @param min minimum value.
+     * @return true if it meets the condition.
+     */
+    public static boolean mustContainMinimum(String evaluate, String regExp, int min) {
+        if (!required(evaluate)) return false;
+        int count = 0;
+        for (char c : evaluate.toCharArray())
+            if (compile(regExp).matcher(c+"").find())
+                ++count;
+        return count >= min;
+    }
     //</editor-fold">
 
 }

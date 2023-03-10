@@ -1,12 +1,3 @@
-// TODO:
-//  - Contener al menos n cantidad de caracteres.?
-//  - mayor a cierta edad.
-//  - password?
-//  - RegEgx: [
-//  - nombre *,
-//  - credit card, (number, expiration, cvv) *
-//  - filepath]
-//  - Eliminar el método any o simplificar el uso.
 package com.apamatesoft.validator;
 
 import com.apamatesoft.validator.utils.Validators;
@@ -24,8 +15,7 @@ import static java.lang.String.format;
 /**
  * <h1>Validator</h1>
  *
- * Validator is a library written in Java, which aims to simplify the validation of Strings by declaring a series of
- * rules.
+ * It facilitates the validation of Strings in java by chaining a series of rules.
  *
  * @author ApamateSoft
  * @version 1.2.0
@@ -730,6 +720,93 @@ public class Validator implements Cloneable {
     }
     //</editor-fold>
 
+    //<editor-fold default-state="collapsed" desc="minAge">
+    /**
+     * Validates that the period from the entered date to the current date is greater than or equal to a minimum age.
+     * <br/>
+     * <b>warning: </b>
+     * <ul>
+     *     <li>This function makes use of the current date of the device.</li>
+     *     <li>It is recommended to implement the {@link #dateFormat(String, String)} rule first.</li>
+     * </ul>
+     * This function makes use of the current date of the device.
+     * @param format Describing the date and time format.
+     * @param age minimum age.
+     * @param message Error message.
+     */
+    public void minAge(String format, int age, String message) {
+        rule( format(message, age), it -> Validators.minAge(it, format, age) );
+    }
+
+    /**
+     * Validates that the period from the entered date to the current date is greater than or equal to a minimum age.
+     * <br/>
+     * <b>warning: </b>
+     * <ul>
+     *     <li>This function makes use of the current date of the device.</li>
+     *     <li>It is recommended to implement the {@link #dateFormat(String)} rule first.</li>
+     * </ul>
+     * @param format Describing the date and time format.
+     * @param age minimum age.
+     */
+    public void minAge(String format, int age) {
+        minAge(format, age, messages.getMinAgeMessage());
+    }
+    //</editor-fold>
+
+    //<editor-fold default-state="collapsed" desc="expirationDate">
+    /**
+     * Valid that the entered date has not expired.
+     * <br/>
+     * <b>warning: </b>
+     * <ul>
+     *     <li>This function makes use of the current date of the device.</li>
+     *     <li>It is recommended to implement the {@link #dateFormat(String, String)} rule first.</li>
+     * </ul>
+     * This function makes use of the current date of the device.
+     * @param format Describing the date and time format.
+     * @param message Error message.
+     */
+    public void expirationDate(String format, String message) {
+        rule( message, it -> Validators.expirationDate(it, format) );
+    }
+
+    /**
+     * Valid that the entered date has not expired.
+     * <br/>
+     * <b>warning: </b>
+     * <ul>
+     *     <li>This function makes use of the current date of the device.</li>
+     *     <li>It is recommended to implement the {@link #dateFormat(String)} rule first.</li>
+     * </ul>
+     * @param format Describing the date and time format.
+     */
+    public void expirationDate(String format) {
+        expirationDate(format, messages.getExpirationDateMessage());
+    }
+    //</editor-fold>
+
+    //<editor-fold default-state="collapsed" desc="mustContainMinimum">
+    /**
+     * Valid that a regular expression repeats a minimum amount.
+     * @param regExp Regular expression.
+     * @param min minimum value.
+     * @param message Error message.
+     */
+    public void mustContainMinimum(String regExp, int min, String message) {
+        rule( format(message, min, regExp), it -> Validators.mustContainMinimum(it, regExp, min) );
+    }
+
+    /**
+     * Valid that a regular expression repeats a minimum amount.
+     * @param regExp Regular expression.
+     * @param min minimum value.
+     */
+    public void mustContainMinimum(String regExp, int min) {
+        mustContainMinimum(regExp, min, messages.getMustContainMinimumMessage());
+    }
+    //</editor-fold>
+
     //</editor-fold>
 
     //</editor-fold>
@@ -1419,6 +1496,99 @@ public class Validator implements Cloneable {
          */
         public Builder rangeValue(double min, double max) {
             return rangeValue(min, max, messages.getRangeValueMessage());
+        }
+        //</editor-fold>
+
+        //<editor-fold default-state="collapsed" desc="minAge">
+        /**
+         * Validates that the period from the entered date to the current date is greater than or equal to a minimum age.
+         * <br/>
+         * <b>warning: </b>
+         * <ul>
+         *     <li>This function makes use of the current date of the device.</li>
+         *     <li>It is recommended to implement the {@link #dateFormat(String, String)} rule first.</li>
+         * </ul>
+         * This function makes use of the current date of the device.
+         * @param format Describing the date and time format.
+         * @param age minimum age.
+         * @param message Error message.
+         * @return Builder
+         */
+        public Builder minAge(String format, int age, String message) {
+            return rule( format(message, age), it -> Validators.minAge(it, format, age) );
+        }
+
+        /**
+         * Validates that the period from the entered date to the current date is greater than or equal to a minimum age.
+         * <br/>
+         * <b>warning: </b>
+         * <ul>
+         *     <li>This function makes use of the current date of the device.</li>
+         *     <li>It is recommended to implement the {@link #dateFormat(String)} rule first.</li>
+         * </ul>
+         * @param format Describing the date and time format.
+         * @param age minimum age.
+         * @return Builder
+         */
+        public Builder minAge(String format, int age) {
+            return minAge(format, age, messages.getMinAgeMessage());
+        }
+        //</editor-fold>
+
+        //<editor-fold default-state="collapsed" desc="expirationDate">
+        /**
+         * Valid that the entered date has not expired.
+         * <br/>
+         * <b>warning: </b>
+         * <ul>
+         *     <li>This function makes use of the current date of the device.</li>
+         *     <li>It is recommended to implement the {@link #dateFormat(String, String)} rule first.</li>
+         * </ul>
+         * This function makes use of the current date of the device.
+         * @param format Describing the date and time format.
+         * @param message Error message.
+         * @return Builder
+         */
+        public Builder expirationDate(String format, String message) {
+            return rule( message, it -> Validators.expirationDate(it, format) );
+        }
+
+        /**
+         * Valid that the entered date has not expired.
+         * <br/>
+         * <b>warning: </b>
+         * <ul>
+         *     <li>This function makes use of the current date of the device.</li>
+         *     <li>It is recommended to implement the {@link #dateFormat(String)} rule first.</li>
+         * </ul>
+         * @param format Describing the date and time format.
+         * @return Builder
+         */
+        public Builder expirationDate(String format) {
+            return expirationDate(format, messages.getExpirationDateMessage());
+        }
+        //</editor-fold>
+
+        //<editor-fold default-state="collapsed" desc="mustContainMinimum">
+        /**
+         * Valid that a regular expression repeats a minimum amount.
+         * @param regExp Regular expression.
+         * @param min minimum value.
+         * @param message Error message.
+         * @return Builder
+         */
+        public Builder mustContainMinimum(String regExp, int min, String message) {
+            return rule( format(message, min, regExp), it -> Validators.mustContainMinimum(it, regExp, min) );
+        }
+
+        /**
+         * Valid that a regular expression repeats a minimum amount.
+         * @param regExp Regular expression.
+         * @param min minimum value.
+         * @return Builder
+         */
+        public Builder mustContainMinimum(String regExp, int min) {
+            return mustContainMinimum(regExp, min, messages.getMustContainMinimumMessage());
         }
         //</editor-fold>
 

@@ -31,4 +31,7 @@ public interface Messages {
     String getRangeValueMessage();
     String getNumberPatternMessage();
     String getDateFormatMessage();
+    String getMinAgeMessage();
+    String getExpirationDateMessage();
+    String getMustContainMinimumMessage();
 }

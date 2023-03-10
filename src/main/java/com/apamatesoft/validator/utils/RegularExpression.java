@@ -5,6 +5,9 @@ public class RegularExpression {
 
     public static final String NUMBERS = "^\\d+$";
     public static final String ALPHABET = "^[a-zA-Z]+$";
+    public static final String ALPHABET_UPPERCASE = "^[A-Z]+$";
+    public static final String ALPHABET_LOWERCASE = "^[a-z]+$";
+    public static final String SPECIAL_CHARACTERS = "^[^A-z\\s\\d][\\\\\\^]?$";
     public static final String ALPHABET_ES = "^[a-zA-ZáéíóúñÁÉÍÓÚÑ]+$";
     public static final String ALPHA_NUMERIC = "^[a-zA-Z0-9]+$";
     public static final String ALPHA_NUMERIC_ES = "^[a-zA-Z0-9]+$";

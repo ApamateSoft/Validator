@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class DateFormatTest {
 
-    private static final String[] NOT_PERMIT = { null, "", "example", "", "21091991", "21-09-1991", "1991/09/21", "09/21/1991" };
+    private static final String[] NOT_PERMIT = { null, "", "example", "21091991", "21-09-1991", "1991/09/21", "09/21/1991" };
     private static final String[] PERMIT = { "21/08/1991" };
     private static final String FORMAT ="dd/MM/yyyy";
 

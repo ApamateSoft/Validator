@@ -152,4 +152,19 @@ public class MessagesEn implements Messages {
         return "It does not match the specified date format %s.";
     }
 
+    @Override
+    public String getMinAgeMessage() {
+        return "you must be at least %d years old";
+    }
+
+    @Override
+    public String getExpirationDateMessage() {
+        return "expired date";
+    }
+
+    @Override
+    public String getMustContainMinimumMessage() {
+        return "must contain at least %d characters matching the following expression %s";
+    }
+
 }
