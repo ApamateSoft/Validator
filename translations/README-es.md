@@ -10,57 +10,60 @@ Facilita la validación de Strings en java encadenando una serie de reglas.
 Se ha renombrado la regla `numericFormat` a `number`.
 
 Se han agregado las siguientes reglas:
-- `rangeLength`
-- `rangeLength`
-- `regExp`
-- `link`
-- `wwwLink`
+- `dateFormat`
+- `expirationDate`
 - `httpLink`
 - `httpsLink`
 - `ip`
 - `ipv4`
 - `ipv6`
+- `link`
+- `maxValue`
+- `minAge`
+- `minValue`
+- `mustContainMinimum`
+- `mustContainOne`
+- `name`
+- `notContain`
+- `numberPattern`
+- `onlyAlphanumeric`
+- `onlyCharacters`
+- `rangeLength`
+- `rangeValue`
+- `regExp`
 - `time`
 - `time12`
 - `time24`
-- `onlyCharacters`
-- `onlyAlphanumeric`
-- `numberPattern`
-- `dateFormat`
-- `notContain`
-- `mustContainOne`
-- `maxValue`
-- `minValue`
-- `rangeValue`
-- `minAge`
-- `expirationDate`
-- `mustContainMinimum`
+- `wwwLink`
 
 ## Instalación
 
 ### Descargar el JAR
-[Validator-1.1.0.jar](https://repo1.maven.org/maven2/io/github/ApamateSoft/Validator/1.1.0/Validator-1.1.0.jar)
+[Validator-1.2.0.jar](https://repo1.maven.org/maven2/io/github/ApamateSoft/Validator/1.2.0/Validator-1.2.0.jar)
 
 ### Maven
 ```xml
 <dependency>
     <groupId>io.github.ApamateSoft</groupId>
     <artifactId>Validator</artifactId>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
 </dependency>
 ```
 
 ### Gradle
 ```groovy
-implementation group: 'io.github.ApamateSoft', name: 'Validator', version: '1.1.0'
+implementation group: 'io.github.ApamateSoft', name: 'Validator', version: '1.2.0'
 ```
 
 ## Empezando
 
 ```java
+import com.apamatesoft.validator.Validator;
+
 public class HelloValidator {
 
   public static void main(String[] args) {
+      
     // Instanciando un nuevo validator
     Validator validator = new Validator();
 
@@ -70,7 +73,7 @@ public class HelloValidator {
       return evaluate!=null;
     } );
 
-    // Secunda regla, solo se aprobará si el String a evaluar es igual a "xxx", en caso contrario mostrara el mensaje
+    // Segunda regla, solo se aprobará si el String a evaluar es igual a "xxx", en caso contrario mostrara el mensaje
     // "El texto es diferente de 'xxx'"
     validator.rule("El texto es diferente de 'xxx'", (String evaluate) -> {
       return evaluate.equals("xxx");
@@ -81,8 +84,8 @@ public class HelloValidator {
 ```
 
 ##### Nota:
-- Se puede agregar n cantidad de reglas.
-- Validator aplicará una a una las reglas, en el orden en que fueron agregadas.
+- Se puede agregar una cantidad indeterminada de reglas.
+- Las reglas serán evaluadas en el orden en el cual fueron agregadas.
 - Al momento de fallar una regla, se ignoran las restantes.
 - Un String se considera válido, solo si este, pasa todas las reglas.
 
@@ -91,6 +94,8 @@ public class HelloValidator {
 Puedes crear una instancia de Validator utilizando `.Builder()`. A continuación el ejemplo anterior simplificado.
 
 ```java
+import com.apamatesoft.validator.Validator;
+
 public class HelloValidator {
 
   Validator validator = new Validator.Builder()
@@ -101,11 +106,13 @@ public class HelloValidator {
 }
 ```
 
-#### Validando un String
+### Validando un String
 
 Se hace uso del método `.isValid` para saber si el String es válido.
 
 ```java
+import com.apamatesoft.validator.Validator;
+
 public class HelloValidator {
 
   Validator validator = new Validator.Builder()
@@ -120,11 +127,13 @@ public class HelloValidator {
 }
 ```
 
-En caso de querer comparar dos String, lo cual es muy útil para validar contraseñas, se puede hacer uso del método
+En caso de querer comparar dos String, *lo cual es muy útil para validar contraseñas*, se puede hacer uso del método
 `.compare`, Opcionalmente se puede utilizar el método `.setNotMatchMessage` para definir el mensaje de error en caso de
 no coincidir.
 
 ```java
+import com.apamatesoft.validator.Validator;
+
 public class HelloValidator {
 
   Validator validator = new Validator.Builder()
@@ -140,10 +149,15 @@ public class HelloValidator {
 }
 ```
 
-#### Capturando los mensajes de error
+## Capturando los mensajes de error
+
+### Trabajando con eventos
+
 El evento `.onNotPass` se ejecuta al fallar una regla cuando es evaluada y devuelve el mensaje asociado a la misma.
 
 ```java
+import com.apamatesoft.validator.Validator;
+
 public class HelloValidator {
 
   public static void main(String[] args) {
@@ -159,14 +173,19 @@ public class HelloValidator {
     
 }
 ```
+### Trabajar con excepciones
 
 Si prefiere no utilizar el evento `.onNotPass`, puedes usar los métodos `.isValidOrFail` y `.compareOrFail` en
 sustitución de los métodos `.isValid` y `.comapre` respectivamente.
 
-La principal diferencia es que estos métodos no retorna valor alguno y en caso de fallar arrojan una excepción del tipo
-`InvalidEvaluationException` que contiene el mensaje de error de la regla junto con el valor del String a evaluar.
+La principal diferencia es que estos métodos no retorna valor alguno y en caso de fallar, en cambio, arrojan una 
+excepción del tipo `InvalidEvaluationException` que contiene el mensaje de error de la regla junto con el valor del
+String a evaluar.
 
 ```java
+import com.apamatesoft.validator.Validator;
+import com.apamatesoft.validator.exceptions.InvalidEvaluationException;
+
 class HelloValidator {
 
     Validator validator = new Validator.Builder()
@@ -185,26 +204,51 @@ class HelloValidator {
 }
 ```
 
-#### Reglas predefinidas
+## Reglas predefinidas
 
 Validator ofrece una serie de reglas predefinidas.
 
-| Regla	              | Descripción                                                                                        |
-|---------------------|----------------------------------------------------------------------------------------------------|
-| `required`	      | Valida que el String a evaluar sea diferente de un vacío y null                                    |
-| `length`	          | Valida que el String a evaluar tenga la longitud exacta de caracteres a la condición               |
-| `minLength`	      | Valida que el String a evaluar tenga una longitud de caracteres minima a la condición              |
-| `maxLength`	      | Valida que el String a evaluar tenga una longitud maxima de caracteres a la condición              |
-| `email`             | Valida que el String a evaluar tenga formato de email                                              |
-| `numericFormat`     | Valida que el String a evaluar tenga un formato numérico                                           |
-| `shouldOnlyContain` | Valida que el String a evaluar solo contenga caracteres incluidos en el String de condición        |
-| `onlyNumbers`       | Valida que el String a evaluar solo contenga caracteres numéricos                                  |
-| `notContain`        | Valida que el String a evaluar no contenga algún carácter incluido en el String de la condición    |
-| `mustContainOne`    | Valida que el String a evaluar contenga al menos un carácter incluido en el String de la condición |
+| Regla	               | Descripción                                                                                              |
+|----------------------|----------------------------------------------------------------------------------------------------------|
+| `dateFormat`	       | Valida que el String a evaluar coincida con el formato de fecha especificado                             |
+| `email`              | Valida que el String tenga un formato de correo electrónico                                              |
+| `expirationDate`     | Valida que la fecha ingresada no haya expirado                                                           |
+| `httpLink`           | Valida que el String sea un enlace con formato http                                                      |
+| `httpsLink`          | Valida que el String sea un enlace con formato https                                                     |
+| `ip`                 | Valida que el String sea un formato de ip                                                                |
+| `ipv4`               | Valida que el String sea un formato de ipv4                                                              |
+| `ipv6`               | Valida que el String sea un formato de ipv6                                                              |
+| `length`	           | Valida que el String tenga una longitud exacta de caracteres                                             |
+| `link`	           | Valida que el String sea un formato de enlace                                                            |
+| `maxLength`	       | Valida que la longitud del String no sea mayor que la condición                                          |
+| `maxValue`	       | Valida que el valor del String no sea mayor que la condición                                             |
+| `minAge`	           | Valida que el período desde la fecha ingresada hasta la fecha actual sea mayor o igual a una edad mínima |
+| `minLength`	       | Valida que la longitud del String no sea menor que la condición                                          |
+| `minValue`	       | Valida que el valor del String no sea menor que la condición                                             |
+| `mustContainMinimum` | Valida que una expresión regular se repita una cantidad mínima                                           |
+| `mustContainOne`     | Valida que el String contenga al menos un carácter incluido en la condición                              |
+| `name`               | Valida que el String sea un nombre propio                                                                |
+| `notContain`         | Valida que el String no contenga ningún carácter incluido en la condición                                |
+| `number`             | Valida que el String sea un formato númerico                                                             |
+| `numberPattern`      | Valida que el String coincida con el patrón, reemplazando las x con números                              |
+| `onlyAlphanumeric`   | Valida que el String contenga solo caracteres alfanuméricos                                              |
+| `onlyCharacters`     | Valida que el String contenga solo caracteres alfabéticos                                                |
+| `onlyNumbers`        | Valida que el String a evaluar solo contenga caracteres numéricos                                        |
+| `rangeLength`        | Valida que la longitud del String esté en el rango establecido                                           |
+| `rangeValue`         | Valida que el valor del String esté en el rango establecido                                              |
+| `regExp`             | Valida que el String coincida con la expresión regular                                                   |
+| `required`	       | Valida que el String sea diferente de nulo y vacío.                                                      |
+| `shouldOnlyContain`  | Valida que el String solo contenga caracteres incluidos en la condición                                  |
+| `time`               | Valida que el String sea un formato de hora                                                              |
+| `time12`             | Valida que el String sea una hora con formato de 12 horas                                                |
+| `time24`             | Valida que el String sea una hora con formato de 24 horas                                                |
+| `wwwLink`            | Valida que el String sea un enlace con formato www                                                       |
 
 Las reglas predefinidas pueden simplificar la definición de un Validator.
 
 ```java
+import com.apamatesoft.validator.Validator;
+
 public class HelloValidator {
       
     Validator validator = new Validator.Builder()
@@ -219,6 +263,8 @@ public class HelloValidator {
 El mensaje en las reglas predefinidas es opcional, ya que Validator ofrece mensajes predeterminados para cada una.
 
 ```java
+import com.apamatesoft.validator.Validator;
+
 public class HelloValidator {
 
    Validator validator = new Validator.Builder()
@@ -248,12 +294,16 @@ para los mensajes en español, ambas clases implementan la interfaz `Messages`.
 | `mustContainOne`    | At least one of the following characters is required: %s | Se requiere al menos uno de los siguientes caracteres |
 
 ##### Nota:
-- Por defecto se muestran los mensajes en Ingles
+- Por defecto se muestran los mensajes en Inglés.
 
-### Cambiar los mensajes por defecto
+## Cambiar los mensajes por defecto
 Validator posee un método estático llamado `.setMessages` el cual recibe como parámetro un objeto del tipo `Messages`.
 
+### Cambiando el idioma de los mensajes a español.
+
 ```java
+import com.apamatesoft.validator.Validator;
+
 public class HelloValidator {
     
   public static void main(String[] args) {
@@ -262,6 +312,8 @@ public class HelloValidator {
   
 }
 ```
+
+### Mensajes personalizados.
 
 La interfaz `Messages` permite crear mensajes predeterminados personalizados.
 

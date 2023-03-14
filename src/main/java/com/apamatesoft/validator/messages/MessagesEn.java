@@ -167,4 +167,9 @@ public class MessagesEn implements Messages {
         return "must contain at least %d characters matching the following expression %s";
     }
 
+    @Override
+    public String getNameMessage() {
+        return "You must enter a valid personal name";
+    }
+
 }

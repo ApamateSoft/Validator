@@ -34,4 +34,5 @@ public interface Messages {
     String getMinAgeMessage();
     String getExpirationDateMessage();
     String getMustContainMinimumMessage();
+    String getNameMessage();
 }

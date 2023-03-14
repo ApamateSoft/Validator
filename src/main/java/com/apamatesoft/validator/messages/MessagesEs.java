@@ -149,12 +149,12 @@ public class MessagesEs implements Messages {
 
     @Override
     public String getDateFormatMessage() {
-        return "No coincide con el formato de fecha especificado %s.";
+        return "No coincide con el formato de fecha especificado %s";
     }
 
     @Override
     public String getMinAgeMessage() {
-        return "se debe tener al menos %d años";
+        return "Se debe tener al menos %d años";
     }
 
     @Override
@@ -164,7 +164,12 @@ public class MessagesEs implements Messages {
 
     @Override
     public String getMustContainMinimumMessage() {
-        return "debe contener al menos %d caracteres que cumplan la siguiente expresión %s";
+        return "Debe contener al menos %d caracteres que cumplan la siguiente expresión %s";
+    }
+
+    @Override
+    public String getNameMessage() {
+        return "Debe introducir un nombre personal válido";
     }
 
 }

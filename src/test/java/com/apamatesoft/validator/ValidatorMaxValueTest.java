@@ -15,8 +15,8 @@ import static org.mockito.Mockito.verify;
 public class ValidatorMaxValueTest {
 
     private static final double CONDITION = 2.5;
-    private static final String[] NOT_PERMIT = { null, "", "2.5", "1,2", "-2.6", "text" };
-    private static final String[] PERMIT = { "2.51", "30", "91" };
+    private static final String[] NOT_PERMIT = { null, "", "text", "2.51", "30", "91", "1,2", "2.6",  };
+    private static final String[] PERMIT = { "2.5", "0.0", "-30", "2.49" };
     private static final String MESSAGES = format(new MessagesEn().getMaxValueMessage(), CONDITION);
 
     private Validator validator, builder;

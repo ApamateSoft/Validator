@@ -16,7 +16,7 @@ public class Validators {
 
     //<editor-fold default-state="collapsed" desc="LENGTH VALIDATORS">
     /**
-     * Validate that the String is different from null and empty.
+     * Validates that the String is different from null and empty.
      * @param evaluate String to evaluate.
      * @return true if it meets the condition.
      */
@@ -59,7 +59,7 @@ public class Validators {
     }
 
     /**
-     * valid that the length of the String is between the minimum and the maximum.
+     * Validates that the length of the String is between a minimum and a maximum.
      * @param evaluate String to evaluate.
      * @param min Minimum character length.
      * @param max Maximum character length.
@@ -131,57 +131,6 @@ public class Validators {
     }
 
     /**
-     * Evaluate that the text matches the pattern, replacing the x's with numbers.
-     * <br/> <br/>
-     * <b>Example:</b>
-     * <br/>
-     * For the pattern +xx (xxx) xxx-xx-xx, the following Strings are valid:
-     * <ul>
-     *     <li>+12 (345) 678-90-12</li>
-     *     <li>+xx (345) 678-90-12</li>
-     *     <li>+xx (xxx) xxx-xx-xx</li>
-     * <ul/>
-     * @param evaluate String to evaluate.
-     * @param pattern String with the pattern.
-     * @return true if it meets the condition.
-     */
-    public static boolean numberPattern(String evaluate, String pattern) {
-        if (evaluate==null || pattern==null) return false;
-        if (evaluate.length()!=pattern.length()) return false;
-        for (int i = 0; i < pattern.length(); i++) {
-            char patternChar = pattern.charAt(i);
-            char evaluateChar = evaluate.charAt(i);
-            if (patternChar=='x' || patternChar == 'X') {
-                if (!onlyNumbers( String.valueOf(evaluateChar)) )
-                    if (patternChar!=evaluateChar)
-                        return false;
-            } else {
-                if (patternChar!=evaluateChar) return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Validates that the text to evaluate matches the specified date format.
-     * @param evaluate String to evaluate.
-     * @param format Describing the date and time format.
-     * @return true if it meets the condition.
-     */
-    public static boolean dateFormat(String evaluate, String format) {
-        if (!required(evaluate)) return false;
-        final SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.getDefault());
-        if (evaluate.length()!=format.length()) return false;
-        sdf.setLenient(false);
-        try {
-            sdf.parse(evaluate);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    /**
      * Validate that the String is a link with https format.
      * @param evaluate String to evaluate.
      * @return true if it meets the condition.
@@ -245,8 +194,66 @@ public class Validators {
     }
 
     /**
-     * Validates that the String is a proper name. (capitalization is ignored). <br/>
-     * Note: Only valid proper names in English.
+     * Evaluate that the text matches the pattern, replacing the x's with numbers.
+     * <br/> <br/>
+     * <b>Example:</b>
+     * <br/>
+     * For the pattern +xx (xxx) xxx-xx-xx, the following Strings are valid:
+     * <ul>
+     *     <li>+12 (345) 678-90-12</li>
+     *     <li>+xx (345) 678-90-12</li>
+     *     <li>+xx (xxx) xxx-xx-xx</li>
+     * <ul/>
+     * @param evaluate String to evaluate.
+     * @param pattern String with the pattern.
+     * @return true if it meets the condition.
+     */
+    public static boolean numberPattern(String evaluate, String pattern) {
+        if (evaluate==null || pattern==null) return false;
+        if (evaluate.length()!=pattern.length()) return false;
+        for (int i = 0; i < pattern.length(); i++) {
+            char patternChar = pattern.charAt(i);
+            char evaluateChar = evaluate.charAt(i);
+            if (patternChar=='x' || patternChar == 'X') {
+                if (!onlyNumbers( String.valueOf(evaluateChar)) )
+                    if (patternChar!=evaluateChar)
+                        return false;
+            } else {
+                if (patternChar!=evaluateChar) return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Validates that the text to evaluate matches the specified date format.
+     * @param evaluate String to evaluate.
+     * @param format Describing the date and time format.
+     * @return true if it meets the condition.
+     */
+    public static boolean dateFormat(String evaluate, String format) {
+        if (!required(evaluate)) return false;
+        final SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.getDefault());
+        if (evaluate.length()!=format.length()) return false;
+        sdf.setLenient(false);
+        try {
+            sdf.parse(evaluate);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    /**
+     * Validates that the String is a proper name. <br/>
+     * <b>Note:</b>
+     * <ul>
+     *     <li>Capitalization is ignored</li>
+     *     <li>
+     *         Only valid proper names in English. to evaluate names in other languages it is recommended to use the
+     *         {@link #regExp(String, String)} function.
+     *     </li>
+     * <ul/>
      * @param evaluate String to evaluate.
      * @return true if it meets the condition.
      */
@@ -334,9 +341,11 @@ public class Validators {
      */
     public static boolean maxValue(String evaluate, double condition) {
         if (!required(evaluate) || !number(evaluate)) return false;
-        return parseDouble(evaluate)>condition;
+        return parseDouble(evaluate)<=condition;
     }
 
+    // TODO: Recomendar utilizar number format antes de esta regla.
+    // TODO
     /**
      * Validate that the value of the String is not less than the condition.
      * @param evaluate String to evaluate.
@@ -345,11 +354,11 @@ public class Validators {
      */
     public static boolean minValue(String evaluate, double condition) {
         if (!required(evaluate) || !number(evaluate)) return false;
-        return parseDouble(evaluate)<condition;
+        return parseDouble(evaluate)>=condition;
     }
 
     /**
-     * Validates that the value of the string is in the established range.
+     * Validate that the value of the String is in the established range.
      * @param evaluate String to evaluate.
      * @param min minimum value.
      * @param max maximum value.

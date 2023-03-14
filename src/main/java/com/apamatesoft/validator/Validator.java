@@ -582,6 +582,39 @@ public class Validator implements Cloneable {
     }
     //</editor-fold>
 
+    //<editor-fold default-state="collapsed" desc="name">
+    /**
+     * Validates that the String is a proper name. <br/>
+     * <b>Note:</b>
+     * <ul>
+     *     <li>Capitalization is ignored</li>
+     *     <li>
+     *         Only valid proper names in English. to evaluate names in other languages it is recommended to use the
+     *         {@link #regExp(String, String)} function.
+     *     </li>
+     * <ul/>
+     * @param message Error message.
+     */
+    public void name(String message) {
+        rule(message, Validators::name);
+    }
+
+    /**
+     * Validates that the String is a proper name. <br/>
+     * <b>Note:</b>
+     * <ul>
+     *     <li>Capitalization is ignored</li>
+     *     <li>
+     *         Only valid proper names in English. to evaluate names in other languages it is recommended to use the
+     *         {@link #regExp(String)} function.
+     *     </li>
+     * <ul/>
+     */
+    public void name() {
+        name(messages.getNameMessage());
+    }
+    //</editor-fold>
+
     //</editor-fold>
 
     //<editor-fold default-state="collapsed" desc="CONTENT RULES">
@@ -879,15 +912,15 @@ public class Validator implements Cloneable {
             return this;
         }
 
-        /**
-         * Validate that the value passes at least one of the validators.
-         * @param message Error message.
-         * @param validators Validators.
-         * @return Builder
-         */
-        public Builder any(String message, Validate... validators) {
-            return rule(message, it -> Arrays.stream(validators).anyMatch( validate -> validate.invoke(it) ) );
-        }
+//        /**
+//         * Validate that the value passes at least one of the validators.
+//         * @param message Error message.
+//         * @param validators Validators.
+//         * @return Builder
+//         */
+//        public Builder any(String message, Validate... validators) {
+//            return rule(message, it -> Arrays.stream(validators).anyMatch( validate -> validate.invoke(it) ) );
+//        }
 
         //<editor-fold default-state="collapsed" desc="LENGTH RULES">
 
@@ -1345,6 +1378,41 @@ public class Validator implements Cloneable {
          */
         public Builder dateFormat(String format) {
             return dateFormat(format, messages.getDateFormatMessage());
+        }
+        //</editor-fold>
+
+        //<editor-fold default-state="collapsed" desc="name">
+        /**
+         * Validates that the String is a proper name. <br/>
+         * <b>Note:</b>
+         * <ul>
+         *     <li>Capitalization is ignored</li>
+         *     <li>
+         *         Only valid proper names in English. to evaluate names in other languages it is recommended to use the
+         *         {@link #regExp(String, String)} function.
+         *     </li>
+         * <ul/>
+         * @param message Error message.
+         * @return Builder
+         */
+        public Builder name(String message) {
+            return rule(message, Validators::name);
+        }
+
+        /**
+         * Validates that the String is a proper name. <br/>
+         * <b>Note:</b>
+         * <ul>
+         *     <li>Capitalization is ignored</li>
+         *     <li>
+         *         Only valid proper names in English. to evaluate names in other languages it is recommended to use the
+         *         {@link #regExp(String)} function.
+         *     </li>
+         * <ul/>
+         * @return Builder
+         */
+        public Builder name() {
+            return name(messages.getNameMessage());
         }
         //</editor-fold>
 
