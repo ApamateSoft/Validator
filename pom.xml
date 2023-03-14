@@ -9,13 +9,12 @@
 
     <groupId>io.github.ApamateSoft</groupId>
     <artifactId>Validator</artifactId>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
     <packaging>jar</packaging>
     <name>Validator</name>
 
     <description>
-        Validador es una librería escrita en Java, que pretende simplificar la validación de Strings declarando una
-        series de reglas.
+        It facilitates the validation of Strings in java by chaining a series of rules.
     </description>
     <url>https://github.com/ApamateSoft/Validator</url>
 

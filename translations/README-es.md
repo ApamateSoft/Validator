@@ -4,37 +4,36 @@ Versión en [Inglés](../README.md)
 
 Facilita la validación de Strings en java encadenando una serie de reglas.
 
-## Notas de version
+## Notas de version 1.2.0
 
-### Versión 1.2.0
-Se ha renombrado la regla `numericFormat` a `number`.
-
-Se han agregado las siguientes reglas:
-- `dateFormat`
-- `expirationDate`
-- `httpLink`
-- `httpsLink`
-- `ip`
-- `ipv4`
-- `ipv6`
-- `link`
-- `maxValue`
-- `minAge`
-- `minValue`
-- `mustContainMinimum`
-- `mustContainOne`
-- `name`
-- `notContain`
-- `numberPattern`
-- `onlyAlphanumeric`
-- `onlyCharacters`
-- `rangeLength`
-- `rangeValue`
-- `regExp`
-- `time`
-- `time12`
-- `time24`
-- `wwwLink`
+- Se ha renombrado el package id de `com.apamatesoft.validator` a `io.github.ApamateSoft.validator`. 
+- Se ha renombrado la regla `numericFormat` a `number`.
+- Se han agregado las siguientes reglas predefinidas:
+  - `dateFormat`
+  - `expirationDate`
+  - `httpLink`
+  - `httpsLink`
+  - `ip`
+  - `ipv4`
+  - `ipv6`
+  - `link`
+  - `maxValue`
+  - `minAge`
+  - `minValue`
+  - `mustContainMinimum`
+  - `mustContainOne`
+  - `name`
+  - `notContain`
+  - `numberPattern`
+  - `onlyAlphanumeric`
+  - `onlyCharacters`
+  - `rangeLength`
+  - `rangeValue`
+  - `regExp`
+  - `time`
+  - `time12`
+  - `time24`
+  - `wwwLink`
 
 ## Instalación
 
@@ -58,28 +57,28 @@ implementation group: 'io.github.ApamateSoft', name: 'Validator', version: '1.2.
 ## Empezando
 
 ```java
-import com.apamatesoft.validator.Validator;
+import io.github.ApamateSoft.validator.Validator;
 
 public class HelloValidator {
 
   public static void main(String[] args) {
-      
+
     // Instanciando un nuevo validator
     Validator validator = new Validator();
 
     // Primera regla, solo se aprobará si el String a evaluar es diferente de null, en caso contrario mostrara el
     // mensaje "Ingrese un texto diferente de null"
     validator.rule("Ingrese un texto diferente de null", (String evaluate) -> {
-      return evaluate!=null;
-    } );
+      return evaluate != null;
+    });
 
     // Segunda regla, solo se aprobará si el String a evaluar es igual a "xxx", en caso contrario mostrara el mensaje
     // "El texto es diferente de 'xxx'"
     validator.rule("El texto es diferente de 'xxx'", (String evaluate) -> {
       return evaluate.equals("xxx");
-    } );
+    });
   }
-  
+
 }
 ```
 
@@ -94,7 +93,7 @@ public class HelloValidator {
 Puedes crear una instancia de Validator utilizando `.Builder()`. A continuación el ejemplo anterior simplificado.
 
 ```java
-import com.apamatesoft.validator.Validator;
+import io.github.ApamateSoft.validator.Validator;
 
 public class HelloValidator {
 
@@ -102,7 +101,7 @@ public class HelloValidator {
           .rule("Ingrese un texto diferente de null", Objects::nonNull)
           .rule("El texto es diferente de 'xxx'", evaluate -> evaluate.equals("xxx"))
           .build();
-    
+
 }
 ```
 
@@ -111,19 +110,19 @@ public class HelloValidator {
 Se hace uso del método `.isValid` para saber si el String es válido.
 
 ```java
-import com.apamatesoft.validator.Validator;
+import io.github.ApamateSoft.validator.Validator;
 
 public class HelloValidator {
 
   Validator validator = new Validator.Builder()
           .rule("El texto es diferente de 'xxx'", evaluate -> evaluate.equals("xxx"))
           .build();
-    
+
   public static void main(String[] args) {
     validator.isValid("yyy"); // false
     validator.isValid("xxx"); // true
   }
-    
+
 }
 ```
 
@@ -132,20 +131,20 @@ En caso de querer comparar dos String, *lo cual es muy útil para validar contra
 no coincidir.
 
 ```java
-import com.apamatesoft.validator.Validator;
+import io.github.ApamateSoft.validator.Validator;
 
 public class HelloValidator {
 
   Validator validator = new Validator.Builder()
-          .rule("Requerido", evaluate -> !evaluate.isEmpty() )
+          .rule("Requerido", evaluate -> !evaluate.isEmpty())
           .setNotMatchMessage("No coinciden")
           .build();
-    
+
   public static void main(String[] args) {
     validator.compare("abc", "xyz"); // false
     validator.compare("abc", "abc"); // true
   }
-    
+
 }
 ```
 
@@ -156,7 +155,7 @@ public class HelloValidator {
 El evento `.onNotPass` se ejecuta al fallar una regla cuando es evaluada y devuelve el mensaje asociado a la misma.
 
 ```java
-import com.apamatesoft.validator.Validator;
+import io.github.ApamateSoft.validator.Validator;
 
 public class HelloValidator {
 
@@ -166,11 +165,11 @@ public class HelloValidator {
             .build();
 
     // Solo se ejecuta si falla la validación de alguna regla
-    validator.onNotPass( message -> System.out.println(message) ); // "El texto es diferente de 'xxx'"
+    validator.onNotPass(message -> System.out.println(message)); // "El texto es diferente de 'xxx'"
 
     validator.isValid("yyy"); // false
   }
-    
+
 }
 ```
 ### Trabajar con excepciones
@@ -183,23 +182,23 @@ excepción del tipo `InvalidEvaluationException` que contiene el mensaje de erro
 String a evaluar.
 
 ```java
-import com.apamatesoft.validator.Validator;
-import com.apamatesoft.validator.exceptions.InvalidEvaluationException;
+import io.github.ApamateSoft.validator.Validator;
+import io.github.ApamateSoft.validator.exceptions.InvalidEvaluationException;
 
 class HelloValidator {
 
-    Validator validator = new Validator.Builder()
-            .rule("El texto es diferente de 'xxx'", evaluate -> evaluate.equals("xxx"))
-            .build();
+  Validator validator = new Validator.Builder()
+          .rule("El texto es diferente de 'xxx'", evaluate -> evaluate.equals("xxx"))
+          .build();
 
-    private void submit() {
-        try {
-            validator.isValidOrFail("yyy");
-            validator.compareOrFail("XXX", "YYY");
-        } catch (InvalidEvaluationException e) {
-            System.out.println(e.getMessage());
-        }
+  private void submit() {
+    try {
+      validator.isValidOrFail("yyy");
+      validator.compareOrFail("XXX", "YYY");
+    } catch (InvalidEvaluationException e) {
+      System.out.println(e.getMessage());
     }
+  }
 
 }
 ```
@@ -247,32 +246,32 @@ Validator ofrece una serie de reglas predefinidas.
 Las reglas predefinidas pueden simplificar la definición de un Validator.
 
 ```java
-import com.apamatesoft.validator.Validator;
+import io.github.ApamateSoft.validator.Validator;
 
 public class HelloValidator {
-      
-    Validator validator = new Validator.Builder()
-            .required("Requerido")
-            .minLength(6, "Se requieren más caracteres")
-            .onlyNumbers("Solo números")
-            .build();
-    
+
+  Validator validator = new Validator.Builder()
+          .required("Requerido")
+          .minLength(6, "Se requieren más caracteres")
+          .onlyNumbers("Solo números")
+          .build();
+
 }
 ```
 
 El mensaje en las reglas predefinidas es opcional, ya que Validator ofrece mensajes predeterminados para cada una.
 
 ```java
-import com.apamatesoft.validator.Validator;
+import io.github.ApamateSoft.validator.Validator;
 
 public class HelloValidator {
 
-   Validator validator = new Validator.Builder()
+  Validator validator = new Validator.Builder()
           .required()
           .minLength(6)
           .onlyNumbers()
           .build();
-    
+
 }
 ```
 
@@ -302,14 +301,14 @@ Validator posee un método estático llamado `.setMessages` el cual recibe como 
 ### Cambiando el idioma de los mensajes a español.
 
 ```java
-import com.apamatesoft.validator.Validator;
+import io.github.ApamateSoft.validator.Validator;
 
 public class HelloValidator {
-    
+
   public static void main(String[] args) {
     Validator.setMessages(new MessagesEs());
   }
-  
+
 }
 ```
 
