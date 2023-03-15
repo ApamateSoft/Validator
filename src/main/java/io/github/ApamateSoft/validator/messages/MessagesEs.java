@@ -3,13 +3,43 @@ package io.github.ApamateSoft.validator.messages;
 public class MessagesEs implements Messages {
 
     @Override
-    public String getNotMatchMessage() {
-        return "No coinciden";
+    public String getDateFormatMessage() {
+        return "La fecha no coincide con el formato %s";
     }
 
     @Override
-    public String getRequireMessage() {
-        return "Requerido";
+    public String getEmailMessage() {
+        return "Correo electrónico invalido";
+    }
+
+    @Override
+    public String getExpirationDateMessage() {
+        return "Fecha expirada";
+    }
+
+    @Override
+    public String getHttpLinkMessage() {
+        return "Enlace http inválido";
+    }
+
+    @Override
+    public String getHttpsLinkMessage() {
+        return "Enlace https inválido";
+    }
+
+    @Override
+    public String getIpMessage() {
+        return "IP inválida";
+    }
+
+    @Override
+    public String getIpv4Message() {
+        return "IPv4 inválida";
+    }
+
+    @Override
+    public String getIpv6Message() {
+        return "IPv6 inválida";
     }
 
     @Override
@@ -18,108 +48,13 @@ public class MessagesEs implements Messages {
     }
 
     @Override
-    public String getMinLengthMessage() {
-        return "Se requiere al menos %d caracteres";
+    public String getLinkMessage() {
+        return "Enlace inválido";
     }
 
     @Override
     public String getMaxLengthMessage() {
-        return "Se requiere menos de %d caracteres";
-    }
-
-    @Override
-    public String getRangeLengthMessage() {
-        return "El texto debe contener entre %d a %d caracteres";
-    }
-
-    @Override
-    public String getEmailMessage() {
-        return "Email invalido";
-    }
-
-    @Override
-    public String getNumberMessage() {
-        return "No es un número";
-    }
-
-    @Override
-    public String getLinkMessage() {
-        return "No es un enlace";
-    }
-
-    @Override
-    public String getWwwLinkMessage() {
-        return "No es un enlace www";
-    }
-
-    @Override
-    public String getHttpLinkMessage() {
-        return "No es un enlace http";
-    }
-
-    @Override
-    public String getHttpsLinkMessage() {
-        return "No es un enlace https";
-    }
-
-    @Override
-    public String getIpMessage() {
-        return "No es una ip";
-    }
-
-    @Override
-    public String getIpv4Message() {
-        return "No es una ipv4";
-    }
-
-    @Override
-    public String getIpv6Message() {
-        return "No es una ipv6";
-    }
-
-    @Override
-    public String getTimeMessage() {
-        return "No es una hora";
-    }
-
-    @Override
-    public String getTime12Message() {
-        return "No es una hora en formato de 12h";
-    }
-
-    @Override
-    public String getTime24Message() {
-        return "No es una hora en formato de 24h";
-    }
-
-    @Override
-    public String getShouldOnlyContainMessage() {
-        return "Solo se admiten los siguientes caracteres %s";
-    }
-
-    @Override
-    public String getOnlyNumbersMessage() {
-        return "Solo números";
-    }
-
-    @Override
-    public String getOnlyCharactersMessage() {
-        return "Solo caracteres";
-    }
-
-    @Override
-    public String getOnlyAlphanumericMessage() {
-        return "Solo caracteres alfanuméricos";
-    }
-
-    @Override
-    public String getNotContainMessage() {
-        return "No se admiten los siguientes caracteres %s";
-    }
-
-    @Override
-    public String getMustContainOneMessage() {
-        return "Se requiere al menos uno de los siguientes caracteres: %s";
+        return "Se requiere %d o menos caracteres";
     }
 
     @Override
@@ -128,8 +63,13 @@ public class MessagesEs implements Messages {
     }
 
     @Override
-    public String getRangeValueMessage() {
-        return "El valor debe estar entre %1$.2f y %1$.2f";
+    public String getMinAgeMessage() {
+        return "Se debe tener al menos %d años";
+    }
+
+    @Override
+    public String getMinLengthMessage() {
+        return "Se requiere %d o más caracteres";
     }
 
     @Override
@@ -138,8 +78,33 @@ public class MessagesEs implements Messages {
     }
 
     @Override
-    public String getRegExpMessage() {
-        return "El valor no coincide con el patrón %s";
+    public String getMustContainMinimumMessage() {
+        return "Debe contener al menos %d caracteres que cumplan la siguiente expresión %s";
+    }
+
+    @Override
+    public String getMustContainOneMessage() {
+        return "Se requiere al menos uno de los siguientes caracteres: %s";
+    }
+
+    @Override
+    public String getNameMessage() {
+        return "Debe introducir un nombre personal válido";
+    }
+
+    @Override
+    public String getNotContainMessage() {
+        return "No se admiten los siguientes caracteres %s";
+    }
+
+    @Override
+    public String getNotMatchMessage() {
+        return "No coinciden";
+    }
+
+    @Override
+    public String getNumberMessage() {
+        return "No es un número";
     }
 
     @Override
@@ -148,28 +113,63 @@ public class MessagesEs implements Messages {
     }
 
     @Override
-    public String getDateFormatMessage() {
-        return "No coincide con el formato de fecha especificado %s";
+    public String getOnlyAlphanumericMessage() {
+        return "Solo caracteres alfanuméricos";
     }
 
     @Override
-    public String getMinAgeMessage() {
-        return "Se debe tener al menos %d años";
+    public String getOnlyCharactersMessage() {
+        return "Solo letras";
     }
 
     @Override
-    public String getExpirationDateMessage() {
-        return "fecha expirada";
+    public String getOnlyNumbersMessage() {
+        return "Solo números";
     }
 
     @Override
-    public String getMustContainMinimumMessage() {
-        return "Debe contener al menos %d caracteres que cumplan la siguiente expresión %s";
+    public String getRangeLengthMessage() {
+        return "El texto debe contener entre %d a %d caracteres";
     }
 
     @Override
-    public String getNameMessage() {
-        return "Debe introducir un nombre personal válido";
+    public String getRangeValueMessage() {
+        return "El valor debe estar entre %1$.2f y %1$.2f";
+    }
+
+    @Override
+    public String getRegExpMessage() {
+        return "El valor no coincide con la expresión regular %s";
+    }
+
+    @Override
+    public String getRequireMessage() {
+        return "Requerido";
+    }
+
+    @Override
+    public String getShouldOnlyContainMessage() {
+        return "Solo se admiten los siguientes caracteres %s";
+    }
+
+    @Override
+    public String getTimeMessage() {
+        return "Hora inválida";
+    }
+
+    @Override
+    public String getTime12Message() {
+        return "Formato 12 horas invalido";
+    }
+
+    @Override
+    public String getTime24Message() {
+        return "Formato 24 horas invalido";
+    }
+
+    @Override
+    public String getWwwLinkMessage() {
+        return "Enlace www inválido";
     }
 
 }

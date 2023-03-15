@@ -278,19 +278,42 @@ public class HelloValidator {
 Los mensajes predeterminados se encuentran en las clases `MessagesEn` para los mensajes en inglés, y en `MessagesEs`
 para los mensajes en español, ambas clases implementan la interfaz `Messages`.
 
-| Regla	              | Ingles                                                   | Español                                               |
-|---------------------|----------------------------------------------------------|-------------------------------------------------------|
-| `compare`	          | Not match                                                | No coinciden                                          |
-| `required`	      | Required                                                 | Requerido                                             |
-| `length`	          | It requires %d characters                                | Se requiere %d caracteres                             |
-| `minLength`	      | It requires at least %d characters                       | Se requiere al menos %d caracteres                    |
-| `maxLength`	      | It requires less than %d characters                      | Se requiere menos de %d caracteres                    |
-| `email`             | Email invalid                                            | Email invalido                                        |
-| `numericFormat`     | It is not a number                                       | No es un número                                       |
-| `shouldOnlyContain` | They are just admitted the following characters %s       | Solo se admiten los siguientes caracteres %s          |
-| `onlyNumbers`       | Just numbers                                             | Solo números                                          |
-| `notContain`        | The following characters aren't admitted %s              | No se admiten los siguientes caracteres %s            |
-| `mustContainOne`    | At least one of the following characters is required: %s | Se requiere al menos uno de los siguientes caracteres |
+| Regla	               | Ingles                                                                   | Español                                                                    |
+|----------------------|--------------------------------------------------------------------------|----------------------------------------------------------------------------|
+| `dateFormat`         | The date does not match the format %s                                    | La fecha no coincide con el formato %s                                     |
+| `email`              | Email invalid                                                            | Correo electrónico invalido                                                |
+| `expirationDate`     | Expired date                                                             | Fecha expirada                                                             |
+| `httpLink`           | Invalid http link                                                        | Enlace http inválido                                                       |
+| `httpsLink`          | Invalid https link                                                       | Enlace https inválido                                                      |
+| `ip`                 | Invalid IP                                                               | IP inválida                                                                |
+| `ipv4`               | Invalid IPv4                                                             | IPv4 inválida                                                              |
+| `ipv6`               | Invalid IPv6                                                             | IPv6 inválida                                                              |
+| `length`             | It requires %d characters                                                | Se requiere %d caracteres                                                  |
+| `link`               | Invalid link                                                             | Enlace inválido                                                            |
+| `maxLength`          | %d or less characters required                                           | Se requiere %d o menos caracteres                                          |
+| `maxValue`           | The value cannot be greater than %1$.2f                                  | El valor no puede ser mayor a %1$.2f                                       |
+| `minAge`             | You must be at least %d years old                                        | Se debe tener al menos %d años                                             |
+| `minLength`          | %d or more characters are required                                       | Se requiere %d o más caracteres                                            |
+| `minValue`           | The value cannot be less than %1$.2f                                     | El valor no puede ser menor a %1$.2f                                       |
+| `mustContainMinimum` | must contain at least %d characters matching the following expression %s | Debe contener al menos %d caracteres que cumplan la siguiente expresión %s |
+| `mustContainOne`     | At least one of the following characters is required: %s                 | Se requiere al menos uno de los siguientes caracteres: %s                  |
+| `name`               | Debe introducir un nombre personal válido                                | Debe introducir un nombre personal válido                                  |
+| `notContain`         | The following characters aren't admitted %s                              | No se admiten los siguientes caracteres %s                                 |
+| `notMatch`           | Not match                                                                | No coinciden                                                               |
+| `number`             | It is not a number                                                       | No es un número                                                            |
+| `numberPattern`      | Does not match pattern %s                                                | No coincide con el patrón %s                                               |
+| `onlyAlphanumeric`   | Just alphanumeric characters                                             | Solo caracteres alfanuméricos                                              |
+| `onlyCharacters`     | Only letters                                                             | Solo letras                                                                |
+| `onlyNumbers`        | Just numbers                                                             | Solo números                                                               |
+| `rangeLength`        | The text must contain between %d to %d characters                        | El texto debe contener entre %d a %d caracteres                            |
+| `rangeValue`         | The value must be between %1$.2f and %1$.2f                              | El valor debe estar entre %1$.2f y %1$.2f                                  |
+| `regExp`             | The value does not match the regular expression %s                       | El valor no coincide con la expresión regular %s                           |
+| `required`           | Required                                                                 | Requerido                                                                  |
+| `shouldOnlyContain`  | They are just admitted the following characters %s                       | Solo se admiten los siguientes caracteres %s                               |
+| `time`               | Time invalid                                                             | Hora inválida                                                              |
+| `time12`             | Invalid 12 hour format                                                   | Formato 12 horas inválido                                                  |
+| `time24`             | Invalid 24 hour format                                                   | Formato 24 horas inválido                                                  |
+| `wwwLink`            | Invalid www link                                                         | Enlace www inválido                                                        |
 
 ##### Nota:
 - Por defecto se muestran los mensajes en Inglés.
@@ -298,7 +321,7 @@ para los mensajes en español, ambas clases implementan la interfaz `Messages`.
 ## Cambiar los mensajes por defecto
 Validator posee un método estático llamado `.setMessages` el cual recibe como parámetro un objeto del tipo `Messages`.
 
-### Cambiando el idioma de los mensajes a español.
+### Cambiando el idioma de los mensajes.
 
 ```java
 import io.github.ApamateSoft.validator.Validator;
@@ -317,48 +340,119 @@ public class HelloValidator {
 La interfaz `Messages` permite crear mensajes predeterminados personalizados.
 
 ```java
+import io.github.ApamateSoft.validator.messages.Messages;
+
 public class HelloValidator {
 
   public static void main(String[] args) {
     Validator.setMessages(new Messages() {
-
+        
       @Override
-      public String getNotMatchMessage() { return "Mensaje personalizado"; }
-
-      @Override
-      public String getRequireMessage() { return "Mensaje personalizado"; }
-
-      @Override
-      public String getLengthMessage() { return "Mensaje personalizado"; }
-
-      @Override
-      public String getMinLengthMessage() { return "Mensaje personalizado"; }
-
-      @Override
-      public String getMaxLengthMessage() { return "Mensaje personalizado"; }
+      public String getDateFormatMessage() { return "Mensaje personalizado"; }
 
       @Override
       public String getEmailMessage() { return "Mensaje personalizado"; }
 
       @Override
-      public String getNumericFormat() { return "Mensaje personalizado"; }
+      public String getExpirationDateMessage() { return "Mensaje personalizado"; }
 
       @Override
-      public String getShouldOnlyContainMessage() { return "Mensaje personalizado"; }
+      public String getHttpLinkMessage() { return "Mensaje personalizado"; }
 
       @Override
-      public String getOnlyNumbersMessage() { return "Mensaje personalizado"; }
+      public String getHttpsLinkMessage() { return "Mensaje personalizado"; }
+
+      @Override
+      public String getIpMessage() { return "Mensaje personalizado"; }
+
+      @Override
+      public String getIpv4Message() { return "Mensaje personalizado"; }
+
+      @Override
+      public String getIpv6Message() { return "Mensaje personalizado"; }
+
+      @Override
+      public String getLengthMessage() { return "Mensaje personalizado"; }
+
+      @Override
+      public String getLinkMessage() { return "Mensaje personalizado"; }
+
+      @Override
+      public String getMaxLengthMessage() { return "Mensaje personalizado"; }
+
+      @Override
+      public String getMaxValueMessage() { return "Mensaje personalizado"; }
+
+      @Override
+      public String getMinAgeMessage() { return "Mensaje personalizado"; }
+
+      @Override
+      public String getMinLengthMessage() { return "Mensaje personalizado"; }
+
+      @Override
+      public String getMinValueMessage() { return "Mensaje personalizado"; }
+
+      @Override
+      public String getMustContainMinimumMessage() { return "Mensaje personalizado"; }
+
+      @Override
+      public String getMustContainOneMessage() { return "Mensaje personalizado"; }
+
+      @Override
+      public String getNameMessage() { return "Mensaje personalizado"; }
 
       @Override
       public String getNotContainMessage() { return "Mensaje personalizado"; }
 
       @Override
-      public String getMustContainOneMessage() { return "Mensaje personalizado"; }
+      public String getNotMatchMessage() { return "Mensaje personalizado"; }
 
+      @Override
+      public String getNumberMessage() { return "Mensaje personalizado"; }
+
+      @Override
+      public String getNumberPatternMessage() { return "Mensaje personalizado"; }
+
+      @Override
+      public String getOnlyAlphanumericMessage() { return "Mensaje personalizado"; }
+
+      @Override
+      public String getOnlyCharactersMessage() { return "Mensaje personalizado"; }
+
+      @Override
+      public String getOnlyNumbersMessage() { return "Mensaje personalizado"; }
+
+      @Override
+      public String getRangeLengthMessage() { return "Mensaje personalizado"; }
+
+      @Override
+      public String getRangeValueMessage() { return "Mensaje personalizado"; }
+
+      @Override
+      public String getRegExpMessage() { return "Mensaje personalizado"; }
+
+      @Override
+      public String getRequireMessage() { return "Mensaje personalizado"; }
+
+      @Override
+      public String getShouldOnlyContainMessage() { return "Mensaje personalizado"; }
+
+      @Override
+      public String getTimeMessage() { return "Mensaje personalizado"; }
+
+      @Override
+      public String getTime12Message() { return "Mensaje personalizado"; }
+
+      @Override
+      public String getTime24Message() { return "Mensaje personalizado"; }
+
+      @Override
+      public String getWwwLinkMessage() { return "Mensaje personalizado"; }
     });
   }
-    
+
 }
+
 ```
 
 ##### Nota:
@@ -366,13 +460,15 @@ public class HelloValidator {
 - Las reglas predefinidas que requieren un parámetro `condition`, hacen uso de `String.format` para formatear el
   mensaje con la condición.
 
-### Recomendaciones
+## Recomendaciones
 
 Comúnmente, suele haber varias instancias de Strings a cuáles aplicar las mismas reglas de validación. Para estos casos
 se recomienda definir los Validators por contexto, con el fin de definir nuestro Validator una vez y reutilizarlo. Esta
 lógica es posible, ya que Validator incluye el método `.copy` el cual genera copias del mismo.
 
 ```java
+import io.github.ApamateSoft.validator.Validator;
+
 public class Validators {
 
   public static final Validator email = new Validator.Builder()

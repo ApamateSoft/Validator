@@ -286,6 +286,7 @@ public class Validators {
         return regExp(evaluate, NUMBERS);
     }
 
+    // TODO: Agregar advertencia indicando que solo caracteres del alfabeto ingles.
     /**
      * Validate that the String contains only alphabetic characters.
      * @param evaluate String to evaluate.
@@ -421,6 +422,7 @@ public class Validators {
         }
     }
 
+    // TODO: Reemplazar la expresion regular por una lista de carcacteres permitidos.
     /**
      * Valid that a regular expression repeats a minimum amount.
      * @param evaluate Valid that the entered date has not expired.
