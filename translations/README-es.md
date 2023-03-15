@@ -259,7 +259,8 @@ public class HelloValidator {
 }
 ```
 
-El mensaje en las reglas predefinidas es opcional, ya que Validator ofrece mensajes predeterminados para cada una.
+El mensaje en las reglas predefinidas es opcional, ya que Validator ofrece mensajes predeterminados para cada una. Por 
+lo tanto, el código anterior se podría simplificar de la siguiente forma.
 
 ```java
 import io.github.ApamateSoft.validator.Validator;
