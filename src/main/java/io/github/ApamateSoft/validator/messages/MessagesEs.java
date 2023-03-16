@@ -79,7 +79,7 @@ public class MessagesEs implements Messages {
 
     @Override
     public String getMustContainMinimumMessage() {
-        return "Debe contener al menos %d caracteres que cumplan la siguiente expresión %s";
+        return "Se requiere al menos %d de los siguientes caracteres: %s";
     }
 
     @Override

@@ -821,22 +821,22 @@ public class Validator implements Cloneable {
 
     //<editor-fold default-state="collapsed" desc="mustContainMinimum">
     /**
-     * Valid that a regular expression repeats a minimum amount.
-     * @param regExp Regular expression.
+     * Validates that the String contains at least a minimum number of characters included in the condition.
      * @param min minimum value.
+     * @param condition String with desired characters.
      * @param message Error message.
      */
-    public void mustContainMinimum(String regExp, int min, String message) {
-        rule( format(message, min, regExp), it -> Validators.mustContainMinimum(it, regExp, min) );
+    public void mustContainMinimum(int min, String condition, String message) {
+        rule( format(message, min, condition), it -> Validators.mustContainMinimum(it, min, condition) );
     }
 
     /**
-     * Valid that a regular expression repeats a minimum amount.
-     * @param regExp Regular expression.
+     * Validates that the String contains at least a minimum number of characters included in the condition.
      * @param min minimum value.
+     * @param condition String with desired characters.
      */
-    public void mustContainMinimum(String regExp, int min) {
-        mustContainMinimum(regExp, min, messages.getMustContainMinimumMessage());
+    public void mustContainMinimum(int min, String condition) {
+        mustContainMinimum(min, condition, messages.getMustContainMinimumMessage());
     }
     //</editor-fold>
 
@@ -1639,24 +1639,24 @@ public class Validator implements Cloneable {
 
         //<editor-fold default-state="collapsed" desc="mustContainMinimum">
         /**
-         * Valid that a regular expression repeats a minimum amount.
-         * @param regExp Regular expression.
+         * Validates that the String contains at least a minimum number of characters included in the condition.
          * @param min minimum value.
+         * @param condition String with desired characters.
          * @param message Error message.
          * @return Builder
          */
-        public Builder mustContainMinimum(String regExp, int min, String message) {
-            return rule( format(message, min, regExp), it -> Validators.mustContainMinimum(it, regExp, min) );
+        public Builder mustContainMinimum(int min, String condition, String message) {
+            return rule( format(message, min, condition), it -> Validators.mustContainMinimum(it, min, condition) );
         }
 
         /**
-         * Valid that a regular expression repeats a minimum amount.
-         * @param regExp Regular expression.
+         * Validates that the String contains at least a minimum number of characters included in the condition.
          * @param min minimum value.
+         * @param condition String with desired characters.
          * @return Builder
          */
-        public Builder mustContainMinimum(String regExp, int min) {
-            return mustContainMinimum(regExp, min, messages.getMustContainMinimumMessage());
+        public Builder mustContainMinimum(int min, String condition) {
+            return mustContainMinimum(min, condition, messages.getMustContainMinimumMessage());
         }
         //</editor-fold>
 

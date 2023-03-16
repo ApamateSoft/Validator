@@ -381,8 +381,7 @@ public class Validators {
      * @return true if it meets the condition.
      */
     public static boolean minAge(String evaluate, String format, int age) {
-        if (!required(evaluate)) return false;
-        if (!dateFormat(evaluate, format)) return false;
+        if (!required(evaluate) || !dateFormat(evaluate, format)) return false;
         LocalDate now = new Date()
             .toInstant()
             .atZone(ZoneId.systemDefault())
@@ -409,8 +408,7 @@ public class Validators {
      * @return true if it meets the condition.
      */
     public static boolean expirationDate(String evaluate, String format) {
-        if (!required(evaluate)) return false;
-        if (!dateFormat(evaluate, format)) return false;
+        if (!required(evaluate) || !dateFormat(evaluate, format)) return false;
         Date now = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.getDefault());
         sdf.setLenient(false);
@@ -422,20 +420,19 @@ public class Validators {
         }
     }
 
-    // TODO: Reemplazar la expresion regular por una lista de carcacteres permitidos.
     /**
-     * Valid that a regular expression repeats a minimum amount.
+     * Validates that the String contains at least a minimum number of characters included in the condition.
      * @param evaluate Valid that the entered date has not expired.
-     * @param regExp Regular expression.
      * @param min minimum value.
+     * @param condition String with desired characters.
      * @return true if it meets the condition.
      */
-    public static boolean mustContainMinimum(String evaluate, String regExp, int min) {
+    public static boolean mustContainMinimum(String evaluate, int min, String condition) {
         if (!required(evaluate)) return false;
         int count = 0;
-        for (char c : evaluate.toCharArray())
-            if (compile(regExp).matcher(c+"").find())
-                ++count;
+        for (char a : evaluate.toCharArray())
+            for (char b : condition.toCharArray())
+                if (a == b) ++count;
         return count >= min;
     }
     //</editor-fold">

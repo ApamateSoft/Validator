@@ -152,7 +152,7 @@ public class HelloValidator {
 
 ### Trabajando con eventos
 
-El evento `.onNotPass` se ejecuta al fallar una regla cuando es evaluada y devuelve el mensaje asociado a la misma.
+El evento `.onInvalidEvaluation` se ejecuta al fallar una regla cuando es evaluada y devuelve el mensaje asociado a la misma.
 
 ```java
 import io.github.ApamateSoft.validator.Validator;
@@ -165,7 +165,7 @@ public class HelloValidator {
             .build();
 
     // Solo se ejecuta si falla la validación de alguna regla
-    validator.onNotPass(message -> System.out.println(message)); // "El texto es diferente de 'xxx'"
+    validator.onInvalidEvaluation(message -> System.out.println(message)); // "El texto es diferente de 'xxx'"
 
     validator.isValid("yyy"); // false
   }
@@ -174,7 +174,7 @@ public class HelloValidator {
 ```
 ### Trabajar con excepciones
 
-Si prefiere no utilizar el evento `.onNotPass`, puedes usar los métodos `.isValidOrFail` y `.compareOrFail` en
+Si prefiere no utilizar el evento `.onInvalidEvaluation`, puedes usar los métodos `.isValidOrFail` y `.compareOrFail` en
 sustitución de los métodos `.isValid` y `.comapre` respectivamente.
 
 La principal diferencia es que estos métodos no retorna valor alguno y en caso de fallar, en cambio, arrojan una 
@@ -279,42 +279,42 @@ public class HelloValidator {
 Los mensajes predeterminados se encuentran en las clases `MessagesEn` para los mensajes en inglés, y en `MessagesEs`
 para los mensajes en español, ambas clases implementan la interfaz `Messages`.
 
-| Regla	               | Ingles                                                                   | Español                                                                    |
-|----------------------|--------------------------------------------------------------------------|----------------------------------------------------------------------------|
-| `dateFormat`         | The date does not match the format %s                                    | La fecha no coincide con el formato %s                                     |
-| `email`              | Email invalid                                                            | Correo electrónico invalido                                                |
-| `expirationDate`     | Expired date                                                             | Fecha expirada                                                             |
-| `httpLink`           | Invalid http link                                                        | Enlace http inválido                                                       |
-| `httpsLink`          | Invalid https link                                                       | Enlace https inválido                                                      |
-| `ip`                 | Invalid IP                                                               | IP inválida                                                                |
-| `ipv4`               | Invalid IPv4                                                             | IPv4 inválida                                                              |
-| `ipv6`               | Invalid IPv6                                                             | IPv6 inválida                                                              |
-| `length`             | It requires %d characters                                                | Se requiere %d caracteres                                                  |
-| `link`               | Invalid link                                                             | Enlace inválido                                                            |
-| `maxLength`          | %d or less characters required                                           | Se requiere %d o menos caracteres                                          |
-| `maxValue`           | The value cannot be greater than %1$.2f                                  | El valor no puede ser mayor a %1$.2f                                       |
-| `minAge`             | You must be at least %d years old                                        | Se debe tener al menos %d años                                             |
-| `minLength`          | %d or more characters are required                                       | Se requiere %d o más caracteres                                            |
-| `minValue`           | The value cannot be less than %1$.2f                                     | El valor no puede ser menor a %1$.2f                                       |
-| `mustContainMinimum` | must contain at least %d characters matching the following expression %s | Debe contener al menos %d caracteres que cumplan la siguiente expresión %s |
-| `mustContainOne`     | At least one of the following characters is required: %s                 | Se requiere al menos uno de los siguientes caracteres: %s                  |
-| `name`               | Debe introducir un nombre personal válido                                | Debe introducir un nombre personal válido                                  |
-| `notContain`         | The following characters aren't admitted %s                              | No se admiten los siguientes caracteres %s                                 |
-| `notMatch`           | Not match                                                                | No coinciden                                                               |
-| `number`             | It is not a number                                                       | No es un número                                                            |
-| `numberPattern`      | Does not match pattern %s                                                | No coincide con el patrón %s                                               |
-| `onlyAlphanumeric`   | Just alphanumeric characters                                             | Solo caracteres alfanuméricos                                              |
-| `onlyCharacters`     | Only letters                                                             | Solo letras                                                                |
-| `onlyNumbers`        | Just numbers                                                             | Solo números                                                               |
-| `rangeLength`        | The text must contain between %d to %d characters                        | El texto debe contener entre %d a %d caracteres                            |
-| `rangeValue`         | The value must be between %1$.2f and %1$.2f                              | El valor debe estar entre %1$.2f y %1$.2f                                  |
-| `regExp`             | The value does not match the regular expression %s                       | El valor no coincide con la expresión regular %s                           |
-| `required`           | Required                                                                 | Requerido                                                                  |
-| `shouldOnlyContain`  | They are just admitted the following characters %s                       | Solo se admiten los siguientes caracteres %s                               |
-| `time`               | Time invalid                                                             | Hora inválida                                                              |
-| `time12`             | Invalid 12 hour format                                                   | Formato 12 horas inválido                                                  |
-| `time24`             | Invalid 24 hour format                                                   | Formato 24 horas inválido                                                  |
-| `wwwLink`            | Invalid www link                                                         | Enlace www inválido                                                        |
+| Regla	               | Inglés                                                   | Español                                                   |
+|----------------------|----------------------------------------------------------|-----------------------------------------------------------|
+| `dateFormat`         | The date does not match the format %s                    | La fecha no coincide con el formato %s                    |
+| `email`              | Email invalid                                            | Correo electrónico invalido                               |
+| `expirationDate`     | Expired date                                             | Fecha expirada                                            |
+| `httpLink`           | Invalid http link                                        | Enlace http inválido                                      |
+| `httpsLink`          | Invalid https link                                       | Enlace https inválido                                     |
+| `ip`                 | Invalid IP                                               | IP inválida                                               |
+| `ipv4`               | Invalid IPv4                                             | IPv4 inválida                                             |
+| `ipv6`               | Invalid IPv6                                             | IPv6 inválida                                             |
+| `length`             | It requires %d characters                                | Se requiere %d caracteres                                 |
+| `link`               | Invalid link                                             | Enlace inválido                                           |
+| `maxLength`          | %d or less characters required                           | Se requiere %d o menos caracteres                         |
+| `maxValue`           | The value cannot be greater than %1$.2f                  | El valor no puede ser mayor a %1$.2f                      |
+| `minAge`             | You must be at least %d years old                        | Se debe tener al menos %d años                            |
+| `minLength`          | %d or more characters are required                       | Se requiere %d o más caracteres                           |
+| `minValue`           | The value cannot be less than %1$.2f                     | El valor no puede ser menor a %1$.2f                      |
+| `mustContainMinimum` | At least %d of the following characters are required: %s | Se requiere al menos %d de los siguientes caracteres: %s  |
+| `mustContainOne`     | At least one of the following characters is required: %s | Se requiere al menos uno de los siguientes caracteres: %s |
+| `name`               | Debe introducir un nombre personal válido                | Debe introducir un nombre personal válido                 |
+| `notContain`         | The following characters aren't admitted %s              | No se admiten los siguientes caracteres %s                |
+| `notMatch`           | Not match                                                | No coinciden                                              |
+| `number`             | It is not a number                                       | No es un número                                           |
+| `numberPattern`      | Does not match pattern %s                                | No coincide con el patrón %s                              |
+| `onlyAlphanumeric`   | Just alphanumeric characters                             | Solo caracteres alfanuméricos                             |
+| `onlyCharacters`     | Only letters                                             | Solo letras                                               |
+| `onlyNumbers`        | Just numbers                                             | Solo números                                              |
+| `rangeLength`        | The text must contain between %d to %d characters        | El texto debe contener entre %d a %d caracteres           |
+| `rangeValue`         | The value must be between %1$.2f and %1$.2f              | El valor debe estar entre %1$.2f y %1$.2f                 |
+| `regExp`             | The value does not match the regular expression %s       | El valor no coincide con la expresión regular %s          |
+| `required`           | Required                                                 | Requerido                                                 |
+| `shouldOnlyContain`  | They are just admitted the following characters %s       | Solo se admiten los siguientes caracteres %s              |
+| `time`               | Time invalid                                             | Hora inválida                                             |
+| `time12`             | Invalid 12 hour format                                   | Formato 12 horas inválido                                 |
+| `time24`             | Invalid 24 hour format                                   | Formato 24 horas inválido                                 |
+| `wwwLink`            | Invalid www link                                         | Enlace www inválido                                       |
 
 ##### Nota:
 - Por defecto se muestran los mensajes en Inglés.
@@ -468,7 +468,10 @@ se recomienda definir los Validators por contexto, con el fin de definir nuestro
 lógica es posible, ya que Validator incluye el método `.copy` el cual genera copias del mismo.
 
 ```java
+import io.github.ApamateSoft.validator.exceptions.InvalidEvaluationException;
 import io.github.ApamateSoft.validator.Validator;
+
+import static io.github.ApamateSoft.validator.utils.Constants.*;
 
 public class Validators {
 
@@ -479,7 +482,11 @@ public class Validators {
 
   public static final Validator password = new Validator.Builder()
           .required()
-          .minLength(6)
+          .minLength(9)
+          .mustContainMinimum(3, ALPHA_LOWERCASE)
+          .mustContainMinimum(3, ALPHA_UPPERCASE)
+          .mustContainMinimum(3, NUMBER)
+          .mustContainMinimum(3, "@~_/")
           .build();
 
 }
@@ -492,18 +499,16 @@ public class Login {
   private String email, psw, pswConfirmation;
 
   public Login() {
-    emailValidator.onNotPass(System.out::println);
-    passwordValidator.onNotPass(System.out::println);
+    emailValidator.onInvalidEvaluation(System.out::println);
+    pswValidator.onInvalidEvaluation(System.out::println);
   }
 
-  // Utilizando eventos.
   public void submit() {
     if (!emailValidator.isValid(email) || !pswValidator.compare(psw, pswConfirmation)) return;
     // TODO
   }
 
-  // Utilizando excepciones
-  public void submit() {
+  public void submitWithExceptions() {
     try {
       emailValidator.isValidOrFail(email);
       pswValidator.compareOrFail(psw, pswConfirmation);

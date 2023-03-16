@@ -1,13 +1,12 @@
 package io.github.ApamateSoft.validator;
 
-import io.github.ApamateSoft.validator.Validator;
 import io.github.ApamateSoft.validator.exceptions.InvalidEvaluationException;
 import io.github.ApamateSoft.validator.functions.OnInvalidEvaluation;
 import io.github.ApamateSoft.validator.messages.MessagesEn;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static io.github.ApamateSoft.validator.utils.RegularExpression.ALPHABET_LOWERCASE;
+import static io.github.ApamateSoft.validator.utils.Constants.ALPHA_LOWERCASE;
 import static java.lang.String.format;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -19,17 +18,17 @@ public class ValidatorMustContainMinimumTest {
     private static final String[] NOT_PERMIT = { null, "", "ABC", "123", "abC" };
     private static final String[] PERMIT = { "abc", "abcd", "aBcDe", "abcABC123..." };
     private static final int MIN = 3;
-    private static final String MESSAGES = format(new MessagesEn().getMustContainMinimumMessage(), MIN, ALPHABET_LOWERCASE);
+    private static final String MESSAGES = format(new MessagesEn().getMustContainMinimumMessage(), MIN, ALPHA_LOWERCASE);
 
     private Validator validator, builder;
 
     @BeforeEach
     void before() {
         validator = new Validator();
-        validator.mustContainMinimum(ALPHABET_LOWERCASE, MIN);
+        validator.mustContainMinimum(MIN, ALPHA_LOWERCASE);
 
         builder = new Validator.Builder()
-            .mustContainMinimum(ALPHABET_LOWERCASE, MIN)
+            .mustContainMinimum(MIN, ALPHA_LOWERCASE)
             .build();
 
     }
