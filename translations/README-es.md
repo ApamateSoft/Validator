@@ -2,10 +2,10 @@ Versión en [Inglés](../README.md)
 
 # Validator
 
-Facilita la validación de Strings en java encadenando una serie de reglas.
+Facilita la validación de Strings encadenando una serie de reglas
 
 ## Notas de version 1.2.0
-
+- Se ha renombrado el evento `onNotPass` a `onInvalidEvaluation`.
 - Se ha renombrado el package id de `com.apamatesoft.validator` a `io.github.ApamateSoft.validator`. 
 - Se ha renombrado la regla `numericFormat` a `number`.
 - Se han agregado las siguientes reglas predefinidas:
@@ -26,7 +26,7 @@ Facilita la validación de Strings en java encadenando una serie de reglas.
   - `notContain`
   - `numberPattern`
   - `onlyAlphanumeric`
-  - `onlyCharacters`
+  - `onlyLetters`
   - `rangeLength`
   - `rangeValue`
   - `regExp`
@@ -224,14 +224,14 @@ Validator ofrece una serie de reglas predefinidas.
 | `minAge`	           | Valida que el período desde la fecha ingresada hasta la fecha actual sea mayor o igual a una edad mínima |
 | `minLength`	       | Valida que la longitud del String no sea menor que la condición                                          |
 | `minValue`	       | Valida que el valor del String no sea menor que la condición                                             |
-| `mustContainMinimum` | Valida que una expresión regular se repita una cantidad mínima                                           |
+| `mustContainMinimum` | Valida que el String contenga al menos un número mínimo de caracteres incluidos en la condición          |
 | `mustContainOne`     | Valida que el String contenga al menos un carácter incluido en la condición                              |
 | `name`               | Valida que el String sea un nombre propio                                                                |
 | `notContain`         | Valida que el String no contenga ningún carácter incluido en la condición                                |
 | `number`             | Valida que el String sea un formato númerico                                                             |
 | `numberPattern`      | Valida que el String coincida con el patrón, reemplazando las x con números                              |
 | `onlyAlphanumeric`   | Valida que el String contenga solo caracteres alfanuméricos                                              |
-| `onlyCharacters`     | Valida que el String contenga solo caracteres alfabéticos                                                |
+| `onlyLetters`        | Valida que el String contenga solo letras                                                                |
 | `onlyNumbers`        | Valida que el String a evaluar solo contenga caracteres numéricos                                        |
 | `rangeLength`        | Valida que la longitud del String esté en el rango establecido                                           |
 | `rangeValue`         | Valida que el valor del String esté en el rango establecido                                              |
@@ -304,7 +304,7 @@ para los mensajes en español, ambas clases implementan la interfaz `Messages`.
 | `number`             | It is not a number                                       | No es un número                                           |
 | `numberPattern`      | Does not match pattern %s                                | No coincide con el patrón %s                              |
 | `onlyAlphanumeric`   | Just alphanumeric characters                             | Solo caracteres alfanuméricos                             |
-| `onlyCharacters`     | Only letters                                             | Solo letras                                               |
+| `onlyLetters`        | Only letters                                             | Solo letras                                               |
 | `onlyNumbers`        | Just numbers                                             | Solo números                                              |
 | `rangeLength`        | The text must contain between %d to %d characters        | El texto debe contener entre %d a %d caracteres           |
 | `rangeValue`         | The value must be between %1$.2f and %1$.2f              | El valor debe estar entre %1$.2f y %1$.2f                 |

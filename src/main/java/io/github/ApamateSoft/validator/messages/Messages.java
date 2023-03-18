@@ -24,7 +24,7 @@ public interface Messages {
     String getNumberMessage();
     String getNumberPatternMessage();
     String getOnlyAlphanumericMessage();
-    String getOnlyCharactersMessage();
+    String getOnlyLettersMessage();
     String getOnlyNumbersMessage();
     String getRangeLengthMessage();
     String getRangeValueMessage();

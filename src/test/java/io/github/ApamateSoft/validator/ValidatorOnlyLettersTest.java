@@ -1,6 +1,5 @@
 package io.github.ApamateSoft.validator;
 
-import io.github.ApamateSoft.validator.Validator;
 import io.github.ApamateSoft.validator.exceptions.InvalidEvaluationException;
 import io.github.ApamateSoft.validator.functions.OnInvalidEvaluation;
 import io.github.ApamateSoft.validator.messages.MessagesEn;
@@ -14,21 +13,21 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-public class ValidatorOnlyCharactersTest {
+public class ValidatorOnlyLettersTest {
 
     private static final String[] NOT_PERMIT = {  null, "", "12", "*/", "a1", "a-", "-1.61", "$10,320.00" };
     private static final String[] PERMIT = { Constants.ALPHABET };
-    private static final String MESSAGES = new MessagesEn().getOnlyCharactersMessage();
+    private static final String MESSAGES = new MessagesEn().getOnlyLettersMessage();
 
     private Validator validator, builder;
 
     @BeforeEach
     void before() {
         validator = new Validator();
-        validator.onlyCharacters();
+        validator.onlyLetters();
 
         builder = new Validator.Builder()
-            .onlyCharacters()
+            .onlyLetters()
             .build();
 
     }

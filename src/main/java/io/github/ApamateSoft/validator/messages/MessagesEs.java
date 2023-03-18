@@ -118,7 +118,7 @@ public class MessagesEs implements Messages {
     }
 
     @Override
-    public String getOnlyCharactersMessage() {
+    public String getOnlyLettersMessage() {
         return "Solo letras";
     }
 
