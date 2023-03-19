@@ -141,17 +141,13 @@ public class Validator implements Cloneable {
 
     /**
      * Create a validation rule.
-     * <br/><br/>
-     * <b>Example:<b/><br>
-     * <code>
+     * <br/>
+     * <b>Example:<b/>
      * <pre>
-     * new Validator().rule("The text is different from 'xxx'", evaluate -> {
-     *     return evaluate.equals("xxx");
-     * });
+     * new Validator.rule("Enter a text other than null", Objects::nonNull)
      * </pre>
-     * </code>
-     * @param message Error message.
-     * @param validate Function that returns true when the String to evaluate meets the conditions.
+     * @param message Error message
+     * @param validate Function that returns true when the String to evaluate meets the conditions
      */
     public void rule(String message, Validate validate) {
         rules.add(new Rule(message, validate));
@@ -884,19 +880,14 @@ public class Validator implements Cloneable {
         //<editor-fold default-state="collapsed" desc="RULES">
 
         /**
-         * Create a validation rule.
-         * <br/><br/>
-         * <b>Ejemplo:<b/><br>
-         * <code>
+         * Create a validation rule
+         * <br/>
+         * <b>Ejemplo:<b/>
          * <pre>
-         * new Validator().rule("The text is different from 'xxx'", evaluate -> {
-         *     return evaluate.equals("xxx");
-         * });
-         * </pre>
+         * new Validator.rule("Enter a text other than null", Objects::nonNull)
          * </code>
-         *
          * @param message Error message.
-         * @param validate Function that returns true when the String to evaluate meets the conditions.
+         * @param validate Function that returns true when the String to evaluate meets the conditions
          * @return Builder
          */
         public Builder rule(String message, Validate validate) {
