@@ -2,7 +2,7 @@ Versión en [Inglés](../README.md)
 
 # Validator
 
-Facilita la validación de Strings encadenando una serie de reglas
+Facilita la validación de Strings encadenando una serie de reglas.
 
 ## Notas de version 1.2.0
 - Se ha renombrado el evento `onNotPass` a `onInvalidEvaluation`.
@@ -458,8 +458,8 @@ public class HelloValidator {
 
 ##### Nota:
 - Los mensajes declarados junto a una regla predefinida tienen prioridad sobre los mensajes predeterminados.
-- Las reglas predefinidas que requieren un parámetro `condition`, hacen uso de `String.format` para formatear el
-  mensaje con la condición.
+- Las reglas predefinidas que requieren un parámetro `condition`, hacen uso de `String.format` para formatear el mensaje
+  con la condición.
 
 ## Recomendaciones
 
