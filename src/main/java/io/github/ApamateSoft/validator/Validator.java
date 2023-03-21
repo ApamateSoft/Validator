@@ -1,5 +1,7 @@
 package io.github.ApamateSoft.validator;
 
+import io.github.ApamateSoft.validator.annotations.Length;
+import io.github.ApamateSoft.validator.annotations.Required;
 import io.github.ApamateSoft.validator.utils.Validators;
 import io.github.ApamateSoft.validator.exceptions.InvalidEvaluationException;
 import io.github.ApamateSoft.validator.messages.Messages;
@@ -7,6 +9,8 @@ import io.github.ApamateSoft.validator.messages.MessagesEn;
 import io.github.ApamateSoft.validator.functions.OnInvalidEvaluation;
 import io.github.ApamateSoft.validator.functions.Validate;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,6 +53,65 @@ public class Validator implements Cloneable {
 
     public static Messages getMessages() {
         return messages;
+    }
+
+    public static void validOrFail(Object obj) throws InvalidEvaluationException {
+        for (Field field : obj.getClass().getDeclaredFields()) {
+
+            if (!field.getType().equals(String.class)) continue;
+
+// -----------------------------------------
+//            try {
+//                System.out.println(">>: - - - - - - -");
+//                System.out.println(">>: name: "+field.getName());
+//                System.out.println(">>: type: "+field.getType());
+//                field.setAccessible(true);
+//                System.out.println(">>: value: "+field.get(obj));
+//            } catch (IllegalAccessException e) {
+//                throw new RuntimeException(e);
+//            }
+// --------------------------------------------------------------
+
+            for (Annotation annotation : field.getDeclaredAnnotations()) {
+
+                // REQUIRED
+                if (annotation instanceof Required) {
+                    field.setAccessible(true);
+                    try {
+                        String value = (String) field.get(obj);
+                        if (!Validators.required(value)) {
+                            Required required = field.getAnnotation(Required.class);
+                            throw new InvalidEvaluationException(
+                                required.message().isEmpty() ? messages.getRequireMessage() : required.message(),
+                                value
+                            );
+                        }
+                    } catch (IllegalAccessException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+
+                // LENGTH
+                if (annotation instanceof Length) {
+                    field.setAccessible(true);
+                    try {
+                        String value = (String) field.get(obj);
+                        if (!Validators.required(value)) {
+                            Length length = field.getAnnotation(Length.class);
+                            throw new InvalidEvaluationException(
+                                String.format(length.message().isEmpty() ? messages.getLengthMessage() : length.message(), length.length()),
+                                value
+                            );
+                        }
+                    } catch (IllegalAccessException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+
+            }
+
+        }
+
     }
 
     /**
