@@ -27,23 +27,23 @@ public class Validators {
     /**
      * Validates that the String has an exact length of characters
      * @param evaluate String to evaluate
-     * @param condition Character length
-     * @return true if it meets the condition
+     * @param length Character length
+     * @return true if it meets the length
      */
-    public static boolean length(String evaluate, int condition) {
+    public static boolean length(String evaluate, int length) {
         if (!required(evaluate)) return false;
-        return evaluate.length()==condition;
+        return evaluate.length()==length;
     }
 
     /**
-     * Validates that the length of the String is not less than the condition
+     * Validates that the length of the String is not less than the min
      * @param evaluate String to evaluate
-     * @param condition Minimum character length
-     * @return true if it meets the condition
+     * @param min Minimum character length
+     * @return true if it meets the min
      */
-    public static boolean minLength(String evaluate, int condition) {
+    public static boolean minLength(String evaluate, int min) {
         if (!required(evaluate)) return false;
-        return evaluate.length()>=condition;
+        return evaluate.length()>=min;
     }
 
     /**

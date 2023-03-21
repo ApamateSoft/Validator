@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface Length {
-    int length();
+public @interface MinLength {
+    int min();
     String message() default "";
 }

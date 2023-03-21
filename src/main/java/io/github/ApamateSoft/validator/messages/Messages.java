@@ -29,7 +29,7 @@ public interface Messages {
     String getRangeLengthMessage();
     String getRangeValueMessage();
     String getRegExpMessage();
-    String getRequireMessage();
+    String getRequiredMessage();
     String getShouldOnlyContainMessage();
     String getTimeMessage();
     String getTime12Message();

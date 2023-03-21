@@ -435,7 +435,7 @@ public class HelloValidator {
       public String getRegExpMessage() { return "personalized message"; }
 
       @Override
-      public String getRequireMessage() { return "personalized message"; }
+      public String getRequiredMessage() { return "personalized message"; }
 
       @Override
       public String getShouldOnlyContainMessage() { return "personalized message"; }

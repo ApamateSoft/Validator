@@ -17,13 +17,14 @@ public class AnnotationTest {
 class Login {
 
     @Required()
+    @MinLength(min = 5)
     private String email = "email test";
-    public int age = 5;
+
     @Required()
     private String password = "password test";
 
     protected void submit() {
-        email = "";
+        email = "12345";
         try {
             Validator.validOrFail(this);
         } catch (InvalidEvaluationException e) {

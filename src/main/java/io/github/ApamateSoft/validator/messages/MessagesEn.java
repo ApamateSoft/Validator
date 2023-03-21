@@ -143,7 +143,7 @@ public class MessagesEn implements Messages {
     }
 
     @Override
-    public String getRequireMessage() {
+    public String getRequiredMessage() {
         return "Required";
     }
 

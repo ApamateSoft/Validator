@@ -1,6 +1,7 @@
 package io.github.ApamateSoft.validator;
 
 import io.github.ApamateSoft.validator.annotations.Length;
+import io.github.ApamateSoft.validator.annotations.MinLength;
 import io.github.ApamateSoft.validator.annotations.Required;
 import io.github.ApamateSoft.validator.utils.Validators;
 import io.github.ApamateSoft.validator.exceptions.InvalidEvaluationException;
@@ -73,39 +74,48 @@ public class Validator implements Cloneable {
 // --------------------------------------------------------------
 
             for (Annotation annotation : field.getDeclaredAnnotations()) {
+                field.setAccessible(true);
 
-                // REQUIRED
-                if (annotation instanceof Required) {
-                    field.setAccessible(true);
-                    try {
+                try {
+
+                    // REQUIRED
+                    if (annotation instanceof Required) {
                         String value = (String) field.get(obj);
                         if (!Validators.required(value)) {
-                            Required required = field.getAnnotation(Required.class);
+                            Required required = (Required) annotation;
                             throw new InvalidEvaluationException(
-                                required.message().isEmpty() ? messages.getRequireMessage() : required.message(),
+                                required.message().isEmpty() ? messages.getRequiredMessage() : required.message(),
                                 value
                             );
                         }
-                    } catch (IllegalAccessException e) {
-                        throw new RuntimeException(e);
                     }
-                }
 
-                // LENGTH
-                if (annotation instanceof Length) {
-                    field.setAccessible(true);
-                    try {
+                    // LENGTH
+                    if (annotation instanceof Length) {
+                        Length length = (Length) annotation;
                         String value = (String) field.get(obj);
-                        if (!Validators.required(value)) {
-                            Length length = field.getAnnotation(Length.class);
+                        if (!Validators.length(value, length.length())) {
                             throw new InvalidEvaluationException(
-                                String.format(length.message().isEmpty() ? messages.getLengthMessage() : length.message(), length.length()),
+                                format(length.message().isEmpty() ? messages.getLengthMessage() : length.message(), length.length()),
                                 value
                             );
                         }
-                    } catch (IllegalAccessException e) {
-                        throw new RuntimeException(e);
                     }
+                    
+                    // MinLength
+                    if (annotation instanceof MinLength) {
+                        String value = (String) field.get(obj);
+                        MinLength minLength = (MinLength) annotation;
+                        if (!Validators.minLength(value, minLength.min())) {
+                            throw new InvalidEvaluationException(
+                                format(minLength.message().isEmpty() ? messages.getMinLengthMessage() : minLength.message(), minLength.min()),
+                                value
+                            );
+                        }
+                    }
+                    
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
                 }
 
             }
@@ -240,7 +250,7 @@ public class Validator implements Cloneable {
      * Validates that the String is different from null and empty
      */
     public void required() {
-        required(messages.getRequireMessage());
+        required(messages.getRequiredMessage());
     }
     //</editor-fold>
 
@@ -985,7 +995,7 @@ public class Validator implements Cloneable {
          * @return Builder
          */
         public Builder required() {
-            return required(messages.getRequireMessage());
+            return required(messages.getRequiredMessage());
         }
         //</editor-fold>
 
