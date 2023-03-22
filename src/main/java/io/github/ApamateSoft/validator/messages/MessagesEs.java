@@ -3,7 +3,7 @@ package io.github.ApamateSoft.validator.messages;
 public class MessagesEs implements Messages {
 
     @Override
-    public String getDateFormatMessage() {
+    public String getDateMessage() {
         return "La fecha no coincide con el formato %s";
     }
 

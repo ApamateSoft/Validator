@@ -47,14 +47,14 @@ public class Validators {
     }
 
     /**
-     * Validates that the length of the String is not greater than the condition
+     * Validates that the length of the String is not greater than the max
      * @param evaluate String to evaluate
-     * @param condition Maximum character length
-     * @return true if it meets the condition
+     * @param max Maximum character length
+     * @return true if it meets the max
      */
-    public static boolean maxLength(String evaluate, int condition) {
+    public static boolean maxLength(String evaluate, int max) {
         if (!required(evaluate)) return false;
-        return evaluate.length()<=condition;
+        return evaluate.length()<=max;
     }
 
     /**
@@ -227,7 +227,7 @@ public class Validators {
      * @param format Describing the date and time format
      * @return true if it meets the condition
      */
-    public static boolean dateFormat(String evaluate, String format) {
+    public static boolean date(String evaluate, String format) {
         if (!required(evaluate)) return false;
         final SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.getDefault());
         if (evaluate.length()!=format.length()) return false;
@@ -378,7 +378,7 @@ public class Validators {
      * @return true if it meets the condition
      */
     public static boolean minAge(String evaluate, String format, int age) {
-        if (!required(evaluate) || !dateFormat(evaluate, format)) return false;
+        if (!required(evaluate) || !date(evaluate, format)) return false;
         LocalDate now = new Date()
             .toInstant()
             .atZone(ZoneId.systemDefault())
@@ -403,7 +403,7 @@ public class Validators {
      * @return true if it meets the condition
      */
     public static boolean expirationDate(String evaluate, String format) {
-        if (!required(evaluate) || !dateFormat(evaluate, format)) return false;
+        if (!required(evaluate) || !date(evaluate, format)) return false;
         Date now = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.getDefault());
         sdf.setLenient(false);

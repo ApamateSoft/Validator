@@ -1,7 +1,7 @@
 package io.github.ApamateSoft.validator.messages;
 
 public interface Messages {
-    String getDateFormatMessage();
+    String getDateMessage();
     String getEmailMessage();
     String getExpirationDateMessage();
     String getHttpLinkMessage();

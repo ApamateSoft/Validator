@@ -12,22 +12,22 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-public class ValidatorDateFormat {
+public class ValidatorDate {
 
     private static final String[] NOT_PERMIT = { null, "", "example", "", "21091991", "21-09-1991", "1991/09/21", "09/21/1991" };
     private static final String[] PERMIT = { "21/08/1991" };
     private static final String FORMAT = "dd/MM/yyyy";
-    private static final String MESSAGES = format(new MessagesEn().getDateFormatMessage(), FORMAT);
+    private static final String MESSAGES = format(new MessagesEn().getDateMessage(), FORMAT);
 
     private Validator validator, builder;
 
     @BeforeEach
     void before() {
         validator = new Validator();
-        validator.dateFormat(FORMAT);
+        validator.date(FORMAT);
 
         builder = new Validator.Builder()
-                .dateFormat(FORMAT)
+                .date(FORMAT)
                 .build();
 
     }

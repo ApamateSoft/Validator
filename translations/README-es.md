@@ -4,54 +4,27 @@ Versión en [Inglés](../README.md)
 
 Facilita la validación de Strings encadenando una serie de reglas.
 
-## Notas de version 1.2.0
-- Se ha renombrado el evento `onNotPass` a `onInvalidEvaluation`.
-- Se ha renombrado el package id de `com.apamatesoft.validator` a `io.github.ApamateSoft.validator`. 
-- Se ha renombrado la regla `numericFormat` a `number`.
-- Se han agregado las siguientes reglas predefinidas:
-  - `dateFormat`
-  - `expirationDate`
-  - `httpLink`
-  - `httpsLink`
-  - `ip`
-  - `ipv4`
-  - `ipv6`
-  - `link`
-  - `maxValue`
-  - `minAge`
-  - `minValue`
-  - `mustContainMinimum`
-  - `mustContainOne`
-  - `name`
-  - `notContain`
-  - `numberPattern`
-  - `onlyAlphanumeric`
-  - `onlyLetters`
-  - `rangeLength`
-  - `rangeValue`
-  - `regExp`
-  - `time`
-  - `time12`
-  - `time24`
-  - `wwwLink`
+## Notas de version 1.3.0
+- Se ha renombrado el la regla `dateFormat` a `date`.
+- Se ha añadido las anotaciones.
 
 ## Instalación
 
 ### Descargar el JAR
-[Validator-1.2.0.jar](https://repo1.maven.org/maven2/io/github/ApamateSoft/Validator/1.2.0/Validator-1.2.0.jar)
+[Validator-1.3.0.jar](https://repo1.maven.org/maven2/io/github/ApamateSoft/Validator/1.3.0/Validator-1.3.0.jar)
 
 ### Maven
 ```xml
 <dependency>
     <groupId>io.github.ApamateSoft</groupId>
     <artifactId>Validator</artifactId>
-    <version>1.2.0</version>
+    <version>1.3.0</version>
 </dependency>
 ```
 
 ### Gradle
 ```groovy
-implementation group: 'io.github.ApamateSoft', name: 'Validator', version: '1.2.0'
+implementation group: 'io.github.ApamateSoft', name: 'Validator', version: '1.3.0'
 ```
 
 ## Empezando
@@ -209,7 +182,7 @@ Validator ofrece una serie de reglas predefinidas.
 
 | Regla	               | Descripción                                                                                              |
 |----------------------|----------------------------------------------------------------------------------------------------------|
-| `dateFormat`	       | Valida que el String a evaluar coincida con el formato de fecha especificado                             |
+| `date`	           | Valida que el String a evaluar coincida con el formato de fecha especificado                             |
 | `email`              | Valida que el String tenga un formato de correo electrónico                                              |
 | `expirationDate`     | Valida que la fecha ingresada no haya expirado                                                           |
 | `httpLink`           | Valida que el String sea un enlace con formato http                                                      |
@@ -281,7 +254,7 @@ para los mensajes en español, ambas clases implementan la interfaz `Messages`.
 
 | Regla	               | Inglés                                                   | Español                                                   |
 |----------------------|----------------------------------------------------------|-----------------------------------------------------------|
-| `dateFormat`         | The date does not match the format %s                    | La fecha no coincide con el formato %s                    |
+| `date`               | The date does not match the format %s                    | La fecha no coincide con el formato %s                    |
 | `email`              | Email invalid                                            | Correo electrónico invalido                               |
 | `expirationDate`     | Expired date                                             | Fecha expirada                                            |
 | `httpLink`           | Invalid http link                                        | Enlace http inválido                                      |
@@ -349,7 +322,7 @@ public class HelloValidator {
     Validator.setMessages(new Messages() {
         
       @Override
-      public String getDateFormatMessage() { return "Mensaje personalizado"; }
+      public String getDateMessage() { return "Mensaje personalizado"; }
 
       @Override
       public String getEmailMessage() { return "Mensaje personalizado"; }
