@@ -6,16 +6,20 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Validates that the length of the String is not less than the condition
+ * Validates that the String contains at least a minimum number of characters included in the condition
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface MinLength {
-
+public @interface MustContainMin {
     /**
-     * @return Minimum character length
+     * @return Minimum value
      */
     int min();
+
+    /**
+     * @return String with desired characters
+     */
+    String condition();
 
     /**
      * @return Error message

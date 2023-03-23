@@ -153,6 +153,17 @@ public class Validator implements Cloneable {
                         }
                     }
 
+                    if (annotation instanceof Link) {
+                        String value = (String) field.get(obj);
+                        if (!Validators.link(value)) {
+                            Link link = (Link) annotation;
+                            throw new InvalidEvaluationException(
+                                link.message().isEmpty() ? messages.getLinkMessage() : link.message(),
+                                value
+                            );
+                        }
+                    }
+
                     if (annotation instanceof WwwLink) {
                         String value = (String) field.get(obj);
                         if (!Validators.wwwLink(value)) {
@@ -384,13 +395,34 @@ public class Validator implements Cloneable {
                         }
                     }
 
-                    // MinAge
                     if (annotation instanceof MinAge) {
                         String value = (String) field.get(obj);
                         MinAge minAge = (MinAge) annotation;
                         if (!Validators.minAge(value, minAge.format(), minAge.age())) {
                             throw new InvalidEvaluationException(
                                 format(minAge.message().isEmpty() ? messages.getMinAgeMessage() : minAge.message(), minAge.age()),
+                                value
+                            );
+                        }
+                    }
+
+                    if (annotation instanceof ExpirationDate) {
+                        String value = (String) field.get(obj);
+                        ExpirationDate expirationDate = (ExpirationDate) annotation;
+                        if (!Validators.expirationDate(value, expirationDate.format())) {
+                            throw new InvalidEvaluationException(
+                                format(expirationDate.message().isEmpty() ? messages.getExpirationDateMessage() : expirationDate.message(), expirationDate.format()),
+                                value
+                            );
+                        }
+                    }
+
+                    if (annotation instanceof MustContainMin) {
+                        String value = (String) field.get(obj);
+                        MustContainMin mustContainMin = (MustContainMin) annotation;
+                        if (!Validators.mustContainMin(value, mustContainMin.min(), mustContainMin.condition())) {
+                            throw new InvalidEvaluationException(
+                                format(mustContainMin.message().isEmpty() ? messages.getMustContainMinMessage() : mustContainMin.message(), mustContainMin.min(), mustContainMin.condition()),
                                 value
                             );
                         }
@@ -539,11 +571,11 @@ public class Validator implements Cloneable {
     //<editor-fold default-state="collapsed" desc="length">
     /**
      * Validates that the String has an exact length of characters
-     * @param condition character length
+     * @param length character length
      * @param message Error message
      */
-    public void length(int condition, String message) {
-        rule(format(message, condition), it -> Validators.length(it, condition) );
+    public void length(int length, String message) {
+        rule(format(message, length), it -> Validators.length(it, length) );
     }
 
     /**
@@ -557,36 +589,36 @@ public class Validator implements Cloneable {
 
     //<editor-fold default-state="collapsed" desc="minLength">
     /**
-     * Validates that the length of the String is not less than the condition
-     * @param condition Minimum character length
+     * Validates that the length of the String is not less than the min
+     * @param min Minimum character length
      * @param message Error message
      */
-    public void minLength(int condition, String message) {
-        rule(format(message, condition), it -> Validators.minLength(it, condition) );
+    public void minLength(int min, String message) {
+        rule(format(message, min), it -> Validators.minLength(it, min) );
     }
 
     /**
-     * Validates that the length of the String is not less than the condition
-     * @param condition Minimum character length
+     * Validates that the length of the String is not less than the min
+     * @param min Minimum character length
      */
-    public void minLength(int condition) {
-        minLength(condition, messages.getMinLengthMessage());
+    public void minLength(int min) {
+        minLength(min, messages.getMinLengthMessage());
     }
     //</editor-fold>
 
     //<editor-fold default-state="collapsed" desc="maxLength">
     /**
-     * Validates that the length of the String is not greater than the condition
-     * @param condition maximum character length
+     * Validates that the length of the String is not greater than the max
+     * @param max Maximum character length
      * @param message Error message
      */
-    public void maxLength(int condition, String message) {
-        rule(format(message, condition), it -> Validators.maxLength(it, condition) );
+    public void maxLength(int max, String message) {
+        rule(format(message, max), it -> Validators.maxLength(it, max) );
     }
 
     /**
      * Validates that the length of the String is not greater than the condition
-     * @param condition maximum character length
+     * @param condition Maximum character length
      */
     public void maxLength(int condition) {
         maxLength(condition, messages.getMaxLengthMessage());
@@ -621,19 +653,19 @@ public class Validator implements Cloneable {
     //<editor-fold default-state="collapsed" desc="regExp">
     /**
      * Validates that the String matches the regular expression
-     * @param condition Regular expression
+     * @param regExp Regular expression
      * @param message Error message
      */
-    public void regExp(String condition, String message) {
-        rule(format(message, condition), it -> Validators.regExp(it, condition) );
+    public void regExp(String regExp, String message) {
+        rule(format(message, regExp), it -> Validators.regExp(it, regExp) );
     }
 
     /**
      * Validates that the String matches the regular expression
-     * @param condition Regular expression
+     * @param regExp Regular expression
      */
-    public void regExp(String condition) {
-        regExp(condition, messages.getRegExpMessage());
+    public void regExp(String regExp) {
+        regExp(regExp, messages.getRegExpMessage());
     }
     //</editor-fold>
 
@@ -828,7 +860,7 @@ public class Validator implements Cloneable {
 
     //<editor-fold default-state="collapsed" desc="time24">
     /**
-     * Validate that the String is a time with 24 hours format.
+     * Validate that the String is a time with 24 hours format
      * @param message Error message.
      */
     public void time24(String message) {
@@ -836,7 +868,7 @@ public class Validator implements Cloneable {
     }
 
     /**
-     * Validate that the String is a time with 24 hours format.
+     * Validate that the String is a time with 24 hours format
      */
     public void time24() {
         time24(messages.getTime24Message());
@@ -901,7 +933,7 @@ public class Validator implements Cloneable {
      *     <li>Capitalization is ignored</li>
      *     <li>
      *         Only valid proper names in English. to evaluate names in other languages it is recommended to use the
-     *         {@link #regExp(String, String)} function.
+     *         {@link #regExp(String, String)} function
      *     </li>
      * <ul/>
      * @param message Error message.
@@ -1048,22 +1080,22 @@ public class Validator implements Cloneable {
 
     //<editor-fold default-state="collapsed" desc="maxValue">
     /**
-     * Validates that the value of the String is not greater than the condition <br />
+     * Validates that the value of the String is not greater than the max <br />
      * <b>Note:</b> It is recommended to implement the {@link #number(String)} rule first
-     * @param condition maximum value
+     * @param max Maximum value
      * @param message Error message
      */
-    public void maxValue(double condition, String message) {
-        rule(format(message, condition), it -> Validators.maxValue(it, condition) );
+    public void maxValue(double max, String message) {
+        rule(format(message, max), it -> Validators.maxValue(it, max) );
     }
 
     /**
-     * Validates that the value of the String is not greater than the condition <br />
+     * Validates that the value of the String is not greater than the max <br />
      * <b>Note:</b> It is recommended to implement the {@link #number()} rule first
-     * @param condition maximum value.
+     * @param max Maximum value.
      */
-    public void maxValue(double condition) {
-        maxValue(condition, messages.getMaxValueMessage());
+    public void maxValue(double max) {
+        maxValue(max, messages.getMaxValueMessage());
     }
     //</editor-fold>
 
@@ -1071,7 +1103,7 @@ public class Validator implements Cloneable {
     /**
      * Validates that the value of the String is not less than the condition <br />
      * <b>Note:</b> It is recommended to implement the {@link #number(String)} rule first
-     * @param condition minimum value
+     * @param condition Minimum value
      * @param message Error message
      */
     public void minValue(double condition, String message) {
@@ -1081,7 +1113,7 @@ public class Validator implements Cloneable {
     /**
      * Validates that the value of the String is not less than the condition <br />
      * <b>Note:</b> It is recommended to implement the {@link #number()} rule first
-     * @param condition minimum value.
+     * @param condition Minimum value.
      */
     public void minValue(double condition) {
         minValue(condition, messages.getMinValueMessage());
@@ -1093,8 +1125,8 @@ public class Validator implements Cloneable {
     /**
      * Validates that the value of the String is in the established range <br />
      * <b>Note:</b> It is recommended to implement the {@link #number(String)} rule first
-     * @param min minimum value
-     * @param max maximum value
+     * @param min Minimum value
+     * @param max Maximum value
      * @param message Error message
      */
     public void rangeValue(double min, double max, String message) {
@@ -1104,8 +1136,8 @@ public class Validator implements Cloneable {
     /**
      * Validates that the value of the String is in the established range <br />
      * <b>Note:</b> It is recommended to implement the {@link #number()} rule first
-     * @param min minimum value
-     * @param max maximum value
+     * @param min Minimum value
+     * @param max Maximum value
      */
     public void rangeValue(double min, double max) {
         rangeValue(min, max, messages.getRangeValueMessage());
@@ -1119,7 +1151,7 @@ public class Validator implements Cloneable {
      * <b>Warning:</b> This function makes use of the current date of the device <br />
      * <b>Note:</b> It is recommended to implement the {@link #date(String, String)} rule first.
      * @param format Describing the date and time format
-     * @param age minimum age
+     * @param age Minimum age
      * @param message Error message
      */
     public void minAge(String format, int age, String message) {
@@ -1132,7 +1164,7 @@ public class Validator implements Cloneable {
      * <b>Warning:</b> This function makes use of the current date of the device <br />
      * <b>Note:</b> It is recommended to implement the {@link #date(String)} rule first
      * @param format Describing the date and time format
-     * @param age minimum age
+     * @param age Minimum age
      */
     public void minAge(String format, int age) {
         minAge(format, age, messages.getMinAgeMessage());
@@ -1162,15 +1194,15 @@ public class Validator implements Cloneable {
     }
     //</editor-fold>
 
-    //<editor-fold default-state="collapsed" desc="mustContainMinimum">
+    //<editor-fold default-state="collapsed" desc="mustContainMin">
     /**
      * Validates that the String contains at least a minimum number of characters included in the condition
-     * @param min minimum value.
-     * @param condition String with desired characters.
-     * @param message Error message.
+     * @param min Minimum value
+     * @param condition String with desired characters
+     * @param message Error message
      */
-    public void mustContainMinimum(int min, String condition, String message) {
-        rule( format(message, min, condition), it -> Validators.mustContainMinimum(it, min, condition) );
+    public void mustContainMin(int min, String condition, String message) {
+        rule( format(message, min, condition), it -> Validators.mustContainMin(it, min, condition) );
     }
 
     /**
@@ -1178,8 +1210,8 @@ public class Validator implements Cloneable {
      * @param min minimum value.
      * @param condition String with desired characters.
      */
-    public void mustContainMinimum(int min, String condition) {
-        mustContainMinimum(min, condition, messages.getMustContainMinimumMessage());
+    public void mustContainMin(int min, String condition) {
+        mustContainMin(min, condition, messages.getMustContainMinMessage());
     }
     //</editor-fold>
 
@@ -1970,7 +2002,7 @@ public class Validator implements Cloneable {
         }
         //</editor-fold>
 
-        //<editor-fold default-state="collapsed" desc="mustContainMinimum">
+        //<editor-fold default-state="collapsed" desc="mustContainMin">
         /**
          * Validates that the String contains at least a minimum number of characters included in the condition
          * @param min minimum value
@@ -1978,8 +2010,8 @@ public class Validator implements Cloneable {
          * @param message Error message
          * @return Builder
          */
-        public Builder mustContainMinimum(int min, String condition, String message) {
-            return rule( format(message, min, condition), it -> Validators.mustContainMinimum(it, min, condition) );
+        public Builder mustContainMin(int min, String condition, String message) {
+            return rule( format(message, min, condition), it -> Validators.mustContainMin(it, min, condition) );
         }
 
         /**
@@ -1988,8 +2020,8 @@ public class Validator implements Cloneable {
          * @param condition String with desired characters
          * @return Builder
          */
-        public Builder mustContainMinimum(int min, String condition) {
-            return mustContainMinimum(min, condition, messages.getMustContainMinimumMessage());
+        public Builder mustContainMin(int min, String condition) {
+            return mustContainMin(min, condition, messages.getMustContainMinMessage());
         }
         //</editor-fold>
 

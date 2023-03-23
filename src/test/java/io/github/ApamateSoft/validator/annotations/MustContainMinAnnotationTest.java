@@ -5,16 +5,18 @@ import io.github.ApamateSoft.validator.messages.MessagesEn;
 import org.junit.jupiter.api.Test;
 
 import static io.github.ApamateSoft.validator.Validator.validOrFail;
+import static io.github.ApamateSoft.validator.utils.Constants.ALPHA_LOWERCASE;
+import static java.lang.String.format;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.fail;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class RequiredAnnotationTest {
+public class MustContainMinAnnotationTest {
 
-    private static final String MESSAGES = new MessagesEn().getRequiredMessage();
+    private static final String CONDITION = ALPHA_LOWERCASE;
+    private static final int MIN = 3;
+    private static final String MESSAGES = format(new MessagesEn().getMustContainMinMessage(), MIN, CONDITION);
 
-    @Required
+    @MustContainMin(condition = CONDITION, min = MIN)
     private String s;
 
     @Test
@@ -39,7 +41,7 @@ public class RequiredAnnotationTest {
 
     @Test
     void pass() {
-        s = "a";
+        s = "abc";
         assertDoesNotThrow(() -> validOrFail(this));
     }
 

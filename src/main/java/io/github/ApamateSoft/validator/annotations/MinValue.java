@@ -5,9 +5,20 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * Validates that the value of the String is not less than the condition <br />
+ * <b>Note:</b> It is recommended to implement the {@Number} annotation first
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface MinValue {
+    /**
+     * @return Minimum value
+     */
     double min();
+
+    /**
+     * @return Error message
+     */
     String message() default "";
 }

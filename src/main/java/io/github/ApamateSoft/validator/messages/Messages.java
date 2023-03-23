@@ -16,7 +16,7 @@ public interface Messages {
     String getMinAgeMessage();
     String getMinLengthMessage();
     String getMinValueMessage();
-    String getMustContainMinimumMessage();
+    String getMustContainMinMessage();
     String getMustContainOneMessage();
     String getNameMessage();
     String getNotContainMessage();

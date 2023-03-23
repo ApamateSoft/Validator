@@ -5,16 +5,15 @@ import io.github.ApamateSoft.validator.messages.MessagesEn;
 import org.junit.jupiter.api.Test;
 
 import static io.github.ApamateSoft.validator.Validator.validOrFail;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.fail;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class RequiredAnnotationTest {
+public class ExpirationDateAnnotationTest {
 
-    private static final String MESSAGES = new MessagesEn().getRequiredMessage();
+    private static final String FORMAT = "08/99";
+    private static final String MESSAGES = new MessagesEn().getExpirationDateMessage();
 
-    @Required
+    @ExpirationDate(format = FORMAT)
     private String s;
 
     @Test
@@ -39,7 +38,7 @@ public class RequiredAnnotationTest {
 
     @Test
     void pass() {
-        s = "a";
+        s = "08/99";
         assertDoesNotThrow(() -> validOrFail(this));
     }
 

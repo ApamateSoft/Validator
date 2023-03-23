@@ -8,7 +8,7 @@ import static java.util.Arrays.stream;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class MustContainMinimumTest {
+public class MustContainMinTest {
 
     private static final String[] NOT_PERMIT = { null, "", "ABC", "123", "abC" };
     private static final String[] PERMIT = { "abc", "abcd", "aBcDe", "abcABC123..." };
@@ -16,13 +16,13 @@ public class MustContainMinimumTest {
 
     @Test
     void test() {
-        boolean b = stream(NOT_PERMIT).anyMatch( it -> Validators.mustContainMinimum(it, MIN, ALPHA_LOWERCASE) );
+        boolean b = stream(NOT_PERMIT).anyMatch( it -> Validators.mustContainMin(it, MIN, ALPHA_LOWERCASE) );
         assertFalse(b);
     }
 
     @Test
     void permit() {
-        boolean b = stream(PERMIT).allMatch( it -> Validators.mustContainMinimum(it, MIN, ALPHA_LOWERCASE) );
+        boolean b = stream(PERMIT).allMatch( it -> Validators.mustContainMin(it, MIN, ALPHA_LOWERCASE) );
         assertTrue(b);
     }
 

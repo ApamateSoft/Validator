@@ -422,7 +422,7 @@ public class Validators {
      * @param condition String with desired characters
      * @return true if it meets the condition
      */
-    public static boolean mustContainMinimum(String evaluate, int min, String condition) {
+    public static boolean mustContainMin(String evaluate, int min, String condition) {
         if (!required(evaluate)) return false;
         int count = 0;
         for (char a : evaluate.toCharArray())

@@ -78,7 +78,7 @@ public class MessagesEn implements Messages {
     }
 
     @Override
-    public String getMustContainMinimumMessage() {
+    public String getMustContainMinMessage() {
         return "At least %d of the following characters are required: %s";
     }
 

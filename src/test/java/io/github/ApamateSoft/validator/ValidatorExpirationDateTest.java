@@ -1,6 +1,5 @@
 package io.github.ApamateSoft.validator;
 
-import io.github.ApamateSoft.validator.Validator;
 import io.github.ApamateSoft.validator.exceptions.InvalidEvaluationException;
 import io.github.ApamateSoft.validator.functions.OnInvalidEvaluation;
 import io.github.ApamateSoft.validator.messages.MessagesEn;

@@ -5,9 +5,19 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * Validates that the String to evaluate matches the specified date format
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface Date {
+    /**
+     * @return Describing the date and time format
+     */
     String format();
+
+    /**
+     * @return Error message
+     */
     String message() default "";
 }

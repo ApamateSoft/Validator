@@ -13,22 +13,22 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-public class ValidatorMustContainMinimumTest {
+public class ValidatorMustContainMinTest {
 
     private static final String[] NOT_PERMIT = { null, "", "ABC", "123", "abC" };
     private static final String[] PERMIT = { "abc", "abcd", "aBcDe", "abcABC123..." };
     private static final int MIN = 3;
-    private static final String MESSAGES = format(new MessagesEn().getMustContainMinimumMessage(), MIN, ALPHA_LOWERCASE);
+    private static final String MESSAGES = format(new MessagesEn().getMustContainMinMessage(), MIN, ALPHA_LOWERCASE);
 
     private Validator validator, builder;
 
     @BeforeEach
     void before() {
         validator = new Validator();
-        validator.mustContainMinimum(MIN, ALPHA_LOWERCASE);
+        validator.mustContainMin(MIN, ALPHA_LOWERCASE);
 
         builder = new Validator.Builder()
-            .mustContainMinimum(MIN, ALPHA_LOWERCASE)
+            .mustContainMin(MIN, ALPHA_LOWERCASE)
             .build();
 
     }

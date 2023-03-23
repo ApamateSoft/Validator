@@ -5,8 +5,14 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * Validates that the String is a time with 12-hour format
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface Time12 {
+    /**
+     * @return Error message
+     */
     String message() default "";
 }

@@ -6,16 +6,17 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Validates that the length of the String is not less than the condition
+ * Validates that the entered date has not expired <br/>
+ * <b>Warning:</b> This annotation makes use of the current date of the device <br />
+ * <b>Note:</b> It is recommended to implement the {@Date} annotation first
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface MinLength {
-
+public @interface ExpirationDate {
     /**
-     * @return Minimum character length
+     * @return Describing the date and time format
      */
-    int min();
+    String format();
 
     /**
      * @return Error message

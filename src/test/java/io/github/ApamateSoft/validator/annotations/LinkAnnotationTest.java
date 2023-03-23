@@ -5,16 +5,14 @@ import io.github.ApamateSoft.validator.messages.MessagesEn;
 import org.junit.jupiter.api.Test;
 
 import static io.github.ApamateSoft.validator.Validator.validOrFail;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.fail;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class RequiredAnnotationTest {
+public class LinkAnnotationTest {
 
-    private static final String MESSAGES = new MessagesEn().getRequiredMessage();
+    private static final String MESSAGES = new MessagesEn().getLinkMessage();
 
-    @Required
+    @Link()
     private String s;
 
     @Test
@@ -39,7 +37,7 @@ public class RequiredAnnotationTest {
 
     @Test
     void pass() {
-        s = "a";
+        s = "www.google.com";
         assertDoesNotThrow(() -> validOrFail(this));
     }
 

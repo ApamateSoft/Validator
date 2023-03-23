@@ -6,17 +6,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Validates that the length of the String is not less than the condition
+ * Validates that the String is a link format
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface MinLength {
-
-    /**
-     * @return Minimum character length
-     */
-    int min();
-
+public @interface Link {
     /**
      * @return Error message
      */
