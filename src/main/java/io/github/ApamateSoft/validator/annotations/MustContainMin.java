@@ -1,13 +1,11 @@
 package io.github.ApamateSoft.validator.annotations;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
 /**
  * Validates that the String contains at least a minimum number of characters included in the condition
  */
+@Repeatable(MustContainMinContainer.class)
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface MustContainMin {

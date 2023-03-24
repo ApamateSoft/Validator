@@ -456,7 +456,7 @@ public class Validators {
 
   public static final Validator password = new Validator.Builder()
           .required()
-          .minLength(9)
+          .minLength(12)
           .mustContainMin(3, ALPHA_LOWERCASE)
           .mustContainMin(3, ALPHA_UPPERCASE)
           .mustContainMin(3, NUMBER)

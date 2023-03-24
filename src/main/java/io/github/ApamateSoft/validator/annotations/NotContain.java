@@ -1,13 +1,11 @@
 package io.github.ApamateSoft.validator.annotations;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
 /**
  * Validates that the String does not contain any characters included in the condition
  */
+@Repeatable(NotContainContainer.class)
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface NotContain {

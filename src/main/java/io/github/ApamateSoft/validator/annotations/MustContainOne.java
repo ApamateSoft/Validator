@@ -1,15 +1,13 @@
 package io.github.ApamateSoft.validator.annotations;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
 /**
  * Validates that the String contains at least one character included in the condition
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
+@Repeatable(MustContainOneContainer.class)
 public @interface MustContainOne {
     /**
      * @return String with desired characters

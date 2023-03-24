@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.lang.String.format;
+import static java.util.Arrays.stream;
 
 /**
  * <h1>Validator</h1>
@@ -63,10 +64,32 @@ public class Validator implements Cloneable {
             for (Annotation annotation : field.getDeclaredAnnotations()) {
                 field.setAccessible(true);
 
+                System.out.println(">>: anno: "+annotation.annotationType());
                 try {
 
+                    String value = (String) field.get(obj);
+                    if (annotation instanceof Compare) {
+                        Compare compareAnnotation = (Compare) annotation;
+                        Field f = stream(obj.getClass().getDeclaredFields())
+                            .filter( it -> it.getName().equals(compareAnnotation.compareWith()) )
+                            .findFirst()
+                            .orElseThrow( () ->
+                                new InvalidEvaluationException(
+                                    compareAnnotation.message().isEmpty() ? messages.getNotMatchMessage() : compareAnnotation.message(),
+                                    value
+                                )
+                            );
+
+                        f.setAccessible(true);
+                        String compare = (String) f.get(obj);
+                        if (compare==null || compare.isEmpty() || !value.equals(compare))
+                            throw new InvalidEvaluationException(
+                                compareAnnotation.message().isEmpty() ? messages.getNotMatchMessage() : compareAnnotation.message(),
+                                value
+                            );
+                    }
+
                     if (annotation instanceof Required) {
-                        String value = (String) field.get(obj);
                         if (!Validators.required(value)) {
                             Required required = (Required) annotation;
                             throw new InvalidEvaluationException(
@@ -78,7 +101,6 @@ public class Validator implements Cloneable {
 
                     if (annotation instanceof Length) {
                         Length length = (Length) annotation;
-                        String value = (String) field.get(obj);
                         if (!Validators.length(value, length.length())) {
                             throw new InvalidEvaluationException(
                                 format(length.message().isEmpty() ? messages.getLengthMessage() : length.message(), length.length()),
@@ -88,7 +110,6 @@ public class Validator implements Cloneable {
                     }
 
                     if (annotation instanceof MinLength) {
-                        String value = (String) field.get(obj);
                         MinLength minLength = (MinLength) annotation;
                         if (!Validators.minLength(value, minLength.min())) {
                             throw new InvalidEvaluationException(
@@ -99,7 +120,6 @@ public class Validator implements Cloneable {
                     }
 
                     if (annotation instanceof MaxLength) {
-                        String value = (String) field.get(obj);
                         MaxLength maxLength = (MaxLength) annotation;
                         if (!Validators.maxLength(value, maxLength.max())) {
                             throw new InvalidEvaluationException(
@@ -110,7 +130,6 @@ public class Validator implements Cloneable {
                     }
 
                     if (annotation instanceof RangeLength) {
-                        String value = (String) field.get(obj);
                         RangeLength rangeLength = (RangeLength) annotation;
                         if (!Validators.rangeLength(value, rangeLength.min(), rangeLength.max())) {
                             throw new InvalidEvaluationException(
@@ -121,7 +140,6 @@ public class Validator implements Cloneable {
                     }
 
                     if (annotation instanceof RegExp) {
-                        String value = (String) field.get(obj);
                         RegExp regExp = (RegExp) annotation;
                         if (!Validators.regExp(value, regExp.regExp())) {
                             throw new InvalidEvaluationException(
@@ -132,7 +150,6 @@ public class Validator implements Cloneable {
                     }
 
                     if (annotation instanceof Email) {
-                        String value = (String) field.get(obj);
                         if (!Validators.email(value)) {
                             Email email = (Email) annotation;
                             throw new InvalidEvaluationException(
@@ -143,7 +160,6 @@ public class Validator implements Cloneable {
                     }
 
                     if (annotation instanceof Number) {
-                        String value = (String) field.get(obj);
                         if (!Validators.number(value)) {
                             Number number = (Number) annotation;
                             throw new InvalidEvaluationException(
@@ -154,7 +170,6 @@ public class Validator implements Cloneable {
                     }
 
                     if (annotation instanceof Link) {
-                        String value = (String) field.get(obj);
                         if (!Validators.link(value)) {
                             Link link = (Link) annotation;
                             throw new InvalidEvaluationException(
@@ -165,7 +180,6 @@ public class Validator implements Cloneable {
                     }
 
                     if (annotation instanceof WwwLink) {
-                        String value = (String) field.get(obj);
                         if (!Validators.wwwLink(value)) {
                             WwwLink wwwLink = (WwwLink) annotation;
                             throw new InvalidEvaluationException(
@@ -176,7 +190,6 @@ public class Validator implements Cloneable {
                     }
 
                     if (annotation instanceof HttpLink) {
-                        String value = (String) field.get(obj);
                         if (!Validators.httpLink(value)) {
                             HttpLink httpLink = (HttpLink) annotation;
                             throw new InvalidEvaluationException(
@@ -187,7 +200,6 @@ public class Validator implements Cloneable {
                     }
 
                     if (annotation instanceof HttpsLink) {
-                        String value = (String) field.get(obj);
                         if (!Validators.httpsLink(value)) {
                             HttpsLink httpsLink = (HttpsLink) annotation;
                             throw new InvalidEvaluationException(
@@ -198,7 +210,6 @@ public class Validator implements Cloneable {
                     }
 
                     if (annotation instanceof Ip) {
-                        String value = (String) field.get(obj);
                         if (!Validators.ip(value)) {
                             Ip ip = (Ip) annotation;
                             throw new InvalidEvaluationException(
@@ -209,7 +220,6 @@ public class Validator implements Cloneable {
                     }
 
                     if (annotation instanceof Ipv4) {
-                        String value = (String) field.get(obj);
                         if (!Validators.ipv4(value)) {
                             Ipv4 ipv4 = (Ipv4) annotation;
                             throw new InvalidEvaluationException(
@@ -220,7 +230,6 @@ public class Validator implements Cloneable {
                     }
 
                     if (annotation instanceof Ipv6) {
-                        String value = (String) field.get(obj);
                         if (!Validators.ipv6(value)) {
                             Ipv6 ipv6 = (Ipv6) annotation;
                             throw new InvalidEvaluationException(
@@ -231,7 +240,6 @@ public class Validator implements Cloneable {
                     }
 
                     if (annotation instanceof Time) {
-                        String value = (String) field.get(obj);
                         if (!Validators.time(value)) {
                             Time time = (Time) annotation;
                             throw new InvalidEvaluationException(
@@ -242,7 +250,6 @@ public class Validator implements Cloneable {
                     }
 
                     if (annotation instanceof Time12) {
-                        String value = (String) field.get(obj);
                         if (!Validators.time12(value)) {
                             Time12 time12 = (Time12) annotation;
                             throw new InvalidEvaluationException(
@@ -253,7 +260,6 @@ public class Validator implements Cloneable {
                     }
 
                     if (annotation instanceof Time24) {
-                        String value = (String) field.get(obj);
                         if (!Validators.time24(value)) {
                             Time24 time24 = (Time24) annotation;
                             throw new InvalidEvaluationException(
@@ -264,7 +270,6 @@ public class Validator implements Cloneable {
                     }
 
                     if (annotation instanceof NumberPattern) {
-                        String value = (String) field.get(obj);
                         NumberPattern numberPattern = (NumberPattern) annotation;
                         if (!Validators.numberPattern(value, numberPattern.patter())) {
                             throw new InvalidEvaluationException(
@@ -275,7 +280,6 @@ public class Validator implements Cloneable {
                     }
 
                     if (annotation instanceof Date) {
-                        String value = (String) field.get(obj);
                         Date date = (Date) annotation;
                         if (!Validators.date(value, date.format())) {
                             throw new InvalidEvaluationException(
@@ -286,7 +290,6 @@ public class Validator implements Cloneable {
                     }
 
                     if (annotation instanceof Name) {
-                        String value = (String) field.get(obj);
                         if (!Validators.name(value)) {
                             Name name = (Name) annotation;
                             throw new InvalidEvaluationException(
@@ -297,7 +300,6 @@ public class Validator implements Cloneable {
                     }
 
                     if (annotation instanceof ShouldOnlyContain) {
-                        String value = (String) field.get(obj);
                         ShouldOnlyContain shouldOnlyContain = (ShouldOnlyContain) annotation;
                         if (!Validators.shouldOnlyContain(value, shouldOnlyContain.condition())) {
                             throw new InvalidEvaluationException(
@@ -308,7 +310,6 @@ public class Validator implements Cloneable {
                     }
 
                     if (annotation instanceof OnlyNumbers) {
-                        String value = (String) field.get(obj);
                         if (!Validators.onlyNumbers(value)) {
                             OnlyNumbers onlyNumbers = (OnlyNumbers) annotation;
                             throw new InvalidEvaluationException(
@@ -319,7 +320,6 @@ public class Validator implements Cloneable {
                     }
 
                     if (annotation instanceof OnlyLetters) {
-                        String value = (String) field.get(obj);
                         if (!Validators.onlyLetters(value)) {
                             OnlyLetters onlyLetters = (OnlyLetters) annotation;
                             throw new InvalidEvaluationException(
@@ -330,7 +330,6 @@ public class Validator implements Cloneable {
                     }
 
                     if (annotation instanceof OnlyAlphanumeric) {
-                        String value = (String) field.get(obj);
                         if (!Validators.onlyAlphanumeric(value)) {
                             OnlyAlphanumeric onlyAlphanumeric = (OnlyAlphanumeric) annotation;
                             throw new InvalidEvaluationException(
@@ -341,7 +340,6 @@ public class Validator implements Cloneable {
                     }
 
                     if (annotation instanceof NotContain) {
-                        String value = (String) field.get(obj);
                         NotContain notContain = (NotContain) annotation;
                         if (!Validators.notContain(value, notContain.condition())) {
                             throw new InvalidEvaluationException(
@@ -351,8 +349,19 @@ public class Validator implements Cloneable {
                         }
                     }
 
+                    if (annotation instanceof NotContainContainer) {
+                        NotContainContainer container = (NotContainContainer) annotation;
+                        for (NotContain notContain : container.value()) {
+                            if (!Validators.notContain(value, notContain.condition())) {
+                                throw new InvalidEvaluationException(
+                                    format(notContain.message().isEmpty() ? messages.getNotContainMessage() : notContain.message(), notContain.condition()),
+                                    value
+                                );
+                            }
+                        }
+                    }
+
                     if (annotation instanceof MustContainOne) {
-                        String value = (String) field.get(obj);
                         MustContainOne mustContainOne = (MustContainOne) annotation;
                         if (!Validators.mustContainOne(value, mustContainOne.condition())) {
                             throw new InvalidEvaluationException(
@@ -362,8 +371,19 @@ public class Validator implements Cloneable {
                         }
                     }
 
+                    if (annotation instanceof MustContainOneContainer) {
+                        MustContainOneContainer container = (MustContainOneContainer) annotation;
+                        for (MustContainOne mustContainOne : container.value()) {
+                            if (!Validators.mustContainOne(value, mustContainOne.condition())) {
+                                throw new InvalidEvaluationException(
+                                    format(mustContainOne.message().isEmpty() ? messages.getMustContainOneMessage() : mustContainOne.message(), mustContainOne.condition()),
+                                    value
+                                );
+                            }
+                        }
+                    }
+
                     if (annotation instanceof MaxValue) {
-                        String value = (String) field.get(obj);
                         MaxValue maxValue = (MaxValue) annotation;
                         if (!Validators.maxValue(value, maxValue.max())) {
                             throw new InvalidEvaluationException(
@@ -374,7 +394,6 @@ public class Validator implements Cloneable {
                     }
 
                     if (annotation instanceof MinValue) {
-                        String value = (String) field.get(obj);
                         MinValue minValue = (MinValue) annotation;
                         if (!Validators.minValue(value, minValue.min())) {
                             throw new InvalidEvaluationException(
@@ -385,7 +404,6 @@ public class Validator implements Cloneable {
                     }
 
                     if (annotation instanceof RangeValue) {
-                        String value = (String) field.get(obj);
                         RangeValue rangeValue = (RangeValue) annotation;
                         if (!Validators.rangeValue(value, rangeValue.min(), rangeValue.max())) {
                             throw new InvalidEvaluationException(
@@ -396,7 +414,6 @@ public class Validator implements Cloneable {
                     }
 
                     if (annotation instanceof MinAge) {
-                        String value = (String) field.get(obj);
                         MinAge minAge = (MinAge) annotation;
                         if (!Validators.minAge(value, minAge.format(), minAge.age())) {
                             throw new InvalidEvaluationException(
@@ -407,7 +424,6 @@ public class Validator implements Cloneable {
                     }
 
                     if (annotation instanceof ExpirationDate) {
-                        String value = (String) field.get(obj);
                         ExpirationDate expirationDate = (ExpirationDate) annotation;
                         if (!Validators.expirationDate(value, expirationDate.format())) {
                             throw new InvalidEvaluationException(
@@ -418,13 +434,24 @@ public class Validator implements Cloneable {
                     }
 
                     if (annotation instanceof MustContainMin) {
-                        String value = (String) field.get(obj);
                         MustContainMin mustContainMin = (MustContainMin) annotation;
                         if (!Validators.mustContainMin(value, mustContainMin.min(), mustContainMin.condition())) {
                             throw new InvalidEvaluationException(
                                 format(mustContainMin.message().isEmpty() ? messages.getMustContainMinMessage() : mustContainMin.message(), mustContainMin.min(), mustContainMin.condition()),
                                 value
                             );
+                        }
+                    }
+
+                    if (annotation instanceof MustContainMinContainer) {
+                        MustContainMinContainer container = (MustContainMinContainer) annotation;
+                        for (MustContainMin mustContainMin : container.value()) {
+                            if (!Validators.mustContainMin(value, mustContainMin.min(), mustContainMin.condition())) {
+                                throw new InvalidEvaluationException(
+                                    format(mustContainMin.message().isEmpty() ? messages.getMustContainMinMessage() : mustContainMin.message(), mustContainMin.min(), mustContainMin.condition()),
+                                    value
+                                );
+                            }
                         }
                     }
 
@@ -435,7 +462,6 @@ public class Validator implements Cloneable {
             }
 
         }
-
     }
 
     /**
@@ -1272,7 +1298,7 @@ public class Validator implements Cloneable {
          * <b>Ejemplo:<b/>
          * <pre>
          * new Validator.rule("Enter a text other than null", Objects::nonNull)
-         * </code>
+         * </pre>
          * @param message Error message.
          * @param validate Function that returns true when the String to evaluate meets the conditions
          * @return Builder
@@ -1316,63 +1342,63 @@ public class Validator implements Cloneable {
         //<editor-fold default-state="collapsed" desc="length">
         /**
          * Validates that the String has an exact length of characters
-         * @param condition character length
+         * @param length character length
          * @param message Error message
          * @return Builder
          */
-        public Builder length(int condition, String message) {
-            return rule(format(message, condition), it -> Validators.length(it, condition) );
+        public Builder length(int length, String message) {
+            return rule(format(message, length), it -> Validators.length(it, length) );
         }
 
         /**
          * Validates that the String has an exact length of characters
-         * @param condition character length
+         * @param length character length
          * @return Builder
          */
-        public Builder length(int condition) {
-            return length(condition, messages.getLengthMessage());
+        public Builder length(int length) {
+            return length(length, messages.getLengthMessage());
         }
         //</editor-fold>
 
         //<editor-fold default-state="collapsed" desc="minLength">
         /**
-         * Validates that the length of the String is not less than the condition
-         * @param condition Minimum character length
+         * Validates that the length of the String is not less than the min
+         * @param min Minimum character length
          * @param message Error message
          * @return Builder
          */
-        public Builder minLength(int condition, String message) {
-            return rule(format(message, condition), it -> Validators.minLength(it, condition) );
+        public Builder minLength(int min, String message) {
+            return rule(format(message, min), it -> Validators.minLength(it, min) );
         }
 
         /**
-         * Validates that the length of the String is not less than the condition
-         * @param condition Minimum character length
+         * Validates that the length of the String is not less than the min
+         * @param min Minimum character length
          * @return Builder
          */
-        public Builder minLength(int condition) {
-            return minLength(condition, messages.getMinLengthMessage());
+        public Builder minLength(int min) {
+            return minLength(min, messages.getMinLengthMessage());
         }
         //</editor-fold>
 
         //<editor-fold default-state="collapsed" desc="maxLength">
         /**
-         * Validates that the length of the String is not greater than the condition
-         * @param condition maximum character length
+         * Validates that the length of the String is not greater than the max
+         * @param max Maximum character length
          * @param message Error message
          * @return Builder
          */
-        public Builder maxLength(int condition, String message) {
-            return rule(format(message, condition), it -> Validators.maxLength(it, condition) );
+        public Builder maxLength(int max, String message) {
+            return rule(format(message, max), it -> Validators.maxLength(it, max) );
         }
 
         /**
-         * Validates that the length of the String is not greater than the condition
-         * @param condition maximum character length
+         * Validates that the length of the String is not greater than the max
+         * @param max Maximum character length
          * @return Builder
          */
-        public Builder maxLength(int condition) {
-            return maxLength(condition, messages.getMaxLengthMessage());
+        public Builder maxLength(int max) {
+            return maxLength(max, messages.getMaxLengthMessage());
         }
         //</editor-fold>
 
@@ -1406,21 +1432,21 @@ public class Validator implements Cloneable {
         //<editor-fold default-state="collapsed" desc="regExp">
         /**
          * Validates that the String matches the regular expression
-         * @param condition Regular expression
+         * @param regExp Regular expression
          * @param message Error message
          * @return Builder
          */
-        public Builder regExp(String condition, String message) {
-            return rule(format(message, condition), it -> Validators.regExp(it, condition) );
+        public Builder regExp(String regExp, String message) {
+            return rule(format(message, regExp), it -> Validators.regExp(it, regExp) );
         }
 
         /**
          * Validates that the String matches the regular expression
-         * @param condition Regular expression
+         * @param regExp Regular expression
          * @return Builder
          */
-        public Builder regExp(String condition) {
-            return regExp(condition, messages.getRegExpMessage());
+        public Builder regExp(String regExp) {
+            return regExp(regExp, messages.getRegExpMessage());
         }
         //</editor-fold>
 
