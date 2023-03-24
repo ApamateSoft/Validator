@@ -23,7 +23,7 @@ import static java.util.Arrays.stream;
  * Facilitates the validation of Strings by chaining a series of rules
  *
  * @author ApamateSoft
- * @version 1.2.0
+ * @version 1.3.0
  */
 public class Validator implements Cloneable {
 
@@ -62,12 +62,11 @@ public class Validator implements Cloneable {
             if (!field.getType().equals(String.class)) continue;
 
             for (Annotation annotation : field.getDeclaredAnnotations()) {
-                field.setAccessible(true);
 
-                System.out.println(">>: anno: "+annotation.annotationType());
                 try {
-
+                    field.setAccessible(true);
                     String value = (String) field.get(obj);
+
                     if (annotation instanceof Compare) {
                         Compare compareAnnotation = (Compare) annotation;
                         Field f = stream(obj.getClass().getDeclaredFields())
