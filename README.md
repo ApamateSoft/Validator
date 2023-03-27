@@ -22,7 +22,7 @@ Facilitates the validation of Strings by chaining a series of rules.
   - `maxValue`
   - `minAge`
   - `minValue`
-  - `mustContainMinimum`
+  - `mustContainMin`
   - `mustContainOne`
   - `name`
   - `notContain`
@@ -227,7 +227,7 @@ Validator offers a series of predefined rules.
 | `minAge`	           | Validates that the period from the entered date to the current date is greater than or equal to a minimum age |
 | `minLength`	       | Validates that the length of the String is not less than the condition                                        |
 | `minValue`	       | Validates that the value of the String is not less than the condition                                         |
-| `mustContainMinimum` | Validates that the String contains at least a minimum number of characters included in the condition          |
+| `mustContainMin` | Validates that the String contains at least a minimum number of characters included in the condition          |
 | `mustContainOne`     | Validates that the String contains at least one character included in the condition                           |
 | `name`               | Validates that the String is a proper name                                                                    |
 | `notContain`         | Validates that the String does not contain any characters included in the condition                           |
@@ -298,7 +298,7 @@ messages, both classes implement the `Messages` interface.
 | `minAge`             | You must be at least %d years old                        | Se debe tener al menos %d años                            |
 | `minLength`          | %d or more characters are required                       | Se requiere %d o más caracteres                           |
 | `minValue`           | The value cannot be less than %1$.2f                     | El valor no puede ser menor a %1$.2f                      |
-| `mustContainMinimum` | At least %d of the following characters are required: %s | Se requiere al menos %d de los siguientes caracteres: %s  |
+| `mustContainMin` | At least %d of the following characters are required: %s | Se requiere al menos %d de los siguientes caracteres: %s  |
 | `mustContainOne`     | At least one of the following characters is required: %s | Se requiere al menos uno de los siguientes caracteres: %s |
 | `name`               | Debe introducir un nombre personal válido                | Debe introducir un nombre personal válido                 |
 | `notContain`         | The following characters aren't admitted %s              | No se admiten los siguientes caracteres %s                |
@@ -435,7 +435,7 @@ public class HelloValidator {
       public String getRegExpMessage() { return "personalized message"; }
 
       @Override
-      public String getRequireMessage() { return "personalized message"; }
+      public String getRequiredMessage() { return "personalized message"; }
 
       @Override
       public String getShouldOnlyContainMessage() { return "personalized message"; }
@@ -485,10 +485,10 @@ public class Validators {
   public static final Validator password = new Validator.Builder()
           .required()
           .minLength(9)
-          .mustContainMinimum(3, ALPHA_LOWERCASE)
-          .mustContainMinimum(3, ALPHA_UPPERCASE)
-          .mustContainMinimum(3, NUMBER)
-          .mustContainMinimum(3, "@~_/")
+          .mustContainMin(3, ALPHA_LOWERCASE)
+          .mustContainMin(3, ALPHA_UPPERCASE)
+          .mustContainMin(3, NUMBER)
+          .mustContainMin(3, "@~_/")
           .build();
 
 }

@@ -3,7 +3,7 @@ package io.github.ApamateSoft.validator.messages;
 public class MessagesEs implements Messages {
 
     @Override
-    public String getDateFormatMessage() {
+    public String getDateMessage() {
         return "La fecha no coincide con el formato %s";
     }
 
@@ -78,7 +78,7 @@ public class MessagesEs implements Messages {
     }
 
     @Override
-    public String getMustContainMinimumMessage() {
+    public String getMustContainMinMessage() {
         return "Se requiere al menos %d de los siguientes caracteres: %s";
     }
 
@@ -143,7 +143,7 @@ public class MessagesEs implements Messages {
     }
 
     @Override
-    public String getRequireMessage() {
+    public String getRequiredMessage() {
         return "Requerido";
     }
 

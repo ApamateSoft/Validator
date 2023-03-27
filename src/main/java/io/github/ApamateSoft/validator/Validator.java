@@ -1,5 +1,7 @@
 package io.github.ApamateSoft.validator;
 
+import io.github.ApamateSoft.validator.annotations.*;
+import io.github.ApamateSoft.validator.annotations.Number;
 import io.github.ApamateSoft.validator.utils.Validators;
 import io.github.ApamateSoft.validator.exceptions.InvalidEvaluationException;
 import io.github.ApamateSoft.validator.messages.Messages;
@@ -7,10 +9,13 @@ import io.github.ApamateSoft.validator.messages.MessagesEn;
 import io.github.ApamateSoft.validator.functions.OnInvalidEvaluation;
 import io.github.ApamateSoft.validator.functions.Validate;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
 import static java.lang.String.format;
+import static java.util.Arrays.stream;
 
 /**
  * <h1>Validator</h1>
@@ -18,7 +23,7 @@ import static java.lang.String.format;
  * Facilitates the validation of Strings by chaining a series of rules
  *
  * @author ApamateSoft
- * @version 1.2.0
+ * @version 1.3.0
  */
 public class Validator implements Cloneable {
 
@@ -49,6 +54,413 @@ public class Validator implements Cloneable {
 
     public static Messages getMessages() {
         return messages;
+    }
+
+    public static void validOrFail(Object obj) throws InvalidEvaluationException {
+        for (Field field : obj.getClass().getDeclaredFields()) {
+
+            if (!field.getType().equals(String.class)) continue;
+
+            for (Annotation annotation : field.getDeclaredAnnotations()) {
+
+                try {
+                    field.setAccessible(true);
+                    String value = (String) field.get(obj);
+
+                    if (annotation instanceof Compare) {
+                        Compare compareAnnotation = (Compare) annotation;
+                        Field f = stream(obj.getClass().getDeclaredFields())
+                            .filter( it -> it.getName().equals(compareAnnotation.compareWith()) )
+                            .findFirst()
+                            .orElseThrow( () ->
+                                new InvalidEvaluationException(
+                                    compareAnnotation.message().isEmpty() ? messages.getNotMatchMessage() : compareAnnotation.message(),
+                                    value
+                                )
+                            );
+
+                        f.setAccessible(true);
+                        String compare = (String) f.get(obj);
+                        if (compare==null || compare.isEmpty() || !value.equals(compare))
+                            throw new InvalidEvaluationException(
+                                compareAnnotation.message().isEmpty() ? messages.getNotMatchMessage() : compareAnnotation.message(),
+                                value
+                            );
+                    }
+
+                    if (annotation instanceof Required) {
+                        if (!Validators.required(value)) {
+                            Required required = (Required) annotation;
+                            throw new InvalidEvaluationException(
+                                required.message().isEmpty() ? messages.getRequiredMessage() : required.message(),
+                                value
+                            );
+                        }
+                    }
+
+                    if (annotation instanceof Length) {
+                        Length length = (Length) annotation;
+                        if (!Validators.length(value, length.length())) {
+                            throw new InvalidEvaluationException(
+                                format(length.message().isEmpty() ? messages.getLengthMessage() : length.message(), length.length()),
+                                value
+                            );
+                        }
+                    }
+
+                    if (annotation instanceof MinLength) {
+                        MinLength minLength = (MinLength) annotation;
+                        if (!Validators.minLength(value, minLength.min())) {
+                            throw new InvalidEvaluationException(
+                                format(minLength.message().isEmpty() ? messages.getMinLengthMessage() : minLength.message(), minLength.min()),
+                                value
+                            );
+                        }
+                    }
+
+                    if (annotation instanceof MaxLength) {
+                        MaxLength maxLength = (MaxLength) annotation;
+                        if (!Validators.maxLength(value, maxLength.max())) {
+                            throw new InvalidEvaluationException(
+                                format(maxLength.message().isEmpty() ? messages.getMaxLengthMessage() : maxLength.message(), maxLength.max()),
+                                value
+                            );
+                        }
+                    }
+
+                    if (annotation instanceof RangeLength) {
+                        RangeLength rangeLength = (RangeLength) annotation;
+                        if (!Validators.rangeLength(value, rangeLength.min(), rangeLength.max())) {
+                            throw new InvalidEvaluationException(
+                                format(rangeLength.message().isEmpty() ? messages.getRangeLengthMessage() : rangeLength.message(), rangeLength.min(), rangeLength.max()),
+                                value
+                            );
+                        }
+                    }
+
+                    if (annotation instanceof RegExp) {
+                        RegExp regExp = (RegExp) annotation;
+                        if (!Validators.regExp(value, regExp.regExp())) {
+                            throw new InvalidEvaluationException(
+                                format(regExp.message().isEmpty() ? messages.getRegExpMessage() : regExp.message(), regExp.regExp()),
+                                value
+                            );
+                        }
+                    }
+
+                    if (annotation instanceof Email) {
+                        if (!Validators.email(value)) {
+                            Email email = (Email) annotation;
+                            throw new InvalidEvaluationException(
+                                email.message().isEmpty() ? messages.getEmailMessage() : email.message(),
+                                value
+                            );
+                        }
+                    }
+
+                    if (annotation instanceof Number) {
+                        if (!Validators.number(value)) {
+                            Number number = (Number) annotation;
+                            throw new InvalidEvaluationException(
+                                number.message().isEmpty() ? messages.getNumberMessage() : number.message(),
+                                value
+                            );
+                        }
+                    }
+
+                    if (annotation instanceof Link) {
+                        if (!Validators.link(value)) {
+                            Link link = (Link) annotation;
+                            throw new InvalidEvaluationException(
+                                link.message().isEmpty() ? messages.getLinkMessage() : link.message(),
+                                value
+                            );
+                        }
+                    }
+
+                    if (annotation instanceof WwwLink) {
+                        if (!Validators.wwwLink(value)) {
+                            WwwLink wwwLink = (WwwLink) annotation;
+                            throw new InvalidEvaluationException(
+                                wwwLink.message().isEmpty() ? messages.getWwwLinkMessage() : wwwLink.message(),
+                                value
+                            );
+                        }
+                    }
+
+                    if (annotation instanceof HttpLink) {
+                        if (!Validators.httpLink(value)) {
+                            HttpLink httpLink = (HttpLink) annotation;
+                            throw new InvalidEvaluationException(
+                                httpLink.message().isEmpty() ? messages.getHttpLinkMessage() : httpLink.message(),
+                                value
+                            );
+                        }
+                    }
+
+                    if (annotation instanceof HttpsLink) {
+                        if (!Validators.httpsLink(value)) {
+                            HttpsLink httpsLink = (HttpsLink) annotation;
+                            throw new InvalidEvaluationException(
+                                httpsLink.message().isEmpty() ? messages.getHttpsLinkMessage() : httpsLink.message(),
+                                value
+                            );
+                        }
+                    }
+
+                    if (annotation instanceof Ip) {
+                        if (!Validators.ip(value)) {
+                            Ip ip = (Ip) annotation;
+                            throw new InvalidEvaluationException(
+                                ip.message().isEmpty() ? messages.getIpMessage() : ip.message(),
+                                value
+                            );
+                        }
+                    }
+
+                    if (annotation instanceof Ipv4) {
+                        if (!Validators.ipv4(value)) {
+                            Ipv4 ipv4 = (Ipv4) annotation;
+                            throw new InvalidEvaluationException(
+                                ipv4.message().isEmpty() ? messages.getIpv4Message() : ipv4.message(),
+                                value
+                            );
+                        }
+                    }
+
+                    if (annotation instanceof Ipv6) {
+                        if (!Validators.ipv6(value)) {
+                            Ipv6 ipv6 = (Ipv6) annotation;
+                            throw new InvalidEvaluationException(
+                                ipv6.message().isEmpty() ? messages.getIpv6Message() : ipv6.message(),
+                                value
+                            );
+                        }
+                    }
+
+                    if (annotation instanceof Time) {
+                        if (!Validators.time(value)) {
+                            Time time = (Time) annotation;
+                            throw new InvalidEvaluationException(
+                                time.message().isEmpty() ? messages.getTimeMessage() : time.message(),
+                                value
+                            );
+                        }
+                    }
+
+                    if (annotation instanceof Time12) {
+                        if (!Validators.time12(value)) {
+                            Time12 time12 = (Time12) annotation;
+                            throw new InvalidEvaluationException(
+                                time12.message().isEmpty() ? messages.getTime12Message() : time12.message(),
+                                value
+                            );
+                        }
+                    }
+
+                    if (annotation instanceof Time24) {
+                        if (!Validators.time24(value)) {
+                            Time24 time24 = (Time24) annotation;
+                            throw new InvalidEvaluationException(
+                                time24.message().isEmpty() ? messages.getTime24Message() : time24.message(),
+                                value
+                            );
+                        }
+                    }
+
+                    if (annotation instanceof NumberPattern) {
+                        NumberPattern numberPattern = (NumberPattern) annotation;
+                        if (!Validators.numberPattern(value, numberPattern.patter())) {
+                            throw new InvalidEvaluationException(
+                                format(numberPattern.message().isEmpty() ? messages.getNumberPatternMessage() : numberPattern.message(), numberPattern.patter()),
+                                value
+                            );
+                        }
+                    }
+
+                    if (annotation instanceof Date) {
+                        Date date = (Date) annotation;
+                        if (!Validators.date(value, date.format())) {
+                            throw new InvalidEvaluationException(
+                                format(date.message().isEmpty() ? messages.getDateMessage() : date.message(), date.format()),
+                                value
+                            );
+                        }
+                    }
+
+                    if (annotation instanceof Name) {
+                        if (!Validators.name(value)) {
+                            Name name = (Name) annotation;
+                            throw new InvalidEvaluationException(
+                                name.message().isEmpty() ? messages.getNameMessage() : name.message(),
+                                value
+                            );
+                        }
+                    }
+
+                    if (annotation instanceof ShouldOnlyContain) {
+                        ShouldOnlyContain shouldOnlyContain = (ShouldOnlyContain) annotation;
+                        if (!Validators.shouldOnlyContain(value, shouldOnlyContain.condition())) {
+                            throw new InvalidEvaluationException(
+                                format(shouldOnlyContain.message().isEmpty() ? messages.getShouldOnlyContainMessage() : shouldOnlyContain.message(), shouldOnlyContain.condition()),
+                                value
+                            );
+                        }
+                    }
+
+                    if (annotation instanceof OnlyNumbers) {
+                        if (!Validators.onlyNumbers(value)) {
+                            OnlyNumbers onlyNumbers = (OnlyNumbers) annotation;
+                            throw new InvalidEvaluationException(
+                                onlyNumbers.message().isEmpty() ? messages.getOnlyNumbersMessage() : onlyNumbers.message(),
+                                value
+                            );
+                        }
+                    }
+
+                    if (annotation instanceof OnlyLetters) {
+                        if (!Validators.onlyLetters(value)) {
+                            OnlyLetters onlyLetters = (OnlyLetters) annotation;
+                            throw new InvalidEvaluationException(
+                                onlyLetters.message().isEmpty() ? messages.getOnlyLettersMessage() : onlyLetters.message(),
+                                value
+                            );
+                        }
+                    }
+
+                    if (annotation instanceof OnlyAlphanumeric) {
+                        if (!Validators.onlyAlphanumeric(value)) {
+                            OnlyAlphanumeric onlyAlphanumeric = (OnlyAlphanumeric) annotation;
+                            throw new InvalidEvaluationException(
+                                onlyAlphanumeric.message().isEmpty() ? messages.getOnlyAlphanumericMessage() : onlyAlphanumeric.message(),
+                                value
+                            );
+                        }
+                    }
+
+                    if (annotation instanceof NotContain) {
+                        NotContain notContain = (NotContain) annotation;
+                        if (!Validators.notContain(value, notContain.condition())) {
+                            throw new InvalidEvaluationException(
+                                format(notContain.message().isEmpty() ? messages.getNotContainMessage() : notContain.message(), notContain.condition()),
+                                value
+                            );
+                        }
+                    }
+
+                    if (annotation instanceof NotContainContainer) {
+                        NotContainContainer container = (NotContainContainer) annotation;
+                        for (NotContain notContain : container.value()) {
+                            if (!Validators.notContain(value, notContain.condition())) {
+                                throw new InvalidEvaluationException(
+                                    format(notContain.message().isEmpty() ? messages.getNotContainMessage() : notContain.message(), notContain.condition()),
+                                    value
+                                );
+                            }
+                        }
+                    }
+
+                    if (annotation instanceof MustContainOne) {
+                        MustContainOne mustContainOne = (MustContainOne) annotation;
+                        if (!Validators.mustContainOne(value, mustContainOne.condition())) {
+                            throw new InvalidEvaluationException(
+                                format(mustContainOne.message().isEmpty() ? messages.getMustContainOneMessage() : mustContainOne.message(), mustContainOne.condition()),
+                                value
+                            );
+                        }
+                    }
+
+                    if (annotation instanceof MustContainOneContainer) {
+                        MustContainOneContainer container = (MustContainOneContainer) annotation;
+                        for (MustContainOne mustContainOne : container.value()) {
+                            if (!Validators.mustContainOne(value, mustContainOne.condition())) {
+                                throw new InvalidEvaluationException(
+                                    format(mustContainOne.message().isEmpty() ? messages.getMustContainOneMessage() : mustContainOne.message(), mustContainOne.condition()),
+                                    value
+                                );
+                            }
+                        }
+                    }
+
+                    if (annotation instanceof MaxValue) {
+                        MaxValue maxValue = (MaxValue) annotation;
+                        if (!Validators.maxValue(value, maxValue.max())) {
+                            throw new InvalidEvaluationException(
+                                format(maxValue.message().isEmpty() ? messages.getMaxValueMessage() : maxValue.message(), maxValue.max()),
+                                value
+                            );
+                        }
+                    }
+
+                    if (annotation instanceof MinValue) {
+                        MinValue minValue = (MinValue) annotation;
+                        if (!Validators.minValue(value, minValue.min())) {
+                            throw new InvalidEvaluationException(
+                                format(minValue.message().isEmpty() ? messages.getMinValueMessage() : minValue.message(), minValue.min()),
+                                value
+                            );
+                        }
+                    }
+
+                    if (annotation instanceof RangeValue) {
+                        RangeValue rangeValue = (RangeValue) annotation;
+                        if (!Validators.rangeValue(value, rangeValue.min(), rangeValue.max())) {
+                            throw new InvalidEvaluationException(
+                                format(rangeValue.message().isEmpty() ? messages.getRangeValueMessage() : rangeValue.message(), rangeValue.min(), rangeValue.max()),
+                                value
+                            );
+                        }
+                    }
+
+                    if (annotation instanceof MinAge) {
+                        MinAge minAge = (MinAge) annotation;
+                        if (!Validators.minAge(value, minAge.format(), minAge.age())) {
+                            throw new InvalidEvaluationException(
+                                format(minAge.message().isEmpty() ? messages.getMinAgeMessage() : minAge.message(), minAge.age()),
+                                value
+                            );
+                        }
+                    }
+
+                    if (annotation instanceof ExpirationDate) {
+                        ExpirationDate expirationDate = (ExpirationDate) annotation;
+                        if (!Validators.expirationDate(value, expirationDate.format())) {
+                            throw new InvalidEvaluationException(
+                                format(expirationDate.message().isEmpty() ? messages.getExpirationDateMessage() : expirationDate.message(), expirationDate.format()),
+                                value
+                            );
+                        }
+                    }
+
+                    if (annotation instanceof MustContainMin) {
+                        MustContainMin mustContainMin = (MustContainMin) annotation;
+                        if (!Validators.mustContainMin(value, mustContainMin.min(), mustContainMin.condition())) {
+                            throw new InvalidEvaluationException(
+                                format(mustContainMin.message().isEmpty() ? messages.getMustContainMinMessage() : mustContainMin.message(), mustContainMin.min(), mustContainMin.condition()),
+                                value
+                            );
+                        }
+                    }
+
+                    if (annotation instanceof MustContainMinContainer) {
+                        MustContainMinContainer container = (MustContainMinContainer) annotation;
+                        for (MustContainMin mustContainMin : container.value()) {
+                            if (!Validators.mustContainMin(value, mustContainMin.min(), mustContainMin.condition())) {
+                                throw new InvalidEvaluationException(
+                                    format(mustContainMin.message().isEmpty() ? messages.getMustContainMinMessage() : mustContainMin.message(), mustContainMin.min(), mustContainMin.condition()),
+                                    value
+                                );
+                            }
+                        }
+                    }
+
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
+
+            }
+
+        }
     }
 
     /**
@@ -177,18 +589,18 @@ public class Validator implements Cloneable {
      * Validates that the String is different from null and empty
      */
     public void required() {
-        required(messages.getRequireMessage());
+        required(messages.getRequiredMessage());
     }
     //</editor-fold>
 
     //<editor-fold default-state="collapsed" desc="length">
     /**
      * Validates that the String has an exact length of characters
-     * @param condition character length
+     * @param length character length
      * @param message Error message
      */
-    public void length(int condition, String message) {
-        rule(format(message, condition), it -> Validators.length(it, condition) );
+    public void length(int length, String message) {
+        rule(format(message, length), it -> Validators.length(it, length) );
     }
 
     /**
@@ -202,36 +614,36 @@ public class Validator implements Cloneable {
 
     //<editor-fold default-state="collapsed" desc="minLength">
     /**
-     * Validates that the length of the String is not less than the condition
-     * @param condition Minimum character length
+     * Validates that the length of the String is not less than the min
+     * @param min Minimum character length
      * @param message Error message
      */
-    public void minLength(int condition, String message) {
-        rule(format(message, condition), it -> Validators.minLength(it, condition) );
+    public void minLength(int min, String message) {
+        rule(format(message, min), it -> Validators.minLength(it, min) );
     }
 
     /**
-     * Validates that the length of the String is not less than the condition
-     * @param condition Minimum character length
+     * Validates that the length of the String is not less than the min
+     * @param min Minimum character length
      */
-    public void minLength(int condition) {
-        minLength(condition, messages.getMinLengthMessage());
+    public void minLength(int min) {
+        minLength(min, messages.getMinLengthMessage());
     }
     //</editor-fold>
 
     //<editor-fold default-state="collapsed" desc="maxLength">
     /**
-     * Validates that the length of the String is not greater than the condition
-     * @param condition maximum character length
+     * Validates that the length of the String is not greater than the max
+     * @param max Maximum character length
      * @param message Error message
      */
-    public void maxLength(int condition, String message) {
-        rule(format(message, condition), it -> Validators.maxLength(it, condition) );
+    public void maxLength(int max, String message) {
+        rule(format(message, max), it -> Validators.maxLength(it, max) );
     }
 
     /**
      * Validates that the length of the String is not greater than the condition
-     * @param condition maximum character length
+     * @param condition Maximum character length
      */
     public void maxLength(int condition) {
         maxLength(condition, messages.getMaxLengthMessage());
@@ -266,19 +678,19 @@ public class Validator implements Cloneable {
     //<editor-fold default-state="collapsed" desc="regExp">
     /**
      * Validates that the String matches the regular expression
-     * @param condition Regular expression
+     * @param regExp Regular expression
      * @param message Error message
      */
-    public void regExp(String condition, String message) {
-        rule(format(message, condition), it -> Validators.regExp(it, condition) );
+    public void regExp(String regExp, String message) {
+        rule(format(message, regExp), it -> Validators.regExp(it, regExp) );
     }
 
     /**
      * Validates that the String matches the regular expression
-     * @param condition Regular expression
+     * @param regExp Regular expression
      */
-    public void regExp(String condition) {
-        regExp(condition, messages.getRegExpMessage());
+    public void regExp(String regExp) {
+        regExp(regExp, messages.getRegExpMessage());
     }
     //</editor-fold>
 
@@ -473,7 +885,7 @@ public class Validator implements Cloneable {
 
     //<editor-fold default-state="collapsed" desc="time24">
     /**
-     * Validate that the String is a time with 24 hours format.
+     * Validate that the String is a time with 24 hours format
      * @param message Error message.
      */
     public void time24(String message) {
@@ -481,7 +893,7 @@ public class Validator implements Cloneable {
     }
 
     /**
-     * Validate that the String is a time with 24 hours format.
+     * Validate that the String is a time with 24 hours format
      */
     public void time24() {
         time24(messages.getTime24Message());
@@ -519,22 +931,22 @@ public class Validator implements Cloneable {
     }
     //</editor-fold>
 
-    //<editor-fold default-state="collapsed" desc="dateFormat">
+    //<editor-fold default-state="collapsed" desc="date">
     /**
      * Validates that the String to evaluate matches the specified date format
      * @param format Describing the date and time format
      * @param message Error message
      */
-    public void dateFormat(String format, String message) {
-        rule(format(message, format), it -> Validators.dateFormat(it, format) );
+    public void date(String format, String message) {
+        rule(format(message, format), it -> Validators.date(it, format) );
     }
 
     /**
      * Validates that the String to evaluate matches the specified date format
      * @param format Describing the date and time format
      */
-    public void dateFormat(String format) {
-        dateFormat(format, messages.getDateFormatMessage());
+    public void date(String format) {
+        date(format, messages.getDateMessage());
     }
     //</editor-fold>
 
@@ -546,7 +958,7 @@ public class Validator implements Cloneable {
      *     <li>Capitalization is ignored</li>
      *     <li>
      *         Only valid proper names in English. to evaluate names in other languages it is recommended to use the
-     *         {@link #regExp(String, String)} function.
+     *         {@link #regExp(String, String)} function
      *     </li>
      * <ul/>
      * @param message Error message.
@@ -693,22 +1105,22 @@ public class Validator implements Cloneable {
 
     //<editor-fold default-state="collapsed" desc="maxValue">
     /**
-     * Validates that the value of the String is not greater than the condition <br />
+     * Validates that the value of the String is not greater than the max <br />
      * <b>Note:</b> It is recommended to implement the {@link #number(String)} rule first
-     * @param condition maximum value
+     * @param max Maximum value
      * @param message Error message
      */
-    public void maxValue(double condition, String message) {
-        rule(format(message, condition), it -> Validators.maxValue(it, condition) );
+    public void maxValue(double max, String message) {
+        rule(format(message, max), it -> Validators.maxValue(it, max) );
     }
 
     /**
-     * Validates that the value of the String is not greater than the condition <br />
+     * Validates that the value of the String is not greater than the max <br />
      * <b>Note:</b> It is recommended to implement the {@link #number()} rule first
-     * @param condition maximum value.
+     * @param max Maximum value.
      */
-    public void maxValue(double condition) {
-        maxValue(condition, messages.getMaxValueMessage());
+    public void maxValue(double max) {
+        maxValue(max, messages.getMaxValueMessage());
     }
     //</editor-fold>
 
@@ -716,7 +1128,7 @@ public class Validator implements Cloneable {
     /**
      * Validates that the value of the String is not less than the condition <br />
      * <b>Note:</b> It is recommended to implement the {@link #number(String)} rule first
-     * @param condition minimum value
+     * @param condition Minimum value
      * @param message Error message
      */
     public void minValue(double condition, String message) {
@@ -726,7 +1138,7 @@ public class Validator implements Cloneable {
     /**
      * Validates that the value of the String is not less than the condition <br />
      * <b>Note:</b> It is recommended to implement the {@link #number()} rule first
-     * @param condition minimum value.
+     * @param condition Minimum value.
      */
     public void minValue(double condition) {
         minValue(condition, messages.getMinValueMessage());
@@ -738,8 +1150,8 @@ public class Validator implements Cloneable {
     /**
      * Validates that the value of the String is in the established range <br />
      * <b>Note:</b> It is recommended to implement the {@link #number(String)} rule first
-     * @param min minimum value
-     * @param max maximum value
+     * @param min Minimum value
+     * @param max Maximum value
      * @param message Error message
      */
     public void rangeValue(double min, double max, String message) {
@@ -749,8 +1161,8 @@ public class Validator implements Cloneable {
     /**
      * Validates that the value of the String is in the established range <br />
      * <b>Note:</b> It is recommended to implement the {@link #number()} rule first
-     * @param min minimum value
-     * @param max maximum value
+     * @param min Minimum value
+     * @param max Maximum value
      */
     public void rangeValue(double min, double max) {
         rangeValue(min, max, messages.getRangeValueMessage());
@@ -762,9 +1174,9 @@ public class Validator implements Cloneable {
      * Validates that the period from the entered date to the current date is greater than or equal to a minimum age
      * <br/>
      * <b>Warning:</b> This function makes use of the current date of the device <br />
-     * <b>Note:</b> It is recommended to implement the {@link #dateFormat(String, String)} rule first.
+     * <b>Note:</b> It is recommended to implement the {@link #date(String, String)} rule first.
      * @param format Describing the date and time format
-     * @param age minimum age
+     * @param age Minimum age
      * @param message Error message
      */
     public void minAge(String format, int age, String message) {
@@ -775,9 +1187,9 @@ public class Validator implements Cloneable {
      * Validates that the period from the entered date to the current date is greater than or equal to a minimum age
      * <br/>
      * <b>Warning:</b> This function makes use of the current date of the device <br />
-     * <b>Note:</b> It is recommended to implement the {@link #dateFormat(String)} rule first
+     * <b>Note:</b> It is recommended to implement the {@link #date(String)} rule first
      * @param format Describing the date and time format
-     * @param age minimum age
+     * @param age Minimum age
      */
     public void minAge(String format, int age) {
         minAge(format, age, messages.getMinAgeMessage());
@@ -788,7 +1200,7 @@ public class Validator implements Cloneable {
     /**
      * Validates that the entered date has not expired <br/>
      * <b>Warning:</b> This function makes use of the current date of the device <br />
-     * <b>Note:</b> It is recommended to implement the {@link #dateFormat(String, String)} rule first
+     * <b>Note:</b> It is recommended to implement the {@link #date(String, String)} rule first
      * @param format Describing the date and time format
      * @param message Error message
      */
@@ -799,7 +1211,7 @@ public class Validator implements Cloneable {
     /**
      * Validates that the entered date has not expired <br/>
      * <b>Warning:</b> This function makes use of the current date of the device <br />
-     * <b>Note:</b> It is recommended to implement the {@link #dateFormat(String)} rule first
+     * <b>Note:</b> It is recommended to implement the {@link #date(String)} rule first
      * @param format Describing the date and time format
      */
     public void expirationDate(String format) {
@@ -807,15 +1219,15 @@ public class Validator implements Cloneable {
     }
     //</editor-fold>
 
-    //<editor-fold default-state="collapsed" desc="mustContainMinimum">
+    //<editor-fold default-state="collapsed" desc="mustContainMin">
     /**
      * Validates that the String contains at least a minimum number of characters included in the condition
-     * @param min minimum value.
-     * @param condition String with desired characters.
-     * @param message Error message.
+     * @param min Minimum value
+     * @param condition String with desired characters
+     * @param message Error message
      */
-    public void mustContainMinimum(int min, String condition, String message) {
-        rule( format(message, min, condition), it -> Validators.mustContainMinimum(it, min, condition) );
+    public void mustContainMin(int min, String condition, String message) {
+        rule( format(message, min, condition), it -> Validators.mustContainMin(it, min, condition) );
     }
 
     /**
@@ -823,8 +1235,8 @@ public class Validator implements Cloneable {
      * @param min minimum value.
      * @param condition String with desired characters.
      */
-    public void mustContainMinimum(int min, String condition) {
-        mustContainMinimum(min, condition, messages.getMustContainMinimumMessage());
+    public void mustContainMin(int min, String condition) {
+        mustContainMin(min, condition, messages.getMustContainMinMessage());
     }
     //</editor-fold>
 
@@ -885,7 +1297,7 @@ public class Validator implements Cloneable {
          * <b>Ejemplo:<b/>
          * <pre>
          * new Validator.rule("Enter a text other than null", Objects::nonNull)
-         * </code>
+         * </pre>
          * @param message Error message.
          * @param validate Function that returns true when the String to evaluate meets the conditions
          * @return Builder
@@ -922,70 +1334,70 @@ public class Validator implements Cloneable {
          * @return Builder
          */
         public Builder required() {
-            return required(messages.getRequireMessage());
+            return required(messages.getRequiredMessage());
         }
         //</editor-fold>
 
         //<editor-fold default-state="collapsed" desc="length">
         /**
          * Validates that the String has an exact length of characters
-         * @param condition character length
+         * @param length character length
          * @param message Error message
          * @return Builder
          */
-        public Builder length(int condition, String message) {
-            return rule(format(message, condition), it -> Validators.length(it, condition) );
+        public Builder length(int length, String message) {
+            return rule(format(message, length), it -> Validators.length(it, length) );
         }
 
         /**
          * Validates that the String has an exact length of characters
-         * @param condition character length
+         * @param length character length
          * @return Builder
          */
-        public Builder length(int condition) {
-            return length(condition, messages.getLengthMessage());
+        public Builder length(int length) {
+            return length(length, messages.getLengthMessage());
         }
         //</editor-fold>
 
         //<editor-fold default-state="collapsed" desc="minLength">
         /**
-         * Validates that the length of the String is not less than the condition
-         * @param condition Minimum character length
+         * Validates that the length of the String is not less than the min
+         * @param min Minimum character length
          * @param message Error message
          * @return Builder
          */
-        public Builder minLength(int condition, String message) {
-            return rule(format(message, condition), it -> Validators.minLength(it, condition) );
+        public Builder minLength(int min, String message) {
+            return rule(format(message, min), it -> Validators.minLength(it, min) );
         }
 
         /**
-         * Validates that the length of the String is not less than the condition
-         * @param condition Minimum character length
+         * Validates that the length of the String is not less than the min
+         * @param min Minimum character length
          * @return Builder
          */
-        public Builder minLength(int condition) {
-            return minLength(condition, messages.getMinLengthMessage());
+        public Builder minLength(int min) {
+            return minLength(min, messages.getMinLengthMessage());
         }
         //</editor-fold>
 
         //<editor-fold default-state="collapsed" desc="maxLength">
         /**
-         * Validates that the length of the String is not greater than the condition
-         * @param condition maximum character length
+         * Validates that the length of the String is not greater than the max
+         * @param max Maximum character length
          * @param message Error message
          * @return Builder
          */
-        public Builder maxLength(int condition, String message) {
-            return rule(format(message, condition), it -> Validators.maxLength(it, condition) );
+        public Builder maxLength(int max, String message) {
+            return rule(format(message, max), it -> Validators.maxLength(it, max) );
         }
 
         /**
-         * Validates that the length of the String is not greater than the condition
-         * @param condition maximum character length
+         * Validates that the length of the String is not greater than the max
+         * @param max Maximum character length
          * @return Builder
          */
-        public Builder maxLength(int condition) {
-            return maxLength(condition, messages.getMaxLengthMessage());
+        public Builder maxLength(int max) {
+            return maxLength(max, messages.getMaxLengthMessage());
         }
         //</editor-fold>
 
@@ -1019,21 +1431,21 @@ public class Validator implements Cloneable {
         //<editor-fold default-state="collapsed" desc="regExp">
         /**
          * Validates that the String matches the regular expression
-         * @param condition Regular expression
+         * @param regExp Regular expression
          * @param message Error message
          * @return Builder
          */
-        public Builder regExp(String condition, String message) {
-            return rule(format(message, condition), it -> Validators.regExp(it, condition) );
+        public Builder regExp(String regExp, String message) {
+            return rule(format(message, regExp), it -> Validators.regExp(it, regExp) );
         }
 
         /**
          * Validates that the String matches the regular expression
-         * @param condition Regular expression
+         * @param regExp Regular expression
          * @return Builder
          */
-        public Builder regExp(String condition) {
-            return regExp(condition, messages.getRegExpMessage());
+        public Builder regExp(String regExp) {
+            return regExp(regExp, messages.getRegExpMessage());
         }
         //</editor-fold>
 
@@ -1348,15 +1760,15 @@ public class Validator implements Cloneable {
         }
         //</editor-fold>
 
-        //<editor-fold default-state="collapsed" desc="dateFormat">
+        //<editor-fold default-state="collapsed" desc="date">
         /**
          * Validates that the String to evaluate matches the specified date format
          * @param format Describing the date and time format
          * @param message Error message
          * @return Builder
          */
-        public Builder dateFormat(String format, String message) {
-            return rule(format(message, format), it -> Validators.dateFormat(it, format) );
+        public Builder date(String format, String message) {
+            return rule(format(message, format), it -> Validators.date(it, format) );
         }
 
         /**
@@ -1364,8 +1776,8 @@ public class Validator implements Cloneable {
          * @param format Describing the date and time format
          * @return Builder
          */
-        public Builder dateFormat(String format) {
-            return dateFormat(format, messages.getDateFormatMessage());
+        public Builder date(String format) {
+            return date(format, messages.getDateMessage());
         }
         //</editor-fold>
 
@@ -1566,7 +1978,7 @@ public class Validator implements Cloneable {
          * Validates that the period from the entered date to the current date is greater than or equal to a minimum age
          * <br/>
          * <b>Warning:</b> This function makes use of the current date of the device <br />
-         * <b>Note:</b> It is recommended to implement the {@link #dateFormat(String, String)} rule first.
+         * <b>Note:</b> It is recommended to implement the {@link #date(String, String)} rule first.
          * @param format Describing the date and time format
          * @param age minimum age
          * @param message Error message
@@ -1580,7 +1992,7 @@ public class Validator implements Cloneable {
          * Validates that the period from the entered date to the current date is greater than or equal to a minimum age
          * <br/>
          * <b>Warning:</b> This function makes use of the current date of the device <br />
-         * <b>Note:</b> It is recommended to implement the {@link #dateFormat(String)} rule first.
+         * <b>Note:</b> It is recommended to implement the {@link #date(String)} rule first.
          * @param format Describing the date and time format
          * @param age minimum age
          * @return Builder
@@ -1594,7 +2006,7 @@ public class Validator implements Cloneable {
         /**
          * Validates that the entered date has not expired <br/>
          * <b>Warning:</b> This function makes use of the current date of the device <br />
-         * <b>Note:</b> It is recommended to implement the {@link #dateFormat(String, String)} rule first
+         * <b>Note:</b> It is recommended to implement the {@link #date(String, String)} rule first
          * @param format Describing the date and time format
          * @param message Error message
          * @return Builder
@@ -1606,7 +2018,7 @@ public class Validator implements Cloneable {
         /**
          * Validates that the entered date has not expired <br/>
          * <b>Warning:</b> This function makes use of the current date of the device <br />
-         * <b>Note:</b> It is recommended to implement the {@link #dateFormat(String)} rule first
+         * <b>Note:</b> It is recommended to implement the {@link #date(String)} rule first
          * @param format Describing the date and time format
          * @return Builder
          */
@@ -1615,7 +2027,7 @@ public class Validator implements Cloneable {
         }
         //</editor-fold>
 
-        //<editor-fold default-state="collapsed" desc="mustContainMinimum">
+        //<editor-fold default-state="collapsed" desc="mustContainMin">
         /**
          * Validates that the String contains at least a minimum number of characters included in the condition
          * @param min minimum value
@@ -1623,8 +2035,8 @@ public class Validator implements Cloneable {
          * @param message Error message
          * @return Builder
          */
-        public Builder mustContainMinimum(int min, String condition, String message) {
-            return rule( format(message, min, condition), it -> Validators.mustContainMinimum(it, min, condition) );
+        public Builder mustContainMin(int min, String condition, String message) {
+            return rule( format(message, min, condition), it -> Validators.mustContainMin(it, min, condition) );
         }
 
         /**
@@ -1633,8 +2045,8 @@ public class Validator implements Cloneable {
          * @param condition String with desired characters
          * @return Builder
          */
-        public Builder mustContainMinimum(int min, String condition) {
-            return mustContainMinimum(min, condition, messages.getMustContainMinimumMessage());
+        public Builder mustContainMin(int min, String condition) {
+            return mustContainMin(min, condition, messages.getMustContainMinMessage());
         }
         //</editor-fold>
 
