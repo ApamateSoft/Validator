@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 public @interface RangeLength {
     /**
-     * @return Minimum character length
+     *Returns minimum character length.
      */
     int min();
 
