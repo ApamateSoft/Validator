@@ -98,7 +98,7 @@ public class MessagesEs implements Messages {
     }
 
     @Override
-    public String getNotMatchMessage() {
+    public String getCompareMessage() {
         return "No coinciden";
     }
 

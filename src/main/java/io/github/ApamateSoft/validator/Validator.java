@@ -31,7 +31,7 @@ public class Validator implements Cloneable {
 
     private final List<Rule> rules = new ArrayList<>();
     private OnInvalidEvaluation onInvalidEvaluation;
-    private String notMatchMessage = messages.getNotMatchMessage();
+    private String notMatchMessage = messages.getCompareMessage();
 
     // <editor-fold default-state="collapsed" defaulted="collapsed" desc="CONSTRUCTORS">
     public Validator() { }
@@ -74,7 +74,7 @@ public class Validator implements Cloneable {
                             .findFirst()
                             .orElseThrow( () ->
                                 new InvalidEvaluationException(
-                                    compareAnnotation.message().isEmpty() ? messages.getNotMatchMessage() : compareAnnotation.message(),
+                                    compareAnnotation.message().isEmpty() ? messages.getCompareMessage() : compareAnnotation.message(),
                                     value
                                 )
                             );
@@ -83,7 +83,7 @@ public class Validator implements Cloneable {
                         String compare = (String) f.get(obj);
                         if (compare==null || compare.isEmpty() || !value.equals(compare))
                             throw new InvalidEvaluationException(
-                                compareAnnotation.message().isEmpty() ? messages.getNotMatchMessage() : compareAnnotation.message(),
+                                compareAnnotation.message().isEmpty() ? messages.getCompareMessage() : compareAnnotation.message(),
                                 value
                             );
                     }
@@ -464,11 +464,11 @@ public class Validator implements Cloneable {
     }
 
     /**
-     * Validate that the String to evaluate meets all the rules.<br>
+     * Validate that the String to evaluate meets all the rules <br>
      * <b>Note:</b> If the String does not meet any rule, the {@link #onInvalidEvaluation(OnInvalidEvaluation)} event will be invoked with the
-     * corresponding error message.
-     * @param evaluate String to evaluate.
-     * @return true: if validation passes.
+     * corresponding error message
+     * @param evaluate String to evaluate
+     * @return true: if validation passes
      */
     public boolean isValid(String evaluate) {
         for (Rule rule: rules) {
@@ -481,11 +481,11 @@ public class Validator implements Cloneable {
     }
 
     /**
-     * Validate that the String to evaluate meets all the rules.<br>
-     * @param evaluate String to evaluate.
-     * @throws InvalidEvaluationException Exception thrown if the String to evaluate does not meet any rule.
+     * Validate that the String to evaluate meets all the rules <br>
+     * @param evaluate String to evaluate
+     * @throws InvalidEvaluationException Exception thrown if the String to evaluate does not meet any rule
      */
-    public void isValidOrFail(String evaluate) throws InvalidEvaluationException {
+    public void validOrFail(String evaluate) throws InvalidEvaluationException {
         for (Rule rule: rules)
             if (!rule.validate(evaluate))
                 throw new InvalidEvaluationException(rule.getMessage(), evaluate);
@@ -504,9 +504,9 @@ public class Validator implements Cloneable {
      *        method.
      *     </li>
      * <ul/>
-     * @param evaluate String to evaluate.
-     * @param compare String to compare.
-     * @return true: if validation passes.
+     * @param evaluate String to evaluate
+     * @param compare String to compare
+     * @return true: if validation passes
      */
     public boolean compare(String evaluate, String compare) {
         if (!evaluate.equals(compare)) {
@@ -517,7 +517,7 @@ public class Validator implements Cloneable {
     }
 
     /**
-     * Validate that both Strings match and that they meet all the rules.
+     * Validate that both Strings match and that they meet all the rules
      * <br/><br/>
      * <b>Note:</b>
      * <ul>
@@ -537,7 +537,7 @@ public class Validator implements Cloneable {
     public void compareOrFail(String evaluate, String compare) throws InvalidEvaluationException {
         if (!evaluate.equals(compare))
             throw new InvalidEvaluationException(notMatchMessage, evaluate);
-        isValidOrFail(evaluate);
+        validOrFail(evaluate);
     }
 
     /**
@@ -552,8 +552,7 @@ public class Validator implements Cloneable {
     //<editor-fold default-state="collapsed" desc="RULES">
 
     /**
-     * Create a validation rule.
-     * <br/>
+     * Create a validation rule <br/>
      * <b>Example:<b/>
      * <pre>
      * new Validator.rule("Enter a text other than null", Objects::nonNull)
@@ -1276,7 +1275,7 @@ public class Validator implements Cloneable {
 
         private final List<Rule> rules = new ArrayList<>();
         private OnInvalidEvaluation onInvalidEvaluation;
-        private String notMatchMessage = messages.getNotMatchMessage();
+        private String notMatchMessage = messages.getCompareMessage();
 
         /**
          * Sets the error message to display, in case the String comparison fails in the method

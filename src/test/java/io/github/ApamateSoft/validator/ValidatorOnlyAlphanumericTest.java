@@ -1,6 +1,5 @@
 package io.github.ApamateSoft.validator;
 
-import io.github.ApamateSoft.validator.Validator;
 import io.github.ApamateSoft.validator.exceptions.InvalidEvaluationException;
 import io.github.ApamateSoft.validator.functions.OnInvalidEvaluation;
 import io.github.ApamateSoft.validator.messages.MessagesEn;
@@ -71,12 +70,12 @@ public class ValidatorOnlyAlphanumericTest {
 
     @Test
     void throwInvalidEvaluationException() {
-        assertThrows(InvalidEvaluationException.class, () -> validator.isValidOrFail(null) );
+        assertThrows(InvalidEvaluationException.class, () -> validator.validOrFail(null) );
     }
 
     @Test
     void throwInvalidEvaluationException_Builder() {
-        assertThrows(InvalidEvaluationException.class, () -> builder.isValidOrFail(null) );
+        assertThrows(InvalidEvaluationException.class, () -> builder.validOrFail(null) );
     }
 
 }
