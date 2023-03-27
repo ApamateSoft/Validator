@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 public class CompareAnnotationTest {
 
-    private static final String MESSAGES = new MessagesEn().getNotMatchMessage();
+    private static final String MESSAGES = new MessagesEn().getCompareMessage();
 
     @Compare(compareWith = "passwordConfirm")
     private String password;

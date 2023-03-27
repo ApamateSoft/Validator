@@ -1,6 +1,7 @@
 package io.github.ApamateSoft.validator.messages;
 
 public interface Messages {
+    String getCompareMessage();
     String getDateMessage();
     String getEmailMessage();
     String getExpirationDateMessage();
@@ -20,7 +21,6 @@ public interface Messages {
     String getMustContainOneMessage();
     String getNameMessage();
     String getNotContainMessage();
-    String getNotMatchMessage();
     String getNumberMessage();
     String getNumberPatternMessage();
     String getOnlyAlphanumericMessage();

@@ -190,18 +190,18 @@ import io.github.ApamateSoft.validator.exceptions.InvalidEvaluationException;
 
 class HelloValidator {
 
-  Validator validator = new Validator.Builder()
-          .rule("The text is different from 'xxx'", evaluate -> evaluate.equals("xxx"))
-          .build();
+    Validator validator = new Validator.Builder()
+        .rule("The text is different from 'xxx'", evaluate -> evaluate.equals("xxx"))
+        .build();
 
-  private void submit() {
-    try {
-      validator.isValidOrFail("yyy");
-      validator.compareOrFail("XXX", "YYY");
-    } catch (InvalidEvaluationException e) {
-      System.out.println(e.getMessage());
+    private void submit() {
+        try {
+            validator.validOrFail("yyy");
+            validator.compareOrFail("XXX", "YYY");
+        } catch (InvalidEvaluationException e) {
+            System.out.println(e.getMessage());
+        }
     }
-  }
 
 }
 ```
@@ -477,48 +477,48 @@ import static io.github.ApamateSoft.validator.utils.Constants.*;
 
 public class Validators {
 
-  public static final Validator email = new Validator.Builder()
-          .required()
-          .email()
-          .build();
+    public static final Validator email = new Validator.Builder()
+        .required()
+        .email()
+        .build();
 
-  public static final Validator password = new Validator.Builder()
-          .required()
-          .minLength(9)
-          .mustContainMin(3, ALPHA_LOWERCASE)
-          .mustContainMin(3, ALPHA_UPPERCASE)
-          .mustContainMin(3, NUMBER)
-          .mustContainMin(3, "@~_/")
-          .build();
+    public static final Validator password = new Validator.Builder()
+        .required()
+        .minLength(9)
+        .mustContainMin(3, ALPHA_LOWERCASE)
+        .mustContainMin(3, ALPHA_UPPERCASE)
+        .mustContainMin(3, NUMBER)
+        .mustContainMin(3, "@~_/")
+        .build();
 
 }
 
 public class Login {
 
-  private final Validator emailValidator = Validators.email.copy();
-  private final Validator pswValidator = Validators.password.copy();
+    private final Validator emailValidator = Validators.email.copy();
+    private final Validator pswValidator = Validators.password.copy();
 
-  private String email, psw, pswConfirmation;
+    private String email, psw, pswConfirmation;
 
-  public Login() {
-    emailValidator.onInvalidEvaluation(System.out::println);
-    pswValidator.onInvalidEvaluation(System.out::println);
-  }
-
-  public void submit() {
-    if (!emailValidator.isValid(email) || !pswValidator.compare(psw, pswConfirmation)) return;
-    // TODO
-  }
-
-  public void submitWithExceptions() {
-    try {
-      emailValidator.isValidOrFail(email);
-      pswValidator.compareOrFail(psw, pswConfirmation);
-      // TODO
-    } catch (InvalidEvaluationException e) {
-      System.out.println(e.getMessage());
+    public Login() {
+        emailValidator.onInvalidEvaluation(System.out::println);
+        pswValidator.onInvalidEvaluation(System.out::println);
     }
-  }
+
+    public void submit() {
+        if (!emailValidator.isValid(email) || !pswValidator.compare(psw, pswConfirmation)) return;
+        // TODO
+    }
+
+    public void submitWithExceptions() {
+        try {
+            emailValidator.validOrFail(email);
+            pswValidator.compareOrFail(psw, pswConfirmation);
+            // TODO
+        } catch (InvalidEvaluationException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 
 }
 ```

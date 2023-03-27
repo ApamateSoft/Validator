@@ -5,9 +5,10 @@ Versión en [Inglés](../README.md)
 Facilita la validación de Strings encadenando una serie de reglas.
 
 ## Notas de version 1.3.0
-- Se ha renombrado el la regla `dateFormat` a `date`.
 - Se ha añadido las anotaciones.
+- Se ha renombrado el la regla `dateFormat` a `date`.
 - Se ha renombrado la regla `mustContainMinimum` a `mustContainMin`.
+- Se ha renombrado la función `isValidOrFail` a `validOrFail`.
 
 ## Instalación
 
@@ -56,7 +57,7 @@ public class HelloValidator {
 }
 ```
 
-##### Nota:
+##### *Nota:*
 - Se puede agregar una cantidad indeterminada de reglas.
 - Las reglas serán evaluadas en el orden en el cual fueron agregadas.
 - Al momento de fallar una regla, se ignoran las restantes.
@@ -167,7 +168,7 @@ class HelloValidator {
 
   private void submit() {
     try {
-      validator.isValidOrFail("yyy");
+      validator.validOrFail("yyy");
       validator.compareOrFail("XXX", "YYY");
     } catch (InvalidEvaluationException e) {
       System.out.println(e.getMessage());
@@ -253,8 +254,9 @@ public class HelloValidator {
 Los mensajes predeterminados se encuentran en las clases `MessagesEn` para los mensajes en inglés, y en `MessagesEs`
 para los mensajes en español, ambas clases implementan la interfaz `Messages`.
 
-| Regla	              | Inglés                                                   | Español                                                   |
+| Regla/Anotación     | Inglés (Por defecto)                                     | Español                                                   |
 |---------------------|----------------------------------------------------------|-----------------------------------------------------------|
+| `compare`           | Not match                                                | No coinciden                                              |
 | `date`              | The date does not match the format %s                    | La fecha no coincide con el formato %s                    |
 | `email`             | Email invalid                                            | Correo electrónico invalido                               |
 | `expirationDate`    | Expired date                                             | Fecha expirada                                            |
@@ -274,7 +276,6 @@ para los mensajes en español, ambas clases implementan la interfaz `Messages`.
 | `mustContainOne`    | At least one of the following characters is required: %s | Se requiere al menos uno de los siguientes caracteres: %s |
 | `name`              | Debe introducir un nombre personal válido                | Debe introducir un nombre personal válido                 |
 | `notContain`        | The following characters aren't admitted %s              | No se admiten los siguientes caracteres %s                |
-| `notMatch`          | Not match                                                | No coinciden                                              |
 | `number`            | It is not a number                                       | No es un número                                           |
 | `numberPattern`     | Does not match pattern %s                                | No coincide con el patrón %s                              |
 | `onlyAlphanumeric`  | Just alphanumeric characters                             | Solo caracteres alfanuméricos                             |
@@ -289,9 +290,6 @@ para los mensajes en español, ambas clases implementan la interfaz `Messages`.
 | `time12`            | Invalid 12 hour format                                   | Formato 12 horas inválido                                 |
 | `time24`            | Invalid 24 hour format                                   | Formato 24 horas inválido                                 |
 | `wwwLink`           | Invalid www link                                         | Enlace www inválido                                       |
-
-##### Nota:
-- Por defecto se muestran los mensajes en Inglés.
 
 ## Cambiar los mensajes por defecto
 Validator posee un método estático llamado `.setMessages` el cual recibe como parámetro un objeto del tipo `Messages`.
@@ -321,6 +319,9 @@ public class HelloValidator {
 
   public static void main(String[] args) {
     Validator.setMessages(new Messages() {
+
+      @Override
+      public String getCompareMessage() { return "Mensaje personalizado"; }
         
       @Override
       public String getDateMessage() { return "Mensaje personalizado"; }
@@ -380,9 +381,6 @@ public class HelloValidator {
       public String getNotContainMessage() { return "Mensaje personalizado"; }
 
       @Override
-      public String getNotMatchMessage() { return "Mensaje personalizado"; }
-
-      @Override
       public String getNumberMessage() { return "Mensaje personalizado"; }
 
       @Override
@@ -423,6 +421,7 @@ public class HelloValidator {
 
       @Override
       public String getWwwLinkMessage() { return "Mensaje personalizado"; }
+      
     });
   }
 
@@ -484,7 +483,7 @@ public class Login {
 
   public void submitWithExceptions() {
     try {
-      emailValidator.isValidOrFail(email);
+      emailValidator.validOrFail(email);
       pswValidator.compareOrFail(psw, pswConfirmation);
       // TODO
     } catch (InvalidEvaluationException e) {
