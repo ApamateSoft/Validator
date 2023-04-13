@@ -300,9 +300,9 @@ public class Validator implements Cloneable {
 
                     if (annotation instanceof ShouldOnlyContain) {
                         ShouldOnlyContain shouldOnlyContain = (ShouldOnlyContain) annotation;
-                        if (!Validators.shouldOnlyContain(value, shouldOnlyContain.condition())) {
+                        if (!Validators.shouldOnlyContain(value, shouldOnlyContain.alphabet())) {
                             throw new InvalidEvaluationException(
-                                format(shouldOnlyContain.message().isEmpty() ? messages.getShouldOnlyContainMessage() : shouldOnlyContain.message(), shouldOnlyContain.condition()),
+                                format(shouldOnlyContain.message().isEmpty() ? messages.getShouldOnlyContainMessage() : shouldOnlyContain.message(), shouldOnlyContain.alphabet()),
                                 value
                             );
                         }
@@ -340,9 +340,9 @@ public class Validator implements Cloneable {
 
                     if (annotation instanceof NotContain) {
                         NotContain notContain = (NotContain) annotation;
-                        if (!Validators.notContain(value, notContain.condition())) {
+                        if (!Validators.notContain(value, notContain.alphabet())) {
                             throw new InvalidEvaluationException(
-                                format(notContain.message().isEmpty() ? messages.getNotContainMessage() : notContain.message(), notContain.condition()),
+                                format(notContain.message().isEmpty() ? messages.getNotContainMessage() : notContain.message(), notContain.alphabet()),
                                 value
                             );
                         }
@@ -351,9 +351,9 @@ public class Validator implements Cloneable {
                     if (annotation instanceof NotContainContainer) {
                         NotContainContainer container = (NotContainContainer) annotation;
                         for (NotContain notContain : container.value()) {
-                            if (!Validators.notContain(value, notContain.condition())) {
+                            if (!Validators.notContain(value, notContain.alphabet())) {
                                 throw new InvalidEvaluationException(
-                                    format(notContain.message().isEmpty() ? messages.getNotContainMessage() : notContain.message(), notContain.condition()),
+                                    format(notContain.message().isEmpty() ? messages.getNotContainMessage() : notContain.message(), notContain.alphabet()),
                                     value
                                 );
                             }
@@ -362,9 +362,9 @@ public class Validator implements Cloneable {
 
                     if (annotation instanceof MustContainOne) {
                         MustContainOne mustContainOne = (MustContainOne) annotation;
-                        if (!Validators.mustContainOne(value, mustContainOne.condition())) {
+                        if (!Validators.mustContainOne(value, mustContainOne.alphabet())) {
                             throw new InvalidEvaluationException(
-                                format(mustContainOne.message().isEmpty() ? messages.getMustContainOneMessage() : mustContainOne.message(), mustContainOne.condition()),
+                                format(mustContainOne.message().isEmpty() ? messages.getMustContainOneMessage() : mustContainOne.message(), mustContainOne.alphabet()),
                                 value
                             );
                         }
@@ -373,9 +373,9 @@ public class Validator implements Cloneable {
                     if (annotation instanceof MustContainOneContainer) {
                         MustContainOneContainer container = (MustContainOneContainer) annotation;
                         for (MustContainOne mustContainOne : container.value()) {
-                            if (!Validators.mustContainOne(value, mustContainOne.condition())) {
+                            if (!Validators.mustContainOne(value, mustContainOne.alphabet())) {
                                 throw new InvalidEvaluationException(
-                                    format(mustContainOne.message().isEmpty() ? messages.getMustContainOneMessage() : mustContainOne.message(), mustContainOne.condition()),
+                                    format(mustContainOne.message().isEmpty() ? messages.getMustContainOneMessage() : mustContainOne.message(), mustContainOne.alphabet()),
                                     value
                                 );
                             }
@@ -434,9 +434,9 @@ public class Validator implements Cloneable {
 
                     if (annotation instanceof MustContainMin) {
                         MustContainMin mustContainMin = (MustContainMin) annotation;
-                        if (!Validators.mustContainMin(value, mustContainMin.min(), mustContainMin.condition())) {
+                        if (!Validators.mustContainMin(value, mustContainMin.min(), mustContainMin.alphabet())) {
                             throw new InvalidEvaluationException(
-                                format(mustContainMin.message().isEmpty() ? messages.getMustContainMinMessage() : mustContainMin.message(), mustContainMin.min(), mustContainMin.condition()),
+                                format(mustContainMin.message().isEmpty() ? messages.getMustContainMinMessage() : mustContainMin.message(), mustContainMin.min(), mustContainMin.alphabet()),
                                 value
                             );
                         }
@@ -445,9 +445,9 @@ public class Validator implements Cloneable {
                     if (annotation instanceof MustContainMinContainer) {
                         MustContainMinContainer container = (MustContainMinContainer) annotation;
                         for (MustContainMin mustContainMin : container.value()) {
-                            if (!Validators.mustContainMin(value, mustContainMin.min(), mustContainMin.condition())) {
+                            if (!Validators.mustContainMin(value, mustContainMin.min(), mustContainMin.alphabet())) {
                                 throw new InvalidEvaluationException(
-                                    format(mustContainMin.message().isEmpty() ? messages.getMustContainMinMessage() : mustContainMin.message(), mustContainMin.min(), mustContainMin.condition()),
+                                    format(mustContainMin.message().isEmpty() ? messages.getMustContainMinMessage() : mustContainMin.message(), mustContainMin.min(), mustContainMin.alphabet()),
                                     value
                                 );
                             }
@@ -1030,20 +1030,20 @@ public class Validator implements Cloneable {
 
     //<editor-fold default-state="collapsed" desc="shouldOnlyContain">
     /**
-     * Validates that the String only contains characters included in the condition
-     * @param condition String with allowed characters
+     * Validates that the String only contains characters included in the alphabet
+     * @param alphabet String with allowed characters
      * @param message  Error message
      */
-    public void shouldOnlyContain(String condition, String message) {
-        rule(format(message, condition), it -> Validators.shouldOnlyContain(it, condition) );
+    public void shouldOnlyContain(String alphabet, String message) {
+        rule(format(message, alphabet), it -> Validators.shouldOnlyContain(it, alphabet) );
     }
 
     /**
-     * Validates that the String only contains characters included in the condition
-     * @param condition String with allowed characters
+     * Validates that the String only contains characters included in the alphabet
+     * @param alphabet String with allowed characters
      */
-    public void shouldOnlyContain(String condition) {
-        shouldOnlyContain(condition, messages.getShouldOnlyContainMessage());
+    public void shouldOnlyContain(String alphabet) {
+        shouldOnlyContain(alphabet, messages.getShouldOnlyContainMessage());
     }
     //</editor-fold>
 
@@ -1066,39 +1066,39 @@ public class Validator implements Cloneable {
 
     //<editor-fold default-state="collapsed" desc="notContain">
     /**
-     * Validates that the String does not contain any characters included in the condition
-     * @param condition String with invalid characters
+     * Validates that the String does not contain any characters included in the alphabet
+     * @param alphabet String with invalid characters
      * @param message Error message
      */
-    public void notContain(String condition, String message) {
-        rule(format(message, condition), it -> Validators.notContain(it, condition) );
+    public void notContain(String alphabet, String message) {
+        rule(format(message, alphabet), it -> Validators.notContain(it, alphabet) );
     }
 
     /**
-     * Validates that the String does not contain any characters included in the condition
-     * @param condition String with invalid characters
+     * Validates that the String does not contain any characters included in the alphabet
+     * @param alphabet String with invalid characters
      */
-    public void notContain(String condition) {
-        notContain(condition, messages.getNotContainMessage());
+    public void notContain(String alphabet) {
+        notContain(alphabet, messages.getNotContainMessage());
     }
     //</editor-fold>
 
     //<editor-fold default-state="collapsed" desc="mustContainOne">
     /**
-     * Validates that the String contains at least one character included in the condition
-     * @param condition String with desired characters
+     * Validates that the String contains at least one character included in the alphabet
+     * @param alphabet String with desired characters
      * @param message Error message
      */
-    public void mustContainOne(String condition, String message) {
-        rule(format(message, condition), it -> Validators.mustContainOne(it, condition) );
+    public void mustContainOne(String alphabet, String message) {
+        rule(format(message, alphabet), it -> Validators.mustContainOne(it, alphabet) );
     }
 
     /**
-     * Validates that the String contains at least one character included in the condition
-     * @param condition String with desired characters
+     * Validates that the String contains at least one character included in the alphabet
+     * @param alphabet String with desired characters
      */
-    public void mustContainOne(String condition) {
-        mustContainOne(condition, messages.getMustContainOneMessage());
+    public void mustContainOne(String alphabet) {
+        mustContainOne(alphabet, messages.getMustContainOneMessage());
     }
     //</editor-fold>
 
@@ -1220,22 +1220,22 @@ public class Validator implements Cloneable {
 
     //<editor-fold default-state="collapsed" desc="mustContainMin">
     /**
-     * Validates that the String contains at least a minimum number of characters included in the condition
+     * Validates that the String contains at least a minimum number of characters included in the alphabet
      * @param min Minimum value
-     * @param condition String with desired characters
+     * @param alphabet String with desired characters
      * @param message Error message
      */
-    public void mustContainMin(int min, String condition, String message) {
-        rule( format(message, min, condition), it -> Validators.mustContainMin(it, min, condition) );
+    public void mustContainMin(int min, String alphabet, String message) {
+        rule( format(message, min, alphabet), it -> Validators.mustContainMin(it, min, alphabet) );
     }
 
     /**
-     * Validates that the String contains at least a minimum number of characters included in the condition
+     * Validates that the String contains at least a minimum number of characters included in the alphabet
      * @param min minimum value.
-     * @param condition String with desired characters.
+     * @param alphabet String with desired characters.
      */
-    public void mustContainMin(int min, String condition) {
-        mustContainMin(min, condition, messages.getMustContainMinMessage());
+    public void mustContainMin(int min, String alphabet) {
+        mustContainMin(min, alphabet, messages.getMustContainMinMessage());
     }
     //</editor-fold>
 
@@ -1821,22 +1821,22 @@ public class Validator implements Cloneable {
 
         //<editor-fold default-state="collapsed" desc="shouldOnlyContain">
         /**
-         * Validates that the String only contains characters included in the condition
-         * @param condition String with allowed characters.
+         * Validates that the String only contains characters included in the alphabet
+         * @param alphabet String with allowed characters.
          * @param message  Error message.
          * @return Builder
          */
-        public Builder shouldOnlyContain(String condition, String message) {
-            return rule(format(message, condition), it -> Validators.shouldOnlyContain(it, condition));
+        public Builder shouldOnlyContain(String alphabet, String message) {
+            return rule(format(message, alphabet), it -> Validators.shouldOnlyContain(it, alphabet));
         }
 
         /**
-         * Validates that the String only contains characters included in the condition
-         * @param condition String with allowed characters
+         * Validates that the String only contains characters included in the alphabet
+         * @param alphabet String with allowed characters
          * @return Builder
          */
-        public Builder shouldOnlyContain(String condition) {
-            return shouldOnlyContain(condition, messages.getShouldOnlyContainMessage());
+        public Builder shouldOnlyContain(String alphabet) {
+            return shouldOnlyContain(alphabet, messages.getShouldOnlyContainMessage());
         }
         //</editor-fold>
 
@@ -1861,43 +1861,43 @@ public class Validator implements Cloneable {
 
         //<editor-fold default-state="collapsed" desc="notContain">
         /**
-         * Validates that the String does not contain any characters included in the condition
-         * @param condition String with invalid characters
+         * Validates that the String does not contain any characters included in the alphabet
+         * @param alphabet String with invalid characters
          * @param message Error message
          * @return Builder
          */
-        public Builder notContain(String condition, String message) {
-            return rule(format(message, condition), it -> Validators.notContain(it, condition));
+        public Builder notContain(String alphabet, String message) {
+            return rule(format(message, alphabet), it -> Validators.notContain(it, alphabet));
         }
 
         /**
-         * Validates that the String does not contain any characters included in the condition
-         * @param condition String with invalid characters
+         * Validates that the String does not contain any characters included in the alphabet
+         * @param alphabet String with invalid characters
          * @return Builder
          */
-        public Builder notContain(String condition) {
-            return notContain(condition, messages.getNotContainMessage());
+        public Builder notContain(String alphabet) {
+            return notContain(alphabet, messages.getNotContainMessage());
         }
         //</editor-fold>
 
         //<editor-fold default-state="collapsed" desc="mustContainOne">
         /**
-         * Validates that the String contains at least one character included in the condition
-         * @param condition String with desired characters
+         * Validates that the String contains at least one character included in the alphabet
+         * @param alphabet String with desired characters
          * @param message Error message
          * @return Builder
          */
-        public Builder mustContainOne(String condition, String message) {
-            return rule(format(message, condition), it -> Validators.mustContainOne(it, condition));
+        public Builder mustContainOne(String alphabet, String message) {
+            return rule(format(message, alphabet), it -> Validators.mustContainOne(it, alphabet));
         }
 
         /**
-         * Validates that the String contains at least one character included in the condition
-         * @param condition String with desired characters
+         * Validates that the String contains at least one character included in the alphabet
+         * @param alphabet String with desired characters
          * @return Builder
          */
-        public Builder mustContainOne(String condition) {
-            return mustContainOne(condition, messages.getMustContainOneMessage());
+        public Builder mustContainOne(String alphabet) {
+            return mustContainOne(alphabet, messages.getMustContainOneMessage());
         }
         //</editor-fold>
 
@@ -2028,24 +2028,24 @@ public class Validator implements Cloneable {
 
         //<editor-fold default-state="collapsed" desc="mustContainMin">
         /**
-         * Validates that the String contains at least a minimum number of characters included in the condition
+         * Validates that the String contains at least a minimum number of characters included in the alphabet
          * @param min minimum value
-         * @param condition String with desired characters
+         * @param alphabet String with desired characters
          * @param message Error message
          * @return Builder
          */
-        public Builder mustContainMin(int min, String condition, String message) {
-            return rule( format(message, min, condition), it -> Validators.mustContainMin(it, min, condition) );
+        public Builder mustContainMin(int min, String alphabet, String message) {
+            return rule( format(message, min, alphabet), it -> Validators.mustContainMin(it, min, alphabet) );
         }
 
         /**
-         * Validates that the String contains at least a minimum number of characters included in the condition
+         * Validates that the String contains at least a minimum number of characters included in the alphabet
          * @param min minimum value
-         * @param condition String with desired characters
+         * @param alphabet String with desired characters
          * @return Builder
          */
-        public Builder mustContainMin(int min, String condition) {
-            return mustContainMin(min, condition, messages.getMustContainMinMessage());
+        public Builder mustContainMin(int min, String alphabet) {
+            return mustContainMin(min, alphabet, messages.getMustContainMinMessage());
         }
         //</editor-fold>
 

@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class NameTest {
 
     private static final String[] NOT_PERMIT = { null, "", "10", "1jose", "@omar", "Jesús", "jesus 1alberto", " jesus", "jesus " };
-    private static final String[] PERMIT = { "jesus", "Jesus", "JESUS", "jesus alberto", "Jesus Alberto", "JESUS ALBERTO", "jose de rosa" };
+    private static final String[] PERMIT = { "jesus", "maria", "JOSE", "jesus maria", "Maria Jose", "Jose Jesus", "maria de jose" };
 
     @Test
     void notPermit() {

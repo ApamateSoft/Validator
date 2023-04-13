@@ -12,7 +12,7 @@ public @interface NotContain {
     /**
      * @return String with invalid characters
      */
-    String condition();
+    String alphabet();
 
     /**
      * @return Error message

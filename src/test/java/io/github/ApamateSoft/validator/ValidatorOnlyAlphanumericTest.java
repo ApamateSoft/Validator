@@ -3,7 +3,7 @@ package io.github.ApamateSoft.validator;
 import io.github.ApamateSoft.validator.exceptions.InvalidEvaluationException;
 import io.github.ApamateSoft.validator.functions.OnInvalidEvaluation;
 import io.github.ApamateSoft.validator.messages.MessagesEn;
-import io.github.ApamateSoft.validator.utils.Constants;
+import io.github.ApamateSoft.validator.utils.Alphabets;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -16,7 +16,7 @@ import static org.mockito.Mockito.verify;
 public class ValidatorOnlyAlphanumericTest {
 
     private static final String[] NOT_PERMIT = { null, "", "-", "a*", ">text", "a-", "-1.61", "$10,320.00", "a b" };
-    private static final String[] PERMIT = { Constants.ALPHA_NUMERIC };
+    private static final String[] PERMIT = { Alphabets.ALPHA_NUMERIC };
     private static final String MESSAGES = new MessagesEn().getOnlyAlphanumericMessage();
 
     private Validator validator, builder;

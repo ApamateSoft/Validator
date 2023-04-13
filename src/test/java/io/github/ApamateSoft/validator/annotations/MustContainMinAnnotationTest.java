@@ -5,7 +5,7 @@ import io.github.ApamateSoft.validator.messages.MessagesEn;
 import org.junit.jupiter.api.Test;
 
 import static io.github.ApamateSoft.validator.Validator.validOrFail;
-import static io.github.ApamateSoft.validator.utils.Constants.ALPHA_LOWERCASE;
+import static io.github.ApamateSoft.validator.utils.Alphabets.ALPHA_LOWERCASE;
 import static java.lang.String.format;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -16,7 +16,7 @@ public class MustContainMinAnnotationTest {
     private static final int MIN = 3;
     private static final String MESSAGES = format(new MessagesEn().getMustContainMinMessage(), MIN, CONDITION);
 
-    @MustContainMin(condition = CONDITION, min = MIN)
+    @MustContainMin(alphabet = CONDITION, min = MIN)
     private String s;
 
     @Test

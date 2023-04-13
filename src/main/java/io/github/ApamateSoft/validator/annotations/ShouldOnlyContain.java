@@ -14,7 +14,7 @@ public @interface ShouldOnlyContain {
     /**
      * @return String with allowed characters
      */
-    String condition();
+    String alphabet();
 
     /**
      * @return Error message

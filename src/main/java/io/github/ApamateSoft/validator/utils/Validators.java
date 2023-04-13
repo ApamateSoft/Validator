@@ -261,15 +261,15 @@ public class Validators {
     //<editor-fold default-state="collapsed" desc="CONTENT VALIDATIONS">
 
     /**
-     * Validates that the String only contains characters included in the condition
+     * Validates that the String only contains characters included in the alphabet
      * @param evaluate String to evaluate
-     * @param condition String with allowed characters
-     * @return true if it meets the condition
+     * @param alphabet String with allowed characters
+     * @return true if it meets the alphabet
      */
-    public static boolean shouldOnlyContain(String evaluate, String condition) {
+    public static boolean shouldOnlyContain(String evaluate, String alphabet) {
         if (!required(evaluate)) return false;
         for (char a: evaluate.toCharArray()) {
-            if (!condition.contains(String.valueOf(a))) return false;
+            if (!alphabet.contains(String.valueOf(a))) return false;
         }
         return true;
     }
@@ -280,7 +280,7 @@ public class Validators {
      * @return true if it meets the condition
      */
     public static boolean onlyNumbers(String evaluate) {
-        return regExp(evaluate, NUMBERS);
+        return regExp(evaluate, NUMBER);
     }
 
     /**
@@ -306,28 +306,28 @@ public class Validators {
     }
 
     /**
-     * Validates that the String does not contain any characters included in the condition
+     * Validates that the String does not contain any characters included in the alphabet
      * @param evaluate String to evaluate
-     * @param condition String with invalid characters
-     * @return true if it meets the condition
+     * @param alphabet String with invalid characters
+     * @return true if it meets the alphabet
      */
-    public static boolean notContain(String evaluate, String condition) {
+    public static boolean notContain(String evaluate, String alphabet) {
         if (!required(evaluate)) return false;
-        for (char a: condition.toCharArray()) {
+        for (char a: alphabet.toCharArray()) {
             if (evaluate.contains(a+"")) return false;
         }
         return true;
     }
 
     /**
-     * Validates that the String contains at least one character included in the condition
+     * Validates that the String contains at least one character included in the alphabet
      * @param evaluate String to evaluate
-     * @param condition String with desired characters
-     * @return true if it meets the condition
+     * @param alphabet String with desired characters
+     * @return true if it meets the alphabet
      */
-    public static boolean mustContainOne(String evaluate, String condition) {
+    public static boolean mustContainOne(String evaluate, String alphabet) {
         if (!required(evaluate)) return false;
-        for (char a: condition.toCharArray()) {
+        for (char a: alphabet.toCharArray()) {
             if (evaluate.contains(a+"")) return true;
         }
         return false;
@@ -416,17 +416,17 @@ public class Validators {
     }
 
     /**
-     * Validates that the String contains at least a minimum number of characters included in the condition
+     * Validates that the String contains at least a minimum number of characters included in the alphabet
      * @param evaluate Valid that the entered date has not expired
      * @param min minimum value
-     * @param condition String with desired characters
-     * @return true if it meets the condition
+     * @param alphabet String with desired characters
+     * @return true if it meets the alphabet
      */
-    public static boolean mustContainMin(String evaluate, int min, String condition) {
+    public static boolean mustContainMin(String evaluate, int min, String alphabet) {
         if (!required(evaluate)) return false;
         int count = 0;
         for (char a : evaluate.toCharArray())
-            for (char b : condition.toCharArray())
+            for (char b : alphabet.toCharArray())
                 if (a == b) ++count;
         return count >= min;
     }

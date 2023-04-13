@@ -12,7 +12,7 @@ public @interface MustContainOne {
     /**
      * @return String with desired characters
      */
-    String condition();
+    String alphabet();
 
     /**
      * @return Error message

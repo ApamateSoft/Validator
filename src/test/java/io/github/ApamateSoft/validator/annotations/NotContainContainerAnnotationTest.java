@@ -4,16 +4,16 @@ import io.github.ApamateSoft.validator.exceptions.InvalidEvaluationException;
 import org.junit.jupiter.api.Test;
 
 import static io.github.ApamateSoft.validator.Validator.validOrFail;
-import static io.github.ApamateSoft.validator.utils.Constants.*;
+import static io.github.ApamateSoft.validator.utils.Alphabets.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 public class NotContainContainerAnnotationTest {
 
 
-    @NotContain(condition = ALPHA_UPPERCASE)
-    @NotContain(condition = ALPHA_LOWERCASE)
-    @NotContain(condition = NUMBER)
+    @NotContain(alphabet = ALPHA_UPPERCASE)
+    @NotContain(alphabet = ALPHA_LOWERCASE)
+    @NotContain(alphabet = NUMBER)
     private String s;
 
     @Test

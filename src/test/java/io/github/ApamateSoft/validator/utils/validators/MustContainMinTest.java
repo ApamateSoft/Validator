@@ -3,7 +3,7 @@ package io.github.ApamateSoft.validator.utils.validators;
 import io.github.ApamateSoft.validator.utils.Validators;
 import org.junit.jupiter.api.Test;
 
-import static io.github.ApamateSoft.validator.utils.Constants.ALPHA_LOWERCASE;
+import static io.github.ApamateSoft.validator.utils.Alphabets.ALPHA_LOWERCASE;
 import static java.util.Arrays.stream;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;

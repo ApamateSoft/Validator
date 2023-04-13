@@ -6,7 +6,7 @@ import io.github.ApamateSoft.validator.messages.MessagesEn;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static io.github.ApamateSoft.validator.utils.Constants.OCT;
+import static io.github.ApamateSoft.validator.utils.Alphabets.OCT;
 import static java.lang.String.format;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;

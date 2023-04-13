@@ -17,7 +17,7 @@ public @interface MustContainMin {
     /**
      * @return String with desired characters
      */
-    String condition();
+    String alphabet();
 
     /**
      * @return Error message

@@ -3,7 +3,7 @@ package io.github.ApamateSoft.validator;
 import io.github.ApamateSoft.validator.exceptions.InvalidEvaluationException;
 import io.github.ApamateSoft.validator.functions.OnInvalidEvaluation;
 import io.github.ApamateSoft.validator.messages.MessagesEn;
-import io.github.ApamateSoft.validator.utils.Constants;
+import io.github.ApamateSoft.validator.utils.Alphabets;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,7 +16,7 @@ import static org.mockito.Mockito.verify;
 
 public class ValidatorMustContainOneTest {
 
-    private static final String CONDITION = Constants.OCT;
+    private static final String CONDITION = Alphabets.OCT;
     private static final String[] NOT_PERMIT = { null, "", "text", "@nick", "@nick89" };
     private static final String[] PERMIT = { "0", "@nick1", "91" };
     private static final String MESSAGES = String.format( new MessagesEn().getMustContainOneMessage(), CONDITION );

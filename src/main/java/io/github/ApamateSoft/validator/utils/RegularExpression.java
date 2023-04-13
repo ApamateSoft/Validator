@@ -3,7 +3,7 @@ package io.github.ApamateSoft.validator.utils;
 // TODO: Crear pruebas unitarias
 public class RegularExpression {
 
-    public static final String NUMBERS = "^\\d+$";
+    public static final String NUMBER = "^\\d+$";
     public static final String ALPHABET = "^[a-zA-Z]+$";
     public static final String ALPHABET_UPPERCASE = "^[A-Z]+$";
     public static final String ALPHABET_LOWERCASE = "^[a-z]+$";
