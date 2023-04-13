@@ -3,7 +3,7 @@ package io.github.ApamateSoft.validator;
 import io.github.ApamateSoft.validator.exceptions.InvalidEvaluationException;
 import io.github.ApamateSoft.validator.functions.OnInvalidEvaluation;
 import io.github.ApamateSoft.validator.messages.MessagesEn;
-import io.github.ApamateSoft.validator.utils.Constants;
+import io.github.ApamateSoft.validator.utils.Alphabets;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -16,7 +16,7 @@ import static org.mockito.Mockito.verify;
 public class ValidatorOnlyLettersTest {
 
     private static final String[] NOT_PERMIT = {  null, "", "12", "*/", "a1", "a-", "-1.61", "$10,320.00" };
-    private static final String[] PERMIT = { Constants.ALPHABET };
+    private static final String[] PERMIT = { Alphabets.ALPHABET };
     private static final String MESSAGES = new MessagesEn().getOnlyLettersMessage();
 
     private Validator validator, builder;
@@ -70,12 +70,12 @@ public class ValidatorOnlyLettersTest {
 
     @Test
     void throwInvalidEvaluationException() {
-        assertThrows(InvalidEvaluationException.class, () -> validator.isValidOrFail(null) );
+        assertThrows(InvalidEvaluationException.class, () -> validator.validOrFail(null) );
     }
 
     @Test
     void throwInvalidEvaluationException_Builder() {
-        assertThrows(InvalidEvaluationException.class, () -> builder.isValidOrFail(null) );
+        assertThrows(InvalidEvaluationException.class, () -> builder.validOrFail(null) );
     }
 
 }

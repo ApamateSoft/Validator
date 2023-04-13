@@ -1,6 +1,5 @@
 package io.github.ApamateSoft.validator;
 
-import io.github.ApamateSoft.validator.Validator;
 import io.github.ApamateSoft.validator.exceptions.InvalidEvaluationException;
 import io.github.ApamateSoft.validator.functions.OnInvalidEvaluation;
 import io.github.ApamateSoft.validator.messages.MessagesEn;
@@ -14,7 +13,7 @@ class ValidatorRequiredTest {
 
     private static final String[] NOT_PERMIT = { null, "",  };
     private static final String[] PERMIT = { " ", "xxx", "123", "Name Lastname", "@nick", "@nick01", "@nick_01" };
-    private static final String MESSAGES = new MessagesEn().getRequireMessage();
+    private static final String MESSAGES = new MessagesEn().getRequiredMessage();
 
     private Validator validator, builder;
 
@@ -86,12 +85,12 @@ class ValidatorRequiredTest {
 
     @Test
     void throwInvalidEvaluationException() {
-        assertThrows(InvalidEvaluationException.class, () -> validator.isValidOrFail(null) );
+        assertThrows(InvalidEvaluationException.class, () -> validator.validOrFail(null) );
     }
 
     @Test
     void throwInvalidEvaluationException_Builder() {
-        assertThrows(InvalidEvaluationException.class, () -> builder.isValidOrFail(null) );
+        assertThrows(InvalidEvaluationException.class, () -> builder.validOrFail(null) );
     }
 
 }

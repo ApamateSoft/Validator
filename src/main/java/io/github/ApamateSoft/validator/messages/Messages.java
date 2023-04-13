@@ -1,7 +1,8 @@
 package io.github.ApamateSoft.validator.messages;
 
 public interface Messages {
-    String getDateFormatMessage();
+    String getCompareMessage();
+    String getDateMessage();
     String getEmailMessage();
     String getExpirationDateMessage();
     String getHttpLinkMessage();
@@ -16,11 +17,10 @@ public interface Messages {
     String getMinAgeMessage();
     String getMinLengthMessage();
     String getMinValueMessage();
-    String getMustContainMinimumMessage();
+    String getMustContainMinMessage();
     String getMustContainOneMessage();
     String getNameMessage();
     String getNotContainMessage();
-    String getNotMatchMessage();
     String getNumberMessage();
     String getNumberPatternMessage();
     String getOnlyAlphanumericMessage();
@@ -29,7 +29,7 @@ public interface Messages {
     String getRangeLengthMessage();
     String getRangeValueMessage();
     String getRegExpMessage();
-    String getRequireMessage();
+    String getRequiredMessage();
     String getShouldOnlyContainMessage();
     String getTimeMessage();
     String getTime12Message();

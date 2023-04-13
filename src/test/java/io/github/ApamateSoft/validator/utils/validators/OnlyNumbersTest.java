@@ -10,7 +10,7 @@ public class OnlyNumbersTest {
 
     @Test
     void notPermit() {
-        final String[] strings = { null, "", "text", "Name Lastname", "1a", "a1", "1a1", "a1a", "1.00", "1,00" };
+        final String[] strings = { null, "", "text", "1a", "a1", "1a1", "a1a", "1.00", "1,00" };
         for (String string : strings) {
             if (Validators.onlyNumbers(string)) {
                 fail();

@@ -6,29 +6,30 @@ import io.github.ApamateSoft.validator.messages.MessagesEn;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static io.github.ApamateSoft.validator.utils.Alphabets.ALPHA_LOWERCASE;
 import static java.lang.String.format;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-public class ValidatorDateFormat {
+public class ValidatorMustContainMinTest {
 
-    private static final String[] NOT_PERMIT = { null, "", "example", "", "21091991", "21-09-1991", "1991/09/21", "09/21/1991" };
-    private static final String[] PERMIT = { "21/08/1991" };
-    private static final String FORMAT = "dd/MM/yyyy";
-    private static final String MESSAGES = format(new MessagesEn().getDateFormatMessage(), FORMAT);
+    private static final String[] NOT_PERMIT = { null, "", "ABC", "123", "abC" };
+    private static final String[] PERMIT = { "abc", "abcd", "aBcDe", "abcABC123..." };
+    private static final int MIN = 3;
+    private static final String MESSAGES = format(new MessagesEn().getMustContainMinMessage(), MIN, ALPHA_LOWERCASE);
 
     private Validator validator, builder;
 
     @BeforeEach
     void before() {
         validator = new Validator();
-        validator.dateFormat(FORMAT);
+        validator.mustContainMin(MIN, ALPHA_LOWERCASE);
 
         builder = new Validator.Builder()
-                .dateFormat(FORMAT)
-                .build();
+            .mustContainMin(MIN, ALPHA_LOWERCASE)
+            .build();
 
     }
 
@@ -90,12 +91,12 @@ public class ValidatorDateFormat {
 
     @Test
     void throwInvalidEvaluationException() {
-        assertThrows(InvalidEvaluationException.class, () -> validator.isValidOrFail(null) );
+        assertThrows(InvalidEvaluationException.class, () -> validator.validOrFail(null) );
     }
 
     @Test
     void throwInvalidEvaluationException_Builder() {
-        assertThrows(InvalidEvaluationException.class, () -> builder.isValidOrFail(null) );
+        assertThrows(InvalidEvaluationException.class, () -> builder.validOrFail(null) );
     }
 
 }

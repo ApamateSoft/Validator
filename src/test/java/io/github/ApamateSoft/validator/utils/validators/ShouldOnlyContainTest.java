@@ -1,6 +1,6 @@
 package io.github.ApamateSoft.validator.utils.validators;
 
-import io.github.ApamateSoft.validator.utils.Constants;
+import io.github.ApamateSoft.validator.utils.Alphabets;
 import io.github.ApamateSoft.validator.utils.Validators;
 import org.junit.jupiter.api.Test;
 
@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class ShouldOnlyContainTest {
 
-    private static final String condition = Constants.OCT;
+    private static final String condition = Alphabets.OCT;
 
     @Test
     void notPermit() {
