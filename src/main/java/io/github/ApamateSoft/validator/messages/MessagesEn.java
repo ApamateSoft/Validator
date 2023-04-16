@@ -89,7 +89,7 @@ public class MessagesEn implements Messages {
 
     @Override
     public String getNameMessage() {
-        return "Debe introducir un nombre personal válido";
+        return "Must enter a valid personal name";
     }
 
     @Override
@@ -124,7 +124,7 @@ public class MessagesEn implements Messages {
 
     @Override
     public String getOnlyNumbersMessage() {
-        return "Just numbers";
+        return "Only numbers";
     }
 
     @Override

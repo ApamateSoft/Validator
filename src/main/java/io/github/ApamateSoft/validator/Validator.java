@@ -23,7 +23,7 @@ import static java.util.Arrays.stream;
  * Facilitates the validation of Strings by chaining a series of rules
  *
  * @author ApamateSoft
- * @version 1.3.0
+ * @version 1.3.1
  */
 public class Validator implements Cloneable {
 
