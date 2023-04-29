@@ -15,17 +15,17 @@ public class ValidatorCompareTest {
 
     @Test
     void exceptionIsExpectedIfTextDoesNotMatch() {
-        assertThrows(InvalidEvaluationException.class, () -> validator.compareOrFail("abc", "xyz") );
+        assertThrows(InvalidEvaluationException.class, () -> validator.compareOrFail("key", "abc", "xyz") );
     }
 
     @Test
     void ExceptionIsExpectedIfTextIsEmpty() {
-        assertThrows(InvalidEvaluationException.class, () -> validator.compareOrFail("", "") );
+        assertThrows(InvalidEvaluationException.class, () -> validator.compareOrFail("key","", "") );
     }
 
     @Test
     void noExceptionExpectedIfTextMatches() {
-        assertDoesNotThrow(() -> validator.compareOrFail("abc", "abc") );
+        assertDoesNotThrow(() -> validator.compareOrFail("key","abc", "abc") );
     }
 
     @Test

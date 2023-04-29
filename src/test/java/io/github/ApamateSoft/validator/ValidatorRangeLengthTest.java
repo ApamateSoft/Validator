@@ -91,12 +91,12 @@ public class ValidatorRangeLengthTest {
 
     @Test
     void throwInvalidEvaluationException() {
-        assertThrows(InvalidEvaluationException.class, () -> validator.validOrFail(null) );
+        assertThrows(InvalidEvaluationException.class, () -> validator.validOrFail("key",null) );
     }
 
     @Test
     void throwInvalidEvaluationException_Builder() {
-        assertThrows(InvalidEvaluationException.class, () -> builder.validOrFail(null) );
+        assertThrows(InvalidEvaluationException.class, () -> builder.validOrFail("key",null) );
     }
 
 }
