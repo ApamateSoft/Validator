@@ -89,7 +89,7 @@ public class MessagesEs implements Messages {
 
     @Override
     public String getNameMessage() {
-        return "Debe introducir un nombre personal válido";
+        return "Nombre personal inválido";
     }
 
     @Override

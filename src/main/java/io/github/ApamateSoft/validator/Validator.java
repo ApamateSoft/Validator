@@ -23,7 +23,7 @@ import static java.util.Arrays.stream;
  * Facilitates the validation of Strings by chaining a series of rules
  *
  * @author ApamateSoft
- * @version 1.3.1
+ * @version 1.3.2
  */
 public class Validator implements Cloneable {
 
@@ -66,6 +66,7 @@ public class Validator implements Cloneable {
                 try {
                     field.setAccessible(true);
                     String value = (String) field.get(obj);
+                    String fieldName = field.getName();
 
                     if (annotation instanceof Compare) {
                         Compare compareAnnotation = (Compare) annotation;
@@ -74,8 +75,9 @@ public class Validator implements Cloneable {
                             .findFirst()
                             .orElseThrow( () ->
                                 new InvalidEvaluationException(
-                                    compareAnnotation.message().isEmpty() ? messages.getCompareMessage() : compareAnnotation.message(),
-                                    value
+                                    fieldName,
+                                    value,
+                                    compareAnnotation.message().isEmpty() ? messages.getCompareMessage() : compareAnnotation.message()
                                 )
                             );
 
@@ -83,8 +85,9 @@ public class Validator implements Cloneable {
                         String compare = (String) f.get(obj);
                         if (compare==null || compare.isEmpty() || !value.equals(compare))
                             throw new InvalidEvaluationException(
-                                compareAnnotation.message().isEmpty() ? messages.getCompareMessage() : compareAnnotation.message(),
-                                value
+                                fieldName,
+                                value,
+                                compareAnnotation.message().isEmpty() ? messages.getCompareMessage() : compareAnnotation.message()
                             );
                     }
 
@@ -92,8 +95,9 @@ public class Validator implements Cloneable {
                         if (!Validators.required(value)) {
                             Required required = (Required) annotation;
                             throw new InvalidEvaluationException(
-                                required.message().isEmpty() ? messages.getRequiredMessage() : required.message(),
-                                value
+                                fieldName,
+                                value,
+                                required.message().isEmpty() ? messages.getRequiredMessage() : required.message()
                             );
                         }
                     }
@@ -102,8 +106,9 @@ public class Validator implements Cloneable {
                         Length length = (Length) annotation;
                         if (!Validators.length(value, length.length())) {
                             throw new InvalidEvaluationException(
-                                format(length.message().isEmpty() ? messages.getLengthMessage() : length.message(), length.length()),
-                                value
+                                fieldName,
+                                value,
+                                format(length.message().isEmpty() ? messages.getLengthMessage() : length.message(), length.length())
                             );
                         }
                     }
@@ -112,8 +117,9 @@ public class Validator implements Cloneable {
                         MinLength minLength = (MinLength) annotation;
                         if (!Validators.minLength(value, minLength.min())) {
                             throw new InvalidEvaluationException(
-                                format(minLength.message().isEmpty() ? messages.getMinLengthMessage() : minLength.message(), minLength.min()),
-                                value
+                                fieldName,
+                                value,
+                                format(minLength.message().isEmpty() ? messages.getMinLengthMessage() : minLength.message(), minLength.min())
                             );
                         }
                     }
@@ -122,8 +128,9 @@ public class Validator implements Cloneable {
                         MaxLength maxLength = (MaxLength) annotation;
                         if (!Validators.maxLength(value, maxLength.max())) {
                             throw new InvalidEvaluationException(
-                                format(maxLength.message().isEmpty() ? messages.getMaxLengthMessage() : maxLength.message(), maxLength.max()),
-                                value
+                                fieldName,
+                                value,
+                                format(maxLength.message().isEmpty() ? messages.getMaxLengthMessage() : maxLength.message(), maxLength.max())
                             );
                         }
                     }
@@ -132,8 +139,9 @@ public class Validator implements Cloneable {
                         RangeLength rangeLength = (RangeLength) annotation;
                         if (!Validators.rangeLength(value, rangeLength.min(), rangeLength.max())) {
                             throw new InvalidEvaluationException(
-                                format(rangeLength.message().isEmpty() ? messages.getRangeLengthMessage() : rangeLength.message(), rangeLength.min(), rangeLength.max()),
-                                value
+                                fieldName,
+                                value,
+                                format(rangeLength.message().isEmpty() ? messages.getRangeLengthMessage() : rangeLength.message(), rangeLength.min(), rangeLength.max())
                             );
                         }
                     }
@@ -142,8 +150,9 @@ public class Validator implements Cloneable {
                         RegExp regExp = (RegExp) annotation;
                         if (!Validators.regExp(value, regExp.regExp())) {
                             throw new InvalidEvaluationException(
-                                format(regExp.message().isEmpty() ? messages.getRegExpMessage() : regExp.message(), regExp.regExp()),
-                                value
+                                fieldName,
+                                value,
+                                format(regExp.message().isEmpty() ? messages.getRegExpMessage() : regExp.message(), regExp.regExp())
                             );
                         }
                     }
@@ -152,8 +161,9 @@ public class Validator implements Cloneable {
                         if (!Validators.email(value)) {
                             Email email = (Email) annotation;
                             throw new InvalidEvaluationException(
-                                email.message().isEmpty() ? messages.getEmailMessage() : email.message(),
-                                value
+                                fieldName,
+                                value,
+                                email.message().isEmpty() ? messages.getEmailMessage() : email.message()
                             );
                         }
                     }
@@ -162,8 +172,9 @@ public class Validator implements Cloneable {
                         if (!Validators.number(value)) {
                             Number number = (Number) annotation;
                             throw new InvalidEvaluationException(
-                                number.message().isEmpty() ? messages.getNumberMessage() : number.message(),
-                                value
+                                fieldName,
+                                value,
+                                number.message().isEmpty() ? messages.getNumberMessage() : number.message()
                             );
                         }
                     }
@@ -172,8 +183,9 @@ public class Validator implements Cloneable {
                         if (!Validators.link(value)) {
                             Link link = (Link) annotation;
                             throw new InvalidEvaluationException(
-                                link.message().isEmpty() ? messages.getLinkMessage() : link.message(),
-                                value
+                                fieldName,
+                                value,
+                                link.message().isEmpty() ? messages.getLinkMessage() : link.message()
                             );
                         }
                     }
@@ -182,8 +194,9 @@ public class Validator implements Cloneable {
                         if (!Validators.wwwLink(value)) {
                             WwwLink wwwLink = (WwwLink) annotation;
                             throw new InvalidEvaluationException(
-                                wwwLink.message().isEmpty() ? messages.getWwwLinkMessage() : wwwLink.message(),
-                                value
+                                fieldName,
+                                value,
+                                wwwLink.message().isEmpty() ? messages.getWwwLinkMessage() : wwwLink.message()
                             );
                         }
                     }
@@ -192,8 +205,9 @@ public class Validator implements Cloneable {
                         if (!Validators.httpLink(value)) {
                             HttpLink httpLink = (HttpLink) annotation;
                             throw new InvalidEvaluationException(
-                                httpLink.message().isEmpty() ? messages.getHttpLinkMessage() : httpLink.message(),
-                                value
+                                fieldName,
+                                value,
+                                httpLink.message().isEmpty() ? messages.getHttpLinkMessage() : httpLink.message()
                             );
                         }
                     }
@@ -202,8 +216,9 @@ public class Validator implements Cloneable {
                         if (!Validators.httpsLink(value)) {
                             HttpsLink httpsLink = (HttpsLink) annotation;
                             throw new InvalidEvaluationException(
-                                httpsLink.message().isEmpty() ? messages.getHttpsLinkMessage() : httpsLink.message(),
-                                value
+                                fieldName,
+                                value,
+                                httpsLink.message().isEmpty() ? messages.getHttpsLinkMessage() : httpsLink.message()
                             );
                         }
                     }
@@ -212,8 +227,9 @@ public class Validator implements Cloneable {
                         if (!Validators.ip(value)) {
                             Ip ip = (Ip) annotation;
                             throw new InvalidEvaluationException(
-                                ip.message().isEmpty() ? messages.getIpMessage() : ip.message(),
-                                value
+                                fieldName,
+                                value,
+                                ip.message().isEmpty() ? messages.getIpMessage() : ip.message()
                             );
                         }
                     }
@@ -222,8 +238,9 @@ public class Validator implements Cloneable {
                         if (!Validators.ipv4(value)) {
                             Ipv4 ipv4 = (Ipv4) annotation;
                             throw new InvalidEvaluationException(
-                                ipv4.message().isEmpty() ? messages.getIpv4Message() : ipv4.message(),
-                                value
+                                fieldName,
+                                value,
+                                ipv4.message().isEmpty() ? messages.getIpv4Message() : ipv4.message()
                             );
                         }
                     }
@@ -232,8 +249,9 @@ public class Validator implements Cloneable {
                         if (!Validators.ipv6(value)) {
                             Ipv6 ipv6 = (Ipv6) annotation;
                             throw new InvalidEvaluationException(
-                                ipv6.message().isEmpty() ? messages.getIpv6Message() : ipv6.message(),
-                                value
+                                fieldName,
+                                value,
+                                ipv6.message().isEmpty() ? messages.getIpv6Message() : ipv6.message()
                             );
                         }
                     }
@@ -242,8 +260,9 @@ public class Validator implements Cloneable {
                         if (!Validators.time(value)) {
                             Time time = (Time) annotation;
                             throw new InvalidEvaluationException(
-                                time.message().isEmpty() ? messages.getTimeMessage() : time.message(),
-                                value
+                                fieldName,
+                                value,
+                                time.message().isEmpty() ? messages.getTimeMessage() : time.message()
                             );
                         }
                     }
@@ -252,8 +271,9 @@ public class Validator implements Cloneable {
                         if (!Validators.time12(value)) {
                             Time12 time12 = (Time12) annotation;
                             throw new InvalidEvaluationException(
-                                time12.message().isEmpty() ? messages.getTime12Message() : time12.message(),
-                                value
+                                fieldName,
+                                value,
+                                time12.message().isEmpty() ? messages.getTime12Message() : time12.message()
                             );
                         }
                     }
@@ -262,8 +282,9 @@ public class Validator implements Cloneable {
                         if (!Validators.time24(value)) {
                             Time24 time24 = (Time24) annotation;
                             throw new InvalidEvaluationException(
-                                time24.message().isEmpty() ? messages.getTime24Message() : time24.message(),
-                                value
+                                fieldName,
+                                value,
+                                time24.message().isEmpty() ? messages.getTime24Message() : time24.message()
                             );
                         }
                     }
@@ -272,8 +293,9 @@ public class Validator implements Cloneable {
                         NumberPattern numberPattern = (NumberPattern) annotation;
                         if (!Validators.numberPattern(value, numberPattern.patter())) {
                             throw new InvalidEvaluationException(
-                                format(numberPattern.message().isEmpty() ? messages.getNumberPatternMessage() : numberPattern.message(), numberPattern.patter()),
-                                value
+                                fieldName,
+                                value,
+                                format(numberPattern.message().isEmpty() ? messages.getNumberPatternMessage() : numberPattern.message(), numberPattern.patter())
                             );
                         }
                     }
@@ -282,8 +304,9 @@ public class Validator implements Cloneable {
                         Date date = (Date) annotation;
                         if (!Validators.date(value, date.format())) {
                             throw new InvalidEvaluationException(
-                                format(date.message().isEmpty() ? messages.getDateMessage() : date.message(), date.format()),
-                                value
+                                fieldName,
+                                value,
+                                format(date.message().isEmpty() ? messages.getDateMessage() : date.message(), date.format())
                             );
                         }
                     }
@@ -292,8 +315,9 @@ public class Validator implements Cloneable {
                         if (!Validators.name(value)) {
                             Name name = (Name) annotation;
                             throw new InvalidEvaluationException(
-                                name.message().isEmpty() ? messages.getNameMessage() : name.message(),
-                                value
+                                fieldName,
+                                value,
+                                name.message().isEmpty() ? messages.getNameMessage() : name.message()
                             );
                         }
                     }
@@ -302,8 +326,9 @@ public class Validator implements Cloneable {
                         ShouldOnlyContain shouldOnlyContain = (ShouldOnlyContain) annotation;
                         if (!Validators.shouldOnlyContain(value, shouldOnlyContain.alphabet())) {
                             throw new InvalidEvaluationException(
-                                format(shouldOnlyContain.message().isEmpty() ? messages.getShouldOnlyContainMessage() : shouldOnlyContain.message(), shouldOnlyContain.alphabet()),
-                                value
+                                fieldName,
+                                value,
+                                format(shouldOnlyContain.message().isEmpty() ? messages.getShouldOnlyContainMessage() : shouldOnlyContain.message(), shouldOnlyContain.alphabet())
                             );
                         }
                     }
@@ -312,8 +337,9 @@ public class Validator implements Cloneable {
                         if (!Validators.onlyNumbers(value)) {
                             OnlyNumbers onlyNumbers = (OnlyNumbers) annotation;
                             throw new InvalidEvaluationException(
-                                onlyNumbers.message().isEmpty() ? messages.getOnlyNumbersMessage() : onlyNumbers.message(),
-                                value
+                                fieldName,
+                                value,
+                                onlyNumbers.message().isEmpty() ? messages.getOnlyNumbersMessage() : onlyNumbers.message()
                             );
                         }
                     }
@@ -322,8 +348,9 @@ public class Validator implements Cloneable {
                         if (!Validators.onlyLetters(value)) {
                             OnlyLetters onlyLetters = (OnlyLetters) annotation;
                             throw new InvalidEvaluationException(
-                                onlyLetters.message().isEmpty() ? messages.getOnlyLettersMessage() : onlyLetters.message(),
-                                value
+                                fieldName,
+                                value,
+                                onlyLetters.message().isEmpty() ? messages.getOnlyLettersMessage() : onlyLetters.message()
                             );
                         }
                     }
@@ -332,8 +359,9 @@ public class Validator implements Cloneable {
                         if (!Validators.onlyAlphanumeric(value)) {
                             OnlyAlphanumeric onlyAlphanumeric = (OnlyAlphanumeric) annotation;
                             throw new InvalidEvaluationException(
-                                onlyAlphanumeric.message().isEmpty() ? messages.getOnlyAlphanumericMessage() : onlyAlphanumeric.message(),
-                                value
+                                fieldName,
+                                value,
+                                onlyAlphanumeric.message().isEmpty() ? messages.getOnlyAlphanumericMessage() : onlyAlphanumeric.message()
                             );
                         }
                     }
@@ -342,8 +370,9 @@ public class Validator implements Cloneable {
                         NotContain notContain = (NotContain) annotation;
                         if (!Validators.notContain(value, notContain.alphabet())) {
                             throw new InvalidEvaluationException(
-                                format(notContain.message().isEmpty() ? messages.getNotContainMessage() : notContain.message(), notContain.alphabet()),
-                                value
+                                fieldName,
+                                value,
+                                format(notContain.message().isEmpty() ? messages.getNotContainMessage() : notContain.message(), notContain.alphabet())
                             );
                         }
                     }
@@ -353,8 +382,9 @@ public class Validator implements Cloneable {
                         for (NotContain notContain : container.value()) {
                             if (!Validators.notContain(value, notContain.alphabet())) {
                                 throw new InvalidEvaluationException(
-                                    format(notContain.message().isEmpty() ? messages.getNotContainMessage() : notContain.message(), notContain.alphabet()),
-                                    value
+                                    fieldName,
+                                    value,
+                                    format(notContain.message().isEmpty() ? messages.getNotContainMessage() : notContain.message(), notContain.alphabet())
                                 );
                             }
                         }
@@ -364,8 +394,9 @@ public class Validator implements Cloneable {
                         MustContainOne mustContainOne = (MustContainOne) annotation;
                         if (!Validators.mustContainOne(value, mustContainOne.alphabet())) {
                             throw new InvalidEvaluationException(
-                                format(mustContainOne.message().isEmpty() ? messages.getMustContainOneMessage() : mustContainOne.message(), mustContainOne.alphabet()),
-                                value
+                                fieldName,
+                                value,
+                                format(mustContainOne.message().isEmpty() ? messages.getMustContainOneMessage() : mustContainOne.message(), mustContainOne.alphabet())
                             );
                         }
                     }
@@ -375,8 +406,9 @@ public class Validator implements Cloneable {
                         for (MustContainOne mustContainOne : container.value()) {
                             if (!Validators.mustContainOne(value, mustContainOne.alphabet())) {
                                 throw new InvalidEvaluationException(
-                                    format(mustContainOne.message().isEmpty() ? messages.getMustContainOneMessage() : mustContainOne.message(), mustContainOne.alphabet()),
-                                    value
+                                    fieldName,
+                                    value,
+                                    format(mustContainOne.message().isEmpty() ? messages.getMustContainOneMessage() : mustContainOne.message(), mustContainOne.alphabet())
                                 );
                             }
                         }
@@ -386,8 +418,9 @@ public class Validator implements Cloneable {
                         MaxValue maxValue = (MaxValue) annotation;
                         if (!Validators.maxValue(value, maxValue.max())) {
                             throw new InvalidEvaluationException(
-                                format(maxValue.message().isEmpty() ? messages.getMaxValueMessage() : maxValue.message(), maxValue.max()),
-                                value
+                                fieldName,
+                                value,
+                                format(maxValue.message().isEmpty() ? messages.getMaxValueMessage() : maxValue.message(), maxValue.max())
                             );
                         }
                     }
@@ -396,8 +429,9 @@ public class Validator implements Cloneable {
                         MinValue minValue = (MinValue) annotation;
                         if (!Validators.minValue(value, minValue.min())) {
                             throw new InvalidEvaluationException(
-                                format(minValue.message().isEmpty() ? messages.getMinValueMessage() : minValue.message(), minValue.min()),
-                                value
+                                fieldName,
+                                value,
+                                format(minValue.message().isEmpty() ? messages.getMinValueMessage() : minValue.message(), minValue.min())
                             );
                         }
                     }
@@ -406,8 +440,9 @@ public class Validator implements Cloneable {
                         RangeValue rangeValue = (RangeValue) annotation;
                         if (!Validators.rangeValue(value, rangeValue.min(), rangeValue.max())) {
                             throw new InvalidEvaluationException(
-                                format(rangeValue.message().isEmpty() ? messages.getRangeValueMessage() : rangeValue.message(), rangeValue.min(), rangeValue.max()),
-                                value
+                                fieldName,
+                                value,
+                                format(rangeValue.message().isEmpty() ? messages.getRangeValueMessage() : rangeValue.message(), rangeValue.min(), rangeValue.max())
                             );
                         }
                     }
@@ -416,8 +451,9 @@ public class Validator implements Cloneable {
                         MinAge minAge = (MinAge) annotation;
                         if (!Validators.minAge(value, minAge.format(), minAge.age())) {
                             throw new InvalidEvaluationException(
-                                format(minAge.message().isEmpty() ? messages.getMinAgeMessage() : minAge.message(), minAge.age()),
-                                value
+                                fieldName,
+                                value,
+                                format(minAge.message().isEmpty() ? messages.getMinAgeMessage() : minAge.message(), minAge.age())
                             );
                         }
                     }
@@ -426,8 +462,9 @@ public class Validator implements Cloneable {
                         ExpirationDate expirationDate = (ExpirationDate) annotation;
                         if (!Validators.expirationDate(value, expirationDate.format())) {
                             throw new InvalidEvaluationException(
-                                format(expirationDate.message().isEmpty() ? messages.getExpirationDateMessage() : expirationDate.message(), expirationDate.format()),
-                                value
+                                fieldName,
+                                value,
+                                format(expirationDate.message().isEmpty() ? messages.getExpirationDateMessage() : expirationDate.message(), expirationDate.format())
                             );
                         }
                     }
@@ -436,8 +473,9 @@ public class Validator implements Cloneable {
                         MustContainMin mustContainMin = (MustContainMin) annotation;
                         if (!Validators.mustContainMin(value, mustContainMin.min(), mustContainMin.alphabet())) {
                             throw new InvalidEvaluationException(
-                                format(mustContainMin.message().isEmpty() ? messages.getMustContainMinMessage() : mustContainMin.message(), mustContainMin.min(), mustContainMin.alphabet()),
-                                value
+                                fieldName,
+                                value,
+                                format(mustContainMin.message().isEmpty() ? messages.getMustContainMinMessage() : mustContainMin.message(), mustContainMin.min(), mustContainMin.alphabet())
                             );
                         }
                     }
@@ -447,8 +485,9 @@ public class Validator implements Cloneable {
                         for (MustContainMin mustContainMin : container.value()) {
                             if (!Validators.mustContainMin(value, mustContainMin.min(), mustContainMin.alphabet())) {
                                 throw new InvalidEvaluationException(
-                                    format(mustContainMin.message().isEmpty() ? messages.getMustContainMinMessage() : mustContainMin.message(), mustContainMin.min(), mustContainMin.alphabet()),
-                                    value
+                                    fieldName,
+                                    value,
+                                    format(mustContainMin.message().isEmpty() ? messages.getMustContainMinMessage() : mustContainMin.message(), mustContainMin.min(), mustContainMin.alphabet())
                                 );
                             }
                         }
@@ -482,13 +521,14 @@ public class Validator implements Cloneable {
 
     /**
      * Validate that the String to evaluate meets all the rules <br>
+     * @param key Identifies the String to evaluate
      * @param evaluate String to evaluate
      * @throws InvalidEvaluationException Exception thrown if the String to evaluate does not meet any rule
      */
-    public void validOrFail(String evaluate) throws InvalidEvaluationException {
+    public void validOrFail(String key, String evaluate) throws InvalidEvaluationException {
         for (Rule rule: rules)
             if (!rule.validate(evaluate))
-                throw new InvalidEvaluationException(rule.getMessage(), evaluate);
+                throw new InvalidEvaluationException(key, evaluate, rule.getMessage());
     }
 
     /**
@@ -508,7 +548,7 @@ public class Validator implements Cloneable {
      * @param compare String to compare
      * @return true: if validation passes
      */
-    public boolean compare(String evaluate, String compare) {
+    public boolean isMatch(String evaluate, String compare) {
         if (!evaluate.equals(compare)) {
             if (onInvalidEvaluation !=null) onInvalidEvaluation.invoke(notMatchMessage);
             return false;
@@ -530,19 +570,20 @@ public class Validator implements Cloneable {
      *        method.
      *     </li>
      * <ul/>
+     * @param key Identifies the String to evaluate
      * @param evaluate String to evaluate.
      * @param compare String to compare.
      * @throws InvalidEvaluationException Exception thrown if the String to evaluate does not meet any rule.
      */
-    public void compareOrFail(String evaluate, String compare) throws InvalidEvaluationException {
+    public void compareOrFail(String key, String evaluate, String compare) throws InvalidEvaluationException {
         if (!evaluate.equals(compare))
-            throw new InvalidEvaluationException(notMatchMessage, evaluate);
-        validOrFail(evaluate);
+            throw new InvalidEvaluationException(key, evaluate, notMatchMessage);
+        validOrFail(key, evaluate);
     }
 
     /**
      * Sets the error message to display, in case the String comparison fails in the method
-     * {@link #compare(String, String)}.
+     * {@link #isMatch(String, String)}.
      * @param message Error message.
      */
     public void setNotMatchMessage(String message) {
@@ -1279,7 +1320,7 @@ public class Validator implements Cloneable {
 
         /**
          * Sets the error message to display, in case the String comparison fails in the method
-         * {@link #compare(String, String)}.
+         * {@link #isMatch(String, String)}.
          * @param message Error message.
          * @return Builder
          */

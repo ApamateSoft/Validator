@@ -1,6 +1,5 @@
 package io.github.ApamateSoft.validator;
 
-import io.github.ApamateSoft.validator.Validator;
 import io.github.ApamateSoft.validator.exceptions.InvalidEvaluationException;
 import io.github.ApamateSoft.validator.functions.OnInvalidEvaluation;
 import org.junit.jupiter.api.Test;
@@ -31,19 +30,19 @@ public class ValidatorCompareTest {
 
     @Test
     void returnsFalseForStringThatDoesNotMatch() {
-        assertFalse(validator.compare("abc", "xyz"));
+        assertFalse(validator.isMatch("abc", "xyz"));
     }
 
     @Test
     void returnsTrueForMatchingText() {
-        assertTrue(validator.compare("abc", "abc"));
+        assertTrue(validator.isMatch("abc", "abc"));
     }
 
     @Test
     void verifyCallback() {
         final OnInvalidEvaluation onInvalidEvaluation = mock(OnInvalidEvaluation.class);
         validator.onInvalidEvaluation(onInvalidEvaluation);
-        validator.compare("abc", "xyz");
+        validator.isMatch("abc", "xyz");
         verify(onInvalidEvaluation).invoke("Not match");
     }
 

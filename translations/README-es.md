@@ -4,27 +4,28 @@ Versión en [Inglés](../README.md)
 
 Facilita la validación de Strings encadenando una serie de reglas.
 
-## Notas de version 1.3.1
-- Solucionado problema de traducción del mensaje por defecto de la regla name en inglés.
-- Se ha cambiado el mensaje de error de la regla `onlyNumbers`.
+## Notas de version 1.3.2
+- Ahora las funciones `validOrFail` y `compareOrFail` requieren un atributo `key` para ser identificados.
+- Solucionado problema al comprobar si el objeto error del catch es del tipo `InvalidEvaluationError` usando `instanceof`.
+- Se ha cambiado el mensaje que retorna la regla `name` y anotación `@Name`.
 
 ## Instalación
 
 ### Descargar el JAR
-[Validator-1.3.1.jar](https://repo1.maven.org/maven2/io/github/ApamateSoft/Validator/1.3.1/Validator-1.3.1.jar)
+[Validator-1.3.2.jar](https://repo1.maven.org/maven2/io/github/ApamateSoft/Validator/1.3.2/Validator-1.3.2.jar)
 
 ### Maven
 ```xml
 <dependency>
     <groupId>io.github.ApamateSoft</groupId>
     <artifactId>Validator</artifactId>
-    <version>1.3.1</version>
+    <version>1.3.2</version>
 </dependency>
 ```
 
 ### Gradle
 ```groovy
-implementation group: 'io.github.ApamateSoft', name: 'Validator', version: '1.3.1'
+implementation group: 'io.github.ApamateSoft', name: 'Validator', version: '1.3.2'
 ```
 
 ## Empezando
@@ -89,7 +90,7 @@ Validator ofrece una serie de reglas predefinidas, tratando de cubrir los casos 
 
 | Regla	              | Descripción                                                                                              |
 |---------------------|----------------------------------------------------------------------------------------------------------|
-| `date`	          | Valida que el String a evaluar coincida con el formato de fecha especificado                             |
+| `date`	             | Valida que el String a evaluar coincida con el formato de fecha especificado                             |
 | `email`             | Valida que el String tenga un formato de correo electrónico                                              |
 | `expirationDate`    | Valida que la fecha ingresada no haya expirado                                                           |
 | `httpLink`          | Valida que el String sea un enlace con formato http                                                      |
@@ -97,13 +98,13 @@ Validator ofrece una serie de reglas predefinidas, tratando de cubrir los casos 
 | `ip`                | Valida que el String sea un formato de ip                                                                |
 | `ipv4`              | Valida que el String sea un formato de ipv4                                                              |
 | `ipv6`              | Valida que el String sea un formato de ipv6                                                              |
-| `length`	          | Valida que el String tenga una longitud exacta de caracteres                                             |
-| `link`	          | Valida que el String sea un formato de enlace                                                            |
-| `maxLength`	      | Valida que la longitud del String no sea mayor que la condición                                          |
-| `maxValue`	      | Valida que el valor del String no sea mayor que la condición                                             |
-| `minAge`	          | Valida que el período desde la fecha ingresada hasta la fecha actual sea mayor o igual a una edad mínima |
-| `minLength`	      | Valida que la longitud del String no sea menor que la condición                                          |
-| `minValue`	      | Valida que el valor del String no sea menor que la condición                                             |
+| `length`	           | Valida que el String tenga una longitud exacta de caracteres                                             |
+| `link`	             | Valida que el String sea un formato de enlace                                                            |
+| `maxLength`	        | Valida que la longitud del String no sea mayor que la condición                                          |
+| `maxValue`	         | Valida que el valor del String no sea mayor que la condición                                             |
+| `minAge`	           | Valida que el período desde la fecha ingresada hasta la fecha actual sea mayor o igual a una edad mínima |
+| `minLength`	        | Valida que la longitud del String no sea menor que la condición                                          |
+| `minValue`	         | Valida que el valor del String no sea menor que la condición                                             |
 | `mustContainMin`    | Valida que el String contenga al menos un número mínimo de caracteres incluidos en la condición          |
 | `mustContainOne`    | Valida que el String contenga al menos un caracter incluido en la condición                              |
 | `name`              | Valida que el String sea un nombre propio                                                                |
@@ -116,7 +117,7 @@ Validator ofrece una serie de reglas predefinidas, tratando de cubrir los casos 
 | `rangeLength`       | Valida que la longitud del String esté en el rango establecido                                           |
 | `rangeValue`        | Valida que el valor del String esté en el rango establecido                                              |
 | `regExp`            | Valida que el String coincida con la expresión regular                                                   |
-| `required`	      | Valida que el String sea diferente de nulo y vacío                                                       |
+| `required`	         | Valida que el String sea diferente de nulo y vacío                                                       |
 | `shouldOnlyContain` | Valida que el String solo contenga caracteres incluidos en la condición                                  |
 | `time`              | Valida que el String sea un formato de hora                                                              |
 | `time12`            | Valida que el String sea una hora con formato de 12 horas                                                |
@@ -267,7 +268,7 @@ para los mensajes en español, ambas clases implementan la interfaz `Messages`.
 | `minValue`          | The value cannot be less than %1$.2f                     | El valor no puede ser menor a %1$.2f                      |
 | `mustContainMin`    | At least %d of the following characters are required: %s | Se requiere al menos %d de los siguientes caracteres: %s  |
 | `mustContainOne`    | At least one of the following characters is required: %s | Se requiere al menos uno de los siguientes caracteres: %s |
-| `name`              | Must enter a valid personal name                         | Debe introducir un nombre personal válido                 |
+| `name`              | Invalid personal name                                    | Nombre personal inválido                                  |
 | `notContain`        | The following characters aren't admitted %s              | No se admiten los siguientes caracteres %s                |
 | `number`            | It is not a number                                       | No es un número                                           |
 | `numberPattern`     | Does not match pattern %s                                | No coincide con el patrón %s                              |
@@ -281,7 +282,7 @@ para los mensajes en español, ambas clases implementan la interfaz `Messages`.
 | `shouldOnlyContain` | They are just admitted the following characters %s       | Solo se admiten los siguientes caracteres %s              |
 | `time`              | Time invalid                                             | Hora inválida                                             |
 | `time12`            | Invalid 12 hour format                                   | Formato 12 horas inválido                                 |
-| `time24`            | Invalid 24 hour format                                   | Formato 24 horas inválido                                 |
+| `time24`            | Invalid 12 hour format                                   | Formato 12 horas inválido                                 |
 | `wwwLink`           | Invalid www link                                         | Enlace www inválido                                       |
 
 #### Cambiar los mensajes por defecto
@@ -333,15 +334,15 @@ import io.github.ApamateSoft.validator.Validator;
 
 public class HelloValidator {
 
-  Validator validator = new Validator.Builder()
-          .rule("Requerido", evaluate -> !evaluate.isEmpty())
-          .setNotMatchMessage("No coinciden")
-          .build();
+    Validator validator = new Validator.Builder()
+        .rule("Requerido", evaluate -> !evaluate.isEmpty())
+        .setNotMatchMessage("No coinciden")
+        .build();
 
-  public static void main(String[] args) {
-    validator.compare("abc", "xyz"); // false
-    validator.compare("abc", "abc"); // true
-  }
+    public static void main(String[] args) {
+        validator.isMatch("abc", "xyz"); // false
+        validator.isMatch("abc", "abc"); // true
+    }
 
 }
 ```
@@ -377,7 +378,8 @@ Si se prefiere no utilizar el evento `.onInvalidEvaluation`, se puede usar los m
 `.compareOrFail` en sustitución de los métodos `.isValid` y `.comapre` respectivamente.
 
 La principal diferencia es que estos métodos no retorna valor alguno y en caso de fallar, arrojan una excepción del tipo
-`InvalidEvaluationException` que contiene el mensaje de error de la regla junto con el valor del String evaluado.
+`InvalidEvaluationException` que contiene el mensaje de error de la regla junto con el valor del String evaluado y una 
+llave que funciona como identificador.
 
 ```java
 import io.github.ApamateSoft.validator.Validator;
@@ -391,11 +393,12 @@ public class HelloValidator {
 
   private void submit() {
     try {
-      validator.validOrFail("yyy");
-      validator.compareOrFail("XXX", "YYY");
-      // TODO
+      validator.validOrFail("textKey", "yyy");
+      // ó
+      validator.compareOrFail("textKey", "XXX", "YYY");
+      // TODO ...
     } catch (InvalidEvaluationException e) {
-      System.out.println(e.getMessage());
+      System.out.println("key: "+e.getKey()+", value: "+e.getValue()+", message: "+e.getMessage());
     }
   }
 
@@ -422,7 +425,7 @@ class HelloValidator {
   private void submit() {
     try {
       Validator.validOrFail(this);
-      // TODO
+      // TODO ...
     } catch (InvalidEvaluationException e) {
       System.out.println(e.getMessage());
     }
@@ -518,12 +521,13 @@ métodos estáticos pertenecientes a la clase `Validators` que solo retornan un 
 | `time24`            | Valida que el String sea una hora con formato de 24 horas                                                |
 | `wwwLink`           | Valida que el String sea un enlace con formato www                                                       |
 
-## Recomendaciones
+## Recomendaciones y ejemplos
 
 Comúnmente, suele haber varias instancias de Strings a cuáles aplicar las mismas reglas de validación. Para estos casos
 se recomienda definir los Validators por contexto, con el fin de definir nuestro Validator una vez y reutilizarlo. Esta
 lógica es posible, ya que Validator incluye el método `.copy` el cual genera copias del mismo.
 
+*Validators.java*
 ```java
 import io.github.ApamateSoft.validator.exceptions.InvalidEvaluationException;
 import io.github.ApamateSoft.validator.Validator;
@@ -552,6 +556,14 @@ public class Validators {
         .build();
 
 }
+```
+
+### Trabajando con eventos
+
+*Register.java*
+
+```java
+import io.github.ApamateSoft.validator.Validator;
 
 public class Register {
 
@@ -559,31 +571,172 @@ public class Register {
     private final Validator pswValidator = Validators.password.copy();
     private final Validator phoneValidator = Validators.phone.copy();
 
-    private String email, phone, psw, pswConfirmation;
+    private String email = "";
+    private String phone = "";
+    private String psw = "";
+    private String pswConfirmation = "";
 
     public Register() {
-        emailValidator.onInvalidEvaluation(System.out::println);
-        pswValidator.onInvalidEvaluation(System.out::println);
-        phoneValidator.onInvalidEvaluation(System.out::println);
+        emailValidator.onInvalidEvaluation(message -> {
+            // TODO: tratar error para el correo electrónico
+        });
+        pswValidator.onInvalidEvaluation(message -> {
+            // TODO: tratar error para la contraseña
+        });
+        phoneValidator.onInvalidEvaluation(message -> {
+            // TODO: tratar error para el teléfono
+        });
     }
 
     public void submit() {
         if (
-            !emailValidator.isValid(email) || 
-            !pswValidator.compare(psw, pswConfirmation) ||
-            !phoneValidator.isValid(phone)
+            !emailValidator.isValid(email) ||
+                !pswValidator.isMatch(psw, pswConfirmation) ||
+                !phoneValidator.isValid(phone)
         ) return;
-        // TODO
+        // TODO proceder con el submit
     }
 
-    public void submitWithExceptions() {
+}
+```
+
+### Trabajando con excepciones
+
+*Register.java*
+```java
+import io.github.ApamateSoft.validator.Validator;
+import io.github.ApamateSoft.validator.exceptions.InvalidEvaluationException;
+
+public class Register {
+
+    private final Validator emailValidator = Validators.email.copy();
+    private final Validator pswValidator = Validators.password.copy();
+    private final Validator phoneValidator = Validators.phone.copy();
+
+    private String email = "";
+    private String phone = "";
+    private String psw = "";
+    private String pswConfirmation = "";
+
+    public void submit() {
         try {
-            emailValidator.validOrFail(email);
-            pswValidator.compareOrFail(psw, pswConfirmation);
-            phoneValidator.validOrFail(phone);
-            // TODO
+            emailValidator.validOrFail("email", email);
+            pswValidator.compareOrFail("psw", psw, pswConfirmation);
+            phoneValidator.validOrFail("phone", phone);
+            // TODO proceder con el submit
         } catch (InvalidEvaluationException e) {
-            System.out.println(e.getMessage());
+            switch (e.getKey()) {
+                case "email":
+                    // TODO: tratar error para el correo electrónico
+                    break;
+                case "psw":
+                    // TODO: tratar error para la contraseña
+                    break;
+                case "phone":
+                    // TODO: tratar error para el teléfono
+                    break;
+            }
+        }
+    }
+
+}
+```
+
+### Trabajar con anotaciones
+
+*RegisterPojo.java*
+```java
+import io.github.ApamateSoft.validator.annotations.*;
+import static io.github.ApamateSoft.validator.utils.Alphabets.*;
+
+public class RegisterPojo {
+
+    @Required
+    @Email
+    private String email = "";
+
+    @Required
+    @NumberPattern(patter = "(xxxx) xx-xx-xxx")
+    private String phone = "";
+
+    @Required
+    @MinLength(min = 12)
+    @MustContainMin(min = 3, alphabet = ALPHA_LOWERCASE)
+    @MustContainMin(min = 3, alphabet = ALPHA_UPPERCASE)
+    @MustContainMin(min = 3, alphabet = NUMBER)
+    @MustContainMin(min = 3, alphabet = "@~_/")
+    @Compare(compareWith = "pswConfirmation")
+    private String psw = "";
+
+    private String pswConfirmation = "";
+
+    public RegisterPojo(String email, String phone, String psw, String pswConfirmation) {
+        this.email = email;
+        this.phone = phone;
+        this.psw = psw;
+        this.pswConfirmation = pswConfirmation;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getPsw() {
+        return psw;
+    }
+
+    public void setPsw(String psw) {
+        this.psw = psw;
+    }
+
+    public String getPswConfirmation() {
+        return pswConfirmation;
+    }
+
+    public void setPswConfirmation(String pswConfirmation) {
+        this.pswConfirmation = pswConfirmation;
+    }
+
+}
+```
+
+*Register.java*
+```java
+import io.github.ApamateSoft.validator.Validator;
+import io.github.ApamateSoft.validator.exceptions.InvalidEvaluationException;
+
+public class Register {
+
+    private RegisterPojo register = new RegisterPojo("", "", "", "");
+
+    public void submit() {
+        try {
+            Validator.validOrFail(register);
+            // TODO proceder con el submit
+        } catch (InvalidEvaluationException e) {
+            switch (e.getKey()) {
+                case "email":
+                    // TODO: tratar error para el correo electrónico
+                    break;
+                case "psw":
+                    // TODO: tratar error para la contraseña
+                    break;
+                case "phone":
+                    // TODO: tratar error para el teléfono
+                    break;
+            }
         }
     }
 

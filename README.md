@@ -88,41 +88,41 @@ public class HelloValidator {
 
 Validator offers a series of predefined rules, trying to cover the most common validation cases.
 
-| Rule	              | Description                                                                                                  |
-|---------------------|--------------------------------------------------------------------------------------------------------------|
-| `date`	          | Validates that the String to evaluate matches the specified date format                                      |
-| `email`             | Validates that the String has an email format                                                                |
-| `expirationDate`    | Validates that the entered date has not expired                                                              |
-| `httpLink`          | Validates that the String is a link with http format                                                         |
-| `httpsLink`         | Validates that the String is a link with https format                                                        |
-| `ip`                | Validates that the String is an ip format                                                                    |
-| `ipv4`              | Validates that the String is an ipv4 format                                                                  |
-| `ipv6`              | Validates that the String is an ipv6 format                                                                  |
-| `length`	          | Validates that the String has an exact length of characters                                                  |
-| `link`	          | Validates that the String is a link format                                                                   |
-| `maxLength`	      | Validates that the length of the String is not greater than the condition                                    |
-| `maxValue`	      | Validates that the value of the String is not greater than the condition                                     |
-| `minAge`	          | Validates that the period from the entered date to the current date is greater than or equal to a minimum age |
-| `minLength`	      | Validates that the length of the String is not less than the condition                                       |
-| `minValue`	      | Validates that the value of the String is not less than the condition                                        |
-| `mustContainMin`    | Validates that the String contains at least a minimum number of characters included in the condition         |
-| `mustContainOne`    | Validates that the String contains at least one character included in the condition                          |
-| `name`              | Validates that the String is a proper name                                                                   |
-| `notContain`        | Validates that the String does not contain any character included in the condition                           |
-| `number`            | Validates that the String is a numeric format                                                                |
-| `numberPattern`     | Validates that the String matches the pattern, replacing the x's with numbers                                |
-| `onlyAlphanumeric`  | Validates that the String contains only alphanumeric characters                                              |
-| `onlyLetters`       | Validates that the String contains only letters                                                              |
-| `onlyNumbers`       | Validates that the String to evaluate only contains numeric characters                                       |
-| `rangeLength`       | Validates that the length of the String is in the established range                                          |
-| `rangeValue`        | Validates that the value of the String is in the established range                                           |
-| `regExp`            | Validates that the String matches the regular expression                                                     |
-| `required`	      | Validates that the String is different from null and empty                                                   |
-| `shouldOnlyContain` | Validates that the String only contains characters included in the condition                                 |
-| `time`              | Validates that the String is a time format                                                                   |
-| `time12`            | Validates that the String is a time with 12-hour format                                                      |
-| `time24`            | Validates that the String is a time with 24-hour format                                                      |
-| `wwwLink`           | Validates that the String is a link with www format                                                          |
+| Rule	               | Description                                                                                                   |
+|---------------------|---------------------------------------------------------------------------------------------------------------|
+| `date`	             | Validates that the String to evaluate matches the specified date format                                       |
+| `email`             | Validates that the String has an email format                                                                 |
+| `expirationDate`    | Validates that the entered date has not expired                                                               |
+| `httpLink`          | Validates that the String is a link with http format                                                          |
+| `httpsLink`         | Validates that the String is a link with https format                                                         |
+| `ip`                | Validates that the String is an ip format                                                                     |
+| `ipv4`              | Validates that the String is an ipv4 format                                                                   |
+| `ipv6`              | Validates that the String is an ipv6 format                                                                   |
+| `length`	           | Validates that the String has an exact length of characters                                                   |
+| `link`	             | Validates that the String is a link format                                                                    |
+| `maxLength`	        | Validates that the length of the String is not greater than the condition                                     |
+| `maxValue`	         | Validates that the value of the String is not greater than the condition                                      |
+| `minAge`	           | Validates that the period from the entered date to the current date is greater than or equal to a minimum age |
+| `minLength`	        | Validates that the length of the String is not less than the condition                                        |
+| `minValue`	         | Validates that the value of the String is not less than the condition                                         |
+| `mustContainMin`    | Validates that the String contains at least a minimum number of characters included in the condition          |
+| `mustContainOne`    | Validates that the String contains at least one character included in the condition                           |
+| `name`              | Validates that the String is a proper name                                                                    |
+| `notContain`        | Validates that the String does not contain any character included in the condition                            |
+| `number`            | Validates that the String is a numeric format                                                                 |
+| `numberPattern`     | Validates that the String matches the pattern, replacing the x's with numbers                                 |
+| `onlyAlphanumeric`  | Validates that the String contains only alphanumeric characters                                               |
+| `onlyLetters`       | Validates that the String contains only letters                                                               |
+| `onlyNumbers`       | Validates that the String to evaluate only contains numeric characters                                        |
+| `rangeLength`       | Validates that the length of the String is in the established range                                           |
+| `rangeValue`        | Validates that the value of the String is in the established range                                            |
+| `regExp`            | Validates that the String matches the regular expression                                                      |
+| `required`	         | Validates that the String is different from null and empty                                                    |
+| `shouldOnlyContain` | Validates that the String only contains characters included in the condition                                  |
+| `time`              | Validates that the String is a time format                                                                    |
+| `time12`            | Validates that the String is a time with 12-hour format                                                       |
+| `time24`            | Validates that the String is a time with 24-hour format                                                       |
+| `wwwLink`           | Validates that the String is a link with www format                                                           |
 
 Predefined rules can simplify the definition of a Validator.
 
@@ -268,7 +268,7 @@ for Spanish messages, both classes implement the `Messages` interface.
 | `minValue`          | The value cannot be less than %1$.2f                     | El valor no puede ser menor a %1$.2f                      |
 | `mustContainMin`    | At least %d of the following characters are required: %s | Se requiere al menos %d de los siguientes caracteres: %s  |
 | `mustContainOne`    | At least one of the following characters is required: %s | Se requiere al menos uno de los siguientes caracteres: %s |
-| `name`              | Must enter a valid personal name                         | Debe introducir un nombre personal válido                 |
+| `name`              | Invalid personal name                                    | Nombre personal inválido                                  |
 | `notContain`        | The following characters aren't admitted %s              | No se admiten los siguientes caracteres %s                |
 | `number`            | It is not a number                                       | No es un número                                           |
 | `numberPattern`     | Does not match pattern %s                                | No coincide con el patrón %s                              |
@@ -333,15 +333,15 @@ import io.github.ApamateSoft.validator.Validator;
 
 public class HelloValidator {
 
-  Validator validator = new Validator.Builder()
-          .rule("Required", evaluate -> !evaluate.isEmpty())
-          .setNotMatchMessage("Not match")
-          .build();
+    Validator validator = new Validator.Builder()
+        .rule("Required", evaluate -> !evaluate.isEmpty())
+        .setNotMatchMessage("Not match")
+        .build();
 
-  public static void main(String[] args) {
-    validator.compare("abc", "xyz"); // false
-    validator.compare("abc", "abc"); // true
-  }
+    public static void main(String[] args) {
+        validator.isMatch("abc", "xyz"); // false
+        validator.isMatch("abc", "abc"); // true
+    }
 
 }
 ```
@@ -378,7 +378,7 @@ If you prefer not to use the `.onInvalidEvaluation` event, you can use the `.isV
 
 The main difference is that these methods do not return any value and if they fail, they throw an exception to the type
 `InvalidEvaluationException` containing the error message from the rule along with the value of the String to be 
-evaluated.
+evaluated and a key which works as an identifier.
 
 ```java
 import io.github.ApamateSoft.validator.Validator;
@@ -392,11 +392,12 @@ public class HelloValidator {
 
   private void submit() {
     try {
-      validator.validOrFail("yyy");
-      validator.compareOrFail("XXX", "YYY");
-      // TODO
+      validator.validOrFail("textKey", "yyy");
+      // or
+      validator.compareOrFail("textKey", "XXX", "YYY");
+      // TODO ...
     } catch (InvalidEvaluationException e) {
-      System.out.println(e.getMessage());
+        System.out.println("key: "+e.getKey()+", value: "+e.getValue()+", message: "+e.getMessage());
     }
   }
 
@@ -482,48 +483,49 @@ offers a class with a set of regular expressions as constants in the `RegularExp
 All the rules use simple validators to validate if the String to be evaluated is valid or not. These validators are
 static methods belonging to the `Validators` class that only return a boolean value.
 
-| Validator	          | Description                                                                                                  |
-|---------------------|--------------------------------------------------------------------------------------------------------------|
-| `date`	          | Validates that the String to evaluate matches the specified date format                                      |
-| `email`             | Validates that the String has an email format                                                                |
-| `expirationDate`    | Validates that the entered date has not expired                                                              |
-| `httpLink`          | Validates that the String is a link with http format                                                         |
-| `httpsLink`         | Validates that the String is a link with https format                                                        |
-| `ip`                | Validates that the String is an ip format                                                                    |
-| `ipv4`              | Validates that the String is an ipv4 format                                                                  |
-| `ipv6`              | Validates that the String is an ipv6 format                                                                  |
-| `length`	          | Validates that the String has an exact length of characters                                                  |
-| `link`	          | Validates that the String is a link format                                                                   |
-| `maxLength`	      | Validates that the length of the String is not greater than the condition                                    |
-| `maxValue`	      | Validates that the value of the String is not greater than the condition                                     |
-| `minAge`	          | Validates that the period from the entered date to the current date is greater than or equal to a minimum age |
-| `minLength`	      | Validates that the length of the String is not less than the condition                                       |
-| `minValue`	      | Validates that the value of the String is not less than the condition                                        |
-| `mustContainMin`    | Validates that the String contains at least a minimum number of characters included in the condition         |
-| `mustContainOne`    | Validates that the String contains at least one character included in the condition                          |
-| `name`              | Validates that the String is a proper name                                                                   |
-| `notContain`        | Validates that the String does not contain any character included in the condition                           |
-| `number`            | Validates that the String is a numeric format                                                                |
-| `numberPattern`     | Validates that the String matches the pattern, replacing the x's with numbers                                |
-| `onlyAlphanumeric`  | Validates that the String contains only alphanumeric characters                                              |
-| `onlyLetters`       | Validates that the String contains only letters                                                              |
-| `onlyNumbers`       | Validates that the String to evaluate only contains numeric characters                                       |
-| `rangeLength`       | Validates that the length of the String is in the established range                                          |
-| `rangeValue`        | Validates that the value of the String is in the established range                                           |
-| `regExp`            | Validates that the String matches the regular expression                                                     |
-| `required`	      | Validates that the String is different from null and empty                                                   |
-| `shouldOnlyContain` | Validates that the String only contains characters included in the condition                                 |
-| `time`              | Validates that the String is a time format                                                                   |
-| `time12`            | Validates that the String is a time with 12-hour format                                                      |
-| `time24`            | Validates that the String is a time with 24-hour format                                                      |
-| `wwwLink`           | Validates that the String is a link with www format                                                          |
+| Validator	          | Description                                                                                                   |
+|---------------------|---------------------------------------------------------------------------------------------------------------|
+| `date`	             | Validates that the String to evaluate matches the specified date format                                       |
+| `email`             | Validates that the String has an email format                                                                 |
+| `expirationDate`    | Validates that the entered date has not expired                                                               |
+| `httpLink`          | Validates that the String is a link with http format                                                          |
+| `httpsLink`         | Validates that the String is a link with https format                                                         |
+| `ip`                | Validates that the String is an ip format                                                                     |
+| `ipv4`              | Validates that the String is an ipv4 format                                                                   |
+| `ipv6`              | Validates that the String is an ipv6 format                                                                   |
+| `length`	           | Validates that the String has an exact length of characters                                                   |
+| `link`	             | Validates that the String is a link format                                                                    |
+| `maxLength`	        | Validates that the length of the String is not greater than the condition                                     |
+| `maxValue`	         | Validates that the value of the String is not greater than the condition                                      |
+| `minAge`	           | Validates that the period from the entered date to the current date is greater than or equal to a minimum age |
+| `minLength`	        | Validates that the length of the String is not less than the condition                                        |
+| `minValue`	         | Validates that the value of the String is not less than the condition                                         |
+| `mustContainMin`    | Validates that the String contains at least a minimum number of characters included in the condition          |
+| `mustContainOne`    | Validates that the String contains at least one character included in the condition                           |
+| `name`              | Validates that the String is a proper name                                                                    |
+| `notContain`        | Validates that the String does not contain any character included in the condition                            |
+| `number`            | Validates that the String is a numeric format                                                                 |
+| `numberPattern`     | Validates that the String matches the pattern, replacing the x's with numbers                                 |
+| `onlyAlphanumeric`  | Validates that the String contains only alphanumeric characters                                               |
+| `onlyLetters`       | Validates that the String contains only letters                                                               |
+| `onlyNumbers`       | Validates that the String to evaluate only contains numeric characters                                        |
+| `rangeLength`       | Validates that the length of the String is in the established range                                           |
+| `rangeValue`        | Validates that the value of the String is in the established range                                            |
+| `regExp`            | Validates that the String matches the regular expression                                                      |
+| `required`	         | Validates that the String is different from null and empty                                                    |
+| `shouldOnlyContain` | Validates that the String only contains characters included in the condition                                  |
+| `time`              | Validates that the String is a time format                                                                    |
+| `time12`            | Validates that the String is a time with 12-hour format                                                       |
+| `time24`            | Validates that the String is a time with 24-hour format                                                       |
+| `wwwLink`           | Validates that the String is a link with www format                                                           |
 
-## Recommendations
+## Recommendations and examples
 
 Commonly, there are several instances of Strings to which to apply the same validation rules. For these cases,
 it is recommended to define Validators per context, in order to define our Validator once and reuse it. This
 logic is possible, since Validator includes a `.copy` method which generates copies of it.
 
+*Validators.java*
 ```java
 import io.github.ApamateSoft.validator.exceptions.InvalidEvaluationException;
 import io.github.ApamateSoft.validator.Validator;
@@ -552,6 +554,14 @@ public class Validators {
         .build();
 
 }
+```
+
+### Working with eventos
+
+*Register.java*
+
+```java
+import io.github.ApamateSoft.validator.Validator;
 
 public class Register {
 
@@ -559,34 +569,174 @@ public class Register {
     private final Validator pswValidator = Validators.password.copy();
     private final Validator phoneValidator = Validators.phone.copy();
 
-    private String email, phone, psw, pswConfirmation;
+    private String email = "";
+    private String phone = "";
+    private String psw = "";
+    private String pswConfirmation = "";
 
     public Register() {
-        emailValidator.onInvalidEvaluation(System.out::println);
-        pswValidator.onInvalidEvaluation(System.out::println);
-        phoneValidator.onInvalidEvaluation(System.out::println);
+        emailValidator.onInvalidEvaluation(message -> {
+            // TODO: handle error for email
+        });
+        pswValidator.onInvalidEvaluation(message -> {
+            // TODO: handle error for password
+        });
+        phoneValidator.onInvalidEvaluation(message -> {
+            // TODO: handle error for phone
+        });
     }
 
     public void submit() {
         if (
-            !emailValidator.isValid(email) || 
-            !pswValidator.compare(psw, pswConfirmation) ||
-            !phoneValidator.isValid(phone)
+            !emailValidator.isValid(email) ||
+                !pswValidator.isMatch(psw, pswConfirmation) ||
+                !phoneValidator.isValid(phone)
         ) return;
-        // TODO
+        // TODO proceed with submit
     }
 
-    public void submitWithExceptions() {
+}
+```
+
+### Working with exceptions
+
+*Register.java*
+```java
+import io.github.ApamateSoft.validator.Validator;
+import io.github.ApamateSoft.validator.exceptions.InvalidEvaluationException;
+
+public class Register {
+
+    private final Validator emailValidator = Validators.email.copy();
+    private final Validator pswValidator = Validators.password.copy();
+    private final Validator phoneValidator = Validators.phone.copy();
+
+    private String email = "";
+    private String phone = "";
+    private String psw = "";
+    private String pswConfirmation = "";
+
+    public void submit() {
         try {
-            emailValidator.validOrFail(email);
-            pswValidator.compareOrFail(psw, pswConfirmation);
-            phoneValidator.validOrFail(phone);
-            // TODO
+            emailValidator.validOrFail("email", email);
+            pswValidator.compareOrFail("psw", psw, pswConfirmation);
+            phoneValidator.validOrFail("phone", phone);
+            // TODO proceed with submit
         } catch (InvalidEvaluationException e) {
-            System.out.println(e.getMessage());
+            switch (e.getKey()) {
+                case "email":
+                    // TODO: handle error for email
+                    break;
+                case "psw":
+                    // TODO: handle error for password
+                    break;
+                case "phone":
+                    // TODO: handle error for phone
+                    break;
+            }
         }
     }
 
 }
 ```
 
+### Working with annotations
+
+*RegisterPojo.java*
+```java
+import io.github.ApamateSoft.validator.annotations.*;
+import static io.github.ApamateSoft.validator.utils.Alphabets.*;
+
+public class RegisterPojo {
+
+    @Required
+    @Email
+    private String email = "";
+
+    @Required
+    @NumberPattern(patter = "(xxxx) xx-xx-xxx")
+    private String phone = "";
+
+    @Required
+    @MinLength(min = 12)
+    @MustContainMin(min = 3, alphabet = ALPHA_LOWERCASE)
+    @MustContainMin(min = 3, alphabet = ALPHA_UPPERCASE)
+    @MustContainMin(min = 3, alphabet = NUMBER)
+    @MustContainMin(min = 3, alphabet = "@~_/")
+    @Compare(compareWith = "pswConfirmation")
+    private String psw = "";
+
+    private String pswConfirmation = "";
+
+    public RegisterPojo(String email, String phone, String psw, String pswConfirmation) {
+        this.email = email;
+        this.phone = phone;
+        this.psw = psw;
+        this.pswConfirmation = pswConfirmation;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getPsw() {
+        return psw;
+    }
+
+    public void setPsw(String psw) {
+        this.psw = psw;
+    }
+
+    public String getPswConfirmation() {
+        return pswConfirmation;
+    }
+
+    public void setPswConfirmation(String pswConfirmation) {
+        this.pswConfirmation = pswConfirmation;
+    }
+
+}
+```
+
+*Register.java*
+```java
+import io.github.ApamateSoft.validator.Validator;
+import io.github.ApamateSoft.validator.exceptions.InvalidEvaluationException;
+
+public class Register {
+
+    private RegisterPojo register = new RegisterPojo("", "", "", "");
+
+    public void submit() {
+        try {
+            Validator.validOrFail(register);
+            // TODO proceed with submit
+        } catch (InvalidEvaluationException e) {
+            switch (e.getKey()) {
+                case "email":
+                    // TODO: handle error for email
+                    break;
+                case "psw":
+                    // TODO: handle error for password
+                    break;
+                case "phone":
+                    // TODO: handle error for phone
+                    break;
+            }
+        }
+    }
+
+}
+```
