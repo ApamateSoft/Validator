@@ -89,7 +89,7 @@ public class MessagesEn implements Messages {
 
     @Override
     public String getNameMessage() {
-        return "Must enter a valid personal name";
+        return "Invalid personal name";
     }
 
     @Override
