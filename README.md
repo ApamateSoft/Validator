@@ -5,27 +5,28 @@ Facilitates the validation of Strings by chaining series of rules.
 ## Translations
 - [Spanish](translations/README-es.md)
 
-## Release Notes 1.3.1
-- Fixed translation problem of the default message of the name rule in English.
-- Changed the error message for the `onlyNumbers` rule.
+## Release Notes 1.3.2
+- The `validOrFail` and `compareOrFail` functions now require a `key` attribute to be identified.
+- Fixed problem when checking if the catch error object is of type `InvalidEvaluationError` using `instanceof`.
+- The message returned by the `name` rule and `@Name` annotation has been changed.
 
 ## Installation
 
 ### Download the JAR
-[Validator-1.3.1.jar](https://repo1.maven.org/maven2/io/github/ApamateSoft/Validator/1.3.1/Validator-1.3.1.jar)
+[Validator-1.3.2.jar](https://repo1.maven.org/maven2/io/github/ApamateSoft/Validator/1.3.2/Validator-1.3.2.jar)
 
 ### Maven
 ```xml
 <dependency>
     <groupId>io.github.ApamateSoft</groupId>
     <artifactId>Validator</artifactId>
-    <version>1.3.1</version>
+    <version>1.3.2</version>
 </dependency>
 ```
 
 ### Gradle
 ```groovy
-implementation group: 'io.github.ApamateSoft', name: 'Validator', version: '1.3.1'
+implementation group: 'io.github.ApamateSoft', name: 'Validator', version: '1.3.2'
 ```
 
 ## Starting
